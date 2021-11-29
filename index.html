@@ -2,30 +2,73 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css_properties_reset.css" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="style.css" type="text/css">
-    
-    <title>Scrumy To the moon BB</title>
+  <meta charset="UTF-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/css_properties_reset.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/style.css" type="text/css">
+  <title>Scrumy</title>
 </head>
 
-<body>
+<body onload="loadApp()">
+  <div class="topNavigationBar" id="myTopNavigationBar">
+    <a href="#home" class="logobutton"><img src="images/logo_scrumy.png" alt="Logo de pagina" class="logo"></a>
+    <div class="projectstabcontainer" id="projectstab">
+      <button onclick="showProjectTab()">Proyecto 1</button>
+      <button onclick="showProjectTab()">Proyecto 2</button>
+      <button id="addproject" >
+        <i class="fa fa-plus-square addproject" aria-hidden="true"></i>
+      </button>
+    </div>
+    <a href="#home" class="userbutton">
+      <i class="fa fa-user-circle-o usericon" aria-hidden="true"></i>Usuario 1 Configuración
+    </a>
 
-<div class="topNavigationBar" id="myTopNavigationBar" >
-  <a href="#home" class="active">Scrumy</a>
-  <a href="http://google.com" target="_self" rel="noopener noreferrer">google</a>
-  <a href="#news">News</a>
-  <a href="#contact">Contact</a>
-  <a href="#about">About</a>
-  <a href="javascript:void(0);" class="icon" onclick="navbarResponse()">
-    <i class="fa fa-bars"></i>
-  </a>
-</div>
+    <a href="javascript:void(0);" class="icon" onclick="navbarResponse()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+  <div class="sidenav">
+    <a href="#">MP</a>
+    <a href="#">SP</a>
+    <a href="#">PI</a>
+    <a href="#">AC</a>
+  </div>
 
+  <div class="retroicon">
+    <i class="fa fa-book " aria-hidden="true"></i>Retro
+  </div>
+
+  <div class="popup">
+    <div class="close-btn">&times;</div>
+    <div class="form">
+      <h2>Crear Proyecto</h2>
+      <div class="form-element">
+        <!---<label for="email">Email</label>-->
+        <input type="text" id="projectname" placeholder="Nombre">
+      </div>
+      <div class="form-element">
+        <!---<label for="motivacion">motivación</label>-->
+        <input type="text" id="motivacion" placeholder="motivacion">
+      </div>
+      <div class="form-element">
+        <!---<label for="motivacion">motivación</label>-->
+        <input type="text" class="descripcion" id="descripcionproyecto" placeholder="Descripción">
+      </div>
+      <div class="form-element">
+        <label for="fecha-culminación">Fecha de culminación</label>
+        <input type="date" id="fechaculminacion">
+      </div>
+      <div class="row">
+        <button>Crear</button>
+        <button class="cancelCreateProjectButton">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
 </body>
 
 </html>
