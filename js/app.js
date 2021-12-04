@@ -34,6 +34,36 @@ function navbarResponse() {
    //TODO: retrieve the quantity and name of all created projects
    //search trough all the projects and list them in the projects tab
  }
+ 
+ 
+  let formularioProyecto;
+ function crearProyecto(){
+   formularioProyecto = document.forms['formularioProyecto'];
+   let nombreProyecto = formularioProyecto['nombreProyecto'];
+   let motivacionProyecto = formularioProyecto['motivacionProyecto'];
+   let descripcionproyecto = formularioProyecto['descripcionproyecto'];
+   let fechaculminacionProyecto = formularioProyecto['fechaculminacionProyecto'];
+
+   let x = document.getElementById('fechaculminacionProyecto');
+   let mensaje = verificarCamposformularioProyecto(nombreProyecto,motivacionProyecto,descripcionproyecto,fechaculminacionProyecto);
+   //console.log(mensaje);
+   //console.log(formularioProyecto);
+   console.log(nombreProyecto.value);
+   console.log(motivacionProyecto.value);
+   console.log(descripcionproyecto.value);
+   console.log(fechaculminacionProyecto.value);
+ }
+ 
+
+ function verificarCamposformularioProyecto(nombreProyecto,motivacionProyecto,descripcionproyecto,fechaculminacionProyecto){
+   if (nombreProyecto =='' || motivacionProyecto =='' || descripcionproyecto =='' || fechaculminacionProyecto =='' ){
+     return 'Campos Vacios'
+   }
+   //else if{
+
+   //}
+   
+ }
 
 
  

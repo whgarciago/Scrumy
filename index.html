@@ -18,7 +18,7 @@
     <div class="projectstabcontainer" id="projectstab">
       <button onclick="showProjectTab()">Proyecto 1</button>
       <button onclick="showProjectTab()">Proyecto 2</button>
-      <button id="addproject" >
+      <button id="addproject">
         <i class="fa fa-plus-square addproject" aria-hidden="true"></i>
       </button>
     </div>
@@ -43,15 +43,15 @@
 
   <div class="popup">
     <div class="close-btn">&times;</div>
-    <div class="form">
+    <form class="form" id="formularioProyecto" onsubmit="return false">
       <h2>Crear Proyecto</h2>
       <div class="form-element">
         <!---<label for="email">Email</label>-->
-        <input type="text" id="projectname" placeholder="Nombre">
+        <input type="text" id="nombreProyecto" placeholder="Nombre">
       </div>
       <div class="form-element">
         <!---<label for="motivacion">motivación</label>-->
-        <input type="text" id="motivacion" placeholder="motivacion">
+        <input type="text" id="motivacionProyecto" placeholder="motivacion">
       </div>
       <div class="form-element">
         <!---<label for="motivacion">motivación</label>-->
@@ -59,13 +59,13 @@
       </div>
       <div class="form-element">
         <label for="fecha-culminación">Fecha de culminación</label>
-        <input type="date" id="fechaculminacion">
+        <input type="date" id="fechaculminacionProyecto">
       </div>
       <div class="row">
-        <button>Crear</button>
+        <button onclick="crearProyecto()">Crear</button>
         <button class="cancelCreateProjectButton">Cancelar</button>
       </div>
-    </div>
+    </form>
   </div>
 
   <script src="js/app.js"></script>
