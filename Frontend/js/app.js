@@ -1,7 +1,11 @@
 //makes the create project popup  visible
-document.querySelector("#addproject").addEventListener("click",function(){
-  document.querySelector(".popup").classList.add("active")
-})
+
+function createProjectPopup(){
+  document.querySelector("#addproject").addEventListener("click",function(){
+    document.querySelector(".popup").classList.add("active")
+  });
+}
+
 //makes the create project popup not visible
 document.querySelector(".popup .close-btn").addEventListener("click",function(){
   document.querySelector(".popup").classList.remove("active")
@@ -43,11 +47,7 @@ function navbarResponse() {
    let motivacionProyecto = formularioProyecto['motivacionProyecto'];
    let descripcionproyecto = formularioProyecto['descripcionproyecto'];
    let fechaculminacionProyecto = formularioProyecto['fechaculminacionProyecto'];
-
-   let x = document.getElementById('fechaculminacionProyecto');
-   let mensaje = verificarCamposformularioProyecto(nombreProyecto,motivacionProyecto,descripcionproyecto,fechaculminacionProyecto);
-   //console.log(mensaje);
-   //console.log(formularioProyecto);
+   
    console.log(nombreProyecto.value);
    console.log(motivacionProyecto.value);
    console.log(descripcionproyecto.value);
@@ -60,7 +60,7 @@ function navbarResponse() {
      return 'Campos Vacios'
    }
    //else if{
-
+    
    //}
    
  }
