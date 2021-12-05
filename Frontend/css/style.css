@@ -339,3 +339,124 @@ html{
       width: auto;
     }
   }
+  .fila-pagina-completa{
+    display: flex;
+    height: 100vh;
+  }
+  .columna-opciones-inicio-sesion{
+    
+    flex:50%
+  }
+  .columna-formulario-ingreso{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex:50%;
+  }
+
+  .logo-pagina-inicio-sesion{
+    width: 100%;
+    padding-left: 10%;
+  }
+  
+  .botones-registro-iniciar-sesion{
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    height: 60%;
+    
+
+  }
+  .botones-registro-iniciar-sesion button{
+    width: 50%;
+    margin-right: 20%;
+    margin-bottom: 30px;
+    padding: 10px 0px 10px 0px;
+    border:none;
+    outline: none;
+    font-size: 23px;
+    background: rgb(45, 213, 217,0.5);
+    color: #eee;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  
+
+  .columna-formulario-ingreso input{
+    
+    display: flex;
+
+    width: 70%;
+    background-color: rgb(123, 169, 209);
+    margin: 10px 0px;
+    
+    font-size: 15px;
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+    cursor:pointer;
+  }
+  .columna-formulario-ingreso input[type="submit"]{
+    
+    margin-left: 10%;
+    width: 50%;
+    padding: 30px 10px;
+    padding-left: 15%;
+    border:none;
+    outline: none;
+    font-size: 23px;
+    background: rgb(45, 213, 217,0.5);
+    color: #eee;
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: right;
+  }
+  
+  .columna-formulario-ingreso input::placeholder{
+    background-color: rgb(123, 169, 209);
+    margin: 10px 0px;
+    text-align: left;
+    font-size: 15px;
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+    cursor:pointer;
+  }
+  .columna-formulario-ingreso a{
+    align-self: flex-end;
+    color: red;
+    margin-right: 20px;
+  }
+  .formulario-inicio-sesion,.formulario-registro {
+    display: block;
+    width: 100%;
+    align-items: center;
+  }
+  .inactive{
+    display: none;
+  }
+
+
+  .columna-formulario-ingreso button{
+    float: right;
+    width: 70%;
+    margin: 20px;
+    margin-right: 90px;
+    padding: 10px 0px 10px 0px;
+    border:none;
+    outline: none;
+    font-size: 23px;
+    background: rgb(45, 213, 217,0.5);
+    color: #eee;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+
+
