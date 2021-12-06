@@ -1,7 +1,9 @@
+
+
 html{
   width: 100%;
   height: 100%;
-  background-image: url("/images/background_picture.jpg");
+  background-image: url("/Frontend/images/background_picture.jpg");
   background-size: cover;
   background-repeat:no-repeat;
   background-position:center center;
@@ -372,6 +374,7 @@ html{
 
   }
   .botones-registro-iniciar-sesion button{
+    cursor: pointer;
     width: 50%;
     margin-right: 20%;
     margin-bottom: 30px;
@@ -437,8 +440,10 @@ html{
     width: 100%;
     align-items: center;
   }
+
   .inactive{
     display: none;
+    pointer-events: none;
   }
 
 
