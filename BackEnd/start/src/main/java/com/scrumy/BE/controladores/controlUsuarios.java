@@ -66,16 +66,16 @@ public class controlUsuarios {
     }
 
     @PutMapping("/usuarios/update")
-    public ResponseEntity<Usuarios> updateUsuario(@RequestParam int id, @RequestBody Usuarios updUsuer){
+    public ResponseEntity<Usuarios> updateUsuario(@RequestParam int id, @RequestBody Usuarios updUser){
         Optional<Usuarios> userdata = RU.findById(id);
             
         if(userdata.isPresent()){
             Usuarios u = userdata.get();
                 
-            u.setContraseña(updUsuer.getContraseña());
-            u.setCorreo(updUsuer.getCorreo());
-            u.setNombre(updUsuer.getNombre());
-            u.setIdProyectos(updUsuer.getIdProyectos());
+            u.setContraseña(updUser.getContraseña());
+            u.setCorreo(updUser.getCorreo());
+            u.setNombre(updUser.getNombre());
+            u.setIdProyectos(updUser.getIdProyectos());
             return new ResponseEntity<>(RU.save(u),HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
