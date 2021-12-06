@@ -1,15 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/css_properties_reset.css" type="text/css">
+    <link rel="stylesheet" href="./css/css_properties_reset.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
     <title>Scrumy</title>
     <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -17,33 +19,32 @@
         <div class="columna-opciones-inicio-sesion">
             <img :src=logo class="logo-pagina-inicio-sesion" alt="Logo de pagina">
             <div class="botones-registro-iniciar-sesion">
-                <button v-on:click="iniciarSesion"> Iniciar Sesión</button>
-                <button v-on:click="iniciarRegistro"> Registrarse</button>
+                <button v-on:click="mostrarFormularioIniciarSesion"> Iniciar Sesión</button>
+                <button v-on:click="mostrarFormularioIniciarRegistro"> Registrarse</button>
             </div>
         </div>
-
-        <div class="columna-formulario-ingreso" @submit.prevent="manejarEnvioLoginUsuario()">
-
-            <form :class="formClassValueIniciarSesion">
+         <div class="columna-formulario-ingreso">
+            <form :class="formClassValueIniciarSesion"@submit.prevent="manejarEnvioLoginUsuario">
                 <label for="campo-correo-inicio-sesion">Correo Electrónico</label>
-                <input type="email" id="campo-correo-inicio-sesion" v-model="valoresInicioDeSesionUsuario.email">
+                <input type="email" id="campo-correo-inicio-sesion" v-model="valoresInicioDeSesionUsuario.correo">
                 <label for="campo-contrasenia">Contraseña</label>
                 <input type="password" id="campo-contrasenia" v-model="valoresInicioDeSesionUsuario.password">
                 <input type="submit" value="Iniciar Sesión">
             </form>
 
-            <form :class="formClassValueRegistro" @submit.prevent="manejarEnvioRegistroUsuario()">
+            <form :class="formClassValueRegistro"@submit.prevent="manejarEnvioRegistroUsuario">
                 <label for="campo-nombre-usuario">Nombre de usuario</label>
                 <input type="text" id="campo-nombre-usuario" v-model="valoresRegistroUsuario.nombre">
                 <label for="campo-correo-registro">Correo Electrónico</label>
-                <input type="email" id="campo-correo-registro" v-model="valoresRegistroUsuario.email">
+                <input type="email" id="campo-correo-registro" v-model="valoresRegistroUsuario.correo">
                 <label for="campo-contrasenia-registro">Contraseña</label>
                 <input type="password" id="campo-contrasenia-registro" v-model="valoresRegistroUsuario.password">
                 <label for="campo-confirmar-contrasenia-registro">Confirmar contraseña</label>
-                <input type="password" id="campo-confirmar-contrasenia-registro"
-                    v-model="valoresRegistroUsuario.confirmPassword">
+                <input type="password" id="campo-confirmar-contrasenia-registro"v-model="valoresRegistroUsuario.confirmarPassword">
                 <input type="submit" value="Registrarse">
             </form>
+            
+            <button v-on:click="obtenerTodosLosUsuarios" >usuarios</button>
 
         </div>
     </div>
