@@ -172,3 +172,47 @@ const app = Vue.createApp({
     },
   },
 });
+/*const mountAppProyectos =Vue.createApp({
+  data(){
+    return{
+      
+    proyectos:[],
+
+    }
+  },
+  methods:{
+    created(){
+      proyectos=obtenerProyectosDeBackend()
+    },
+    async obtenerProyectosDeBackend() {
+      try {
+        const response = await axios.get(
+          "http://localhost:8081/api/proyectos/all",
+          {
+            params: {
+              id: usuarioID,
+            },
+          }
+        );
+        proyectos = response["data"];
+        console.log(proyectos);
+      } catch (error) {
+        console.log(error);
+        if (error.response) {
+          // get response with a status code not in range 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // no response
+          console.log(error.request);
+        } else {
+          // Something wrong in setting up the request
+          console.log("Error", error.message);
+        }
+        console.log(error.config);
+      }
+    }
+  }
+
+})*/

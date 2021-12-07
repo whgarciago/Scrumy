@@ -6,6 +6,8 @@ document.querySelector("#addproject").addEventListener("click", function () {
 let usuarioID = localStorage.getItem("usuarioID");
 console.log(usuarioID);
 
+let proyectos = [];
+
 //makes the create project popup not visible
 document
   .querySelector(".popup .cancel-create-project-button")
@@ -34,13 +36,41 @@ function showProjectTab() {
 }
 
 function loadApp() {
-  //TODO: execute all initial loads of the page, for now the projectstab
-  loadProjects();
+  proyectos = obtenerProyectosDeBackend();
+  if (proyectos.length > 0) {
+    cargarProyectos();
+  }
 }
 
-function loadProjects() {
-  //TODO: retrieve the quantity and name of all created projects
-  //search trough all the projects and list them in the projects tab
+async function obtenerProyectosDeBackend() {
+  try {
+    const response = await axios.get(
+      "http://localhost:8081/api/proyectos/all",
+      {
+        params: {
+          id: usuarioID,
+        },
+      }
+    );
+    proyectos = response["data"];
+    //console.log(proyectos);
+  } catch (error) {
+    console.log(error);
+    if (error.response) {
+      // get response with a status code not in range 2xx
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // no response
+      console.log(error.request);
+    } else {
+      // Something wrong in setting up the request
+      console.log("Error", error.message);
+    }
+    console.log(error.config);
+  }
+  cargarProyectos();
 }
 
 async function registrarProyecto(
@@ -61,7 +91,7 @@ async function registrarProyecto(
         fechaFin: fechaculminacionProyecto.value,
       }
     );
-    console.log(response);
+    //console.log(response);
   } catch (error) {
     console.log(error);
     if (error.response) {
@@ -85,19 +115,36 @@ async function crearProyecto() {
   let motivacionProyecto = formularioProyecto["motivacionProyecto"];
   let descripcionproyecto = formularioProyecto["descripcionproyecto"];
   let fechaculminacionProyecto = formularioProyecto["fechaculminacionProyecto"];
-
-  await registrarProyecto(
+  let respuesta = verificarCamposformularioProyecto(
     nombreProyecto,
     motivacionProyecto,
     descripcionproyecto,
     fechaculminacionProyecto
   );
-  alert("Proyecto creado");
+  if (respuesta == true) {
+    try {
+      await registrarProyecto(
+        nombreProyecto,
+        motivacionProyecto,
+        descripcionproyecto,
+        fechaculminacionProyecto
+      );
+    } catch (e) {
+      console.log(e.value);
+    }
+
+    alert("Proyecto creado");
+    obtenerProyectosDeBackend();
+    cargarProyectos();
+  } else {
+    alert("Campos vacíos");
+  }
 
   // console.log(nombreProyecto.value);
   // console.log(motivacionProyecto.value);
   // console.log(descripcionproyecto.value);
   //console.log(fechaculminacionProyecto.value);
+  document.querySelector(".popup").classList.remove("active");
 }
 
 function verificarCamposformularioProyecto(
@@ -107,15 +154,37 @@ function verificarCamposformularioProyecto(
   fechaculminacionProyecto
 ) {
   if (
-    nombreProyecto == "" ||
-    motivacionProyecto == "" ||
-    descripcionproyecto == "" ||
-    fechaculminacionProyecto == ""
+    nombreProyecto.value == "" ||
+    motivacionProyecto.value == "" ||
+    descripcionproyecto.value == "" ||
+    fechaculminacionProyecto.value == ""
   ) {
-    alert("Datos incompletos");
-    return "Campos Vacios";
+    return false;
+  } else {
+    return true;
   }
-  //else if{
-
-  //}
 }
+function abrirPopup(){
+  document.querySelector(".popup").classList.add("active");
+}
+
+function cargarProyectos() {
+  
+  let proyectosHTML = "";
+  console.log(proyectos);
+  for (let proyecto of proyectos) {
+    proyectosHTML += crearProyectoHTML(proyecto);
+    console.log(proyecto);
+  }
+  proyectosHTML += `<button id="addproject" onClick="abrirPopup()">
+  <i class="fa fa-plus-square addproject" aria-hidden="true"></i>
+</button>`;
+  document.getElementById("projectstab").innerHTML = proyectosHTML;
+}
+function crearProyectoHTML(proyecto) {
+  let proyectoHTML = `
+  <button >${proyecto.nombre}</button>
+  `;
+  return proyectoHTML;
+}
+

@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="./css/css_properties_reset.css" type="text/css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="./css/style.css" type="text/css">
+  <script src="https://unpkg.com/vue@next"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <title>Scrumy</title>
 </head>
@@ -17,10 +18,8 @@
   
   <div class="topNavigationBar" id="myTopNavigationBar">
     <a href="#home" class="logobutton"><img src="images/logo_scrumy.png" alt="Logo de pagina" class="logo"></a>
-    <div class="projectstabcontainer" id="projectstab">
-      <button onclick="showProjectTab()">Proyecto 1</button>
-      <button onclick="showProjectTab()">Proyecto 2</button>
-      <button id="addproject" >
+    <div onload= "cargarProyectos()" class="projectstabcontainer" id="projectstab">
+      <button id="addproject" onclick="abrirPopup()" >
         <i class="fa fa-plus-square addproject" aria-hidden="true"></i>
       </button>
     </div>
