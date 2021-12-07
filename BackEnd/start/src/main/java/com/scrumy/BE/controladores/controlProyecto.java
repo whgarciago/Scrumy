@@ -20,10 +20,10 @@ public class controlProyecto {
     @Autowired
     repoProyectos RP;
 
-<<<<<<< Updated upstream
-=======
+
     @GetMapping("/proyectos/all")
     public ResponseEntity<List<Proyectos>> getAllProjectsByUser(@RequestParam int id){
+
         try{
             List<Proyectos> listaProyectos = new ArrayList<Proyectos>();
             RP.findAll().forEach(listaProyectos::add);
@@ -49,7 +49,7 @@ public class controlProyecto {
         }
     }
 
->>>>>>> Stashed changes
+
     @PostMapping("/proyectos/create")
     public ResponseEntity<Proyectos> createProyecto(@RequestBody Proyectos u){
         try{
@@ -59,8 +59,7 @@ public class controlProyecto {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-<<<<<<< Updated upstream
-=======
+
 
     @DeleteMapping("/proyectos/remove")
     public ResponseEntity<HttpStatus> deleteProyecto(@RequestParam int id){
@@ -77,15 +76,14 @@ public class controlProyecto {
         Optional<Proyectos> proyectdata = RP.findById(id);
             
         if(proyectdata.isPresent()){
-            Proyectos p = proyectdata.get();
-            
+            Proyectos p = proyectdata.get();            
             p.setDescripcion(updProyect.getDescripcion());
             p.setFechaFin(updProyect.getFechaFin());
             p.setIdMeta(updProyect.getIdMeta());
             p.setIdUsuarios(updProyect.getIdUsuarios());
             p.setMotivacion(updProyect.getMotivacion());
             p.setNombre(updProyect.getNombre());
-            
+
             return new ResponseEntity<>(RP.save(p),HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -101,5 +99,4 @@ public class controlProyecto {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
->>>>>>> Stashed changes
-}
+

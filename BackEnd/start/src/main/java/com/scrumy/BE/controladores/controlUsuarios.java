@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
 import org.springframework.beans.factory.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:8080")
+//removido para poder acceder localmente desde cualquier ip
+//@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class controlUsuarios {
@@ -66,16 +68,16 @@ public class controlUsuarios {
     }
 
     @PutMapping("/usuarios/update")
-    public ResponseEntity<Usuarios> updateUsuario(@RequestParam int id, @RequestBody Usuarios updUsuer){
+    public ResponseEntity<Usuarios> updateUsuario(@RequestParam int id, @RequestBody Usuarios updUser){
         Optional<Usuarios> userdata = RU.findById(id);
             
         if(userdata.isPresent()){
             Usuarios u = userdata.get();
                 
-            u.setContraseña(updUsuer.getContraseña());
-            u.setCorreo(updUsuer.getCorreo());
-            u.setNombre(updUsuer.getNombre());
-            u.setIdProyectos(updUsuer.getIdProyectos());
+            u.setContraseña(updUser.getContraseña());
+            u.setCorreo(updUser.getCorreo());
+            u.setNombre(updUser.getNombre());
+            u.setIdProyectos(updUser.getIdProyectos());
             return new ResponseEntity<>(RU.save(u),HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
