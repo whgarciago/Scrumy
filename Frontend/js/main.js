@@ -4,6 +4,7 @@ const app = Vue.createApp({
     formClassValueRegistro: ".formulario-registro inactive",
     logo: "./images/logo_scrumy.png",
 
+
     valoresInicioDeSesionUsuario: {
       correo: "",
       password: "",
@@ -26,46 +27,61 @@ const app = Vue.createApp({
       this.formClassValueIniciarSesion = "formulario-inicio-sesion inactive";
       this.formClassValueRegistro = "formulario-registro";
     },
-    manejarEnvioLoginUsuario() {
+    async manejarEnvioLoginUsuario() {
       console.log(this.valoresInicioDeSesionUsuario.correo);
       console.log(this.valoresInicioDeSesionUsuario.password);
       console.log("login");
 
-      let error = this.verificarLogin();
+      let error = await this.verificarLogin();
 
-      if (!error) {
+      if (error == false) {
+        window.location.href = "index.html";
       }
 
       console.log(error);
     },
 
-    verificarLogin() {
+    async verificarLogin() {
       if (
-        this.valoresRegistroUsuario.correo == "" ||
-        this.valoresRegistroUsuario.password == ""
+        this.valoresInicioDeSesionUsuario.correo == "" ||
+        this.valoresInicioDeSesionUsuario.password == ""
       ) {
         alert("Datos incompletos");
         return true;
-      } else {
-        return false;
       }
-    },
+      let usuarios = await this.obtenerTodosLosUsuarios();
 
-    verificarUsuarioExiste() {
-      let usuarios = this.obtenerTodosLosUsuarios();
-      for (usuario in usuarios) {
-        if (
-          this.valoresRegistroUsuario.nombre == usuario.nombre ||
-          this.valoresRegistroUsuario.correo == usuario.correo
-        ) {
-          console.log(usuario);
-          return true;
+      for (let i = 0; i < usuarios.length; i++) {
+        if (usuarios[i].correo == this.valoresInicioDeSesionUsuario.correo) {
+          console.log("hallado");
+          console.log( usuarios[i].usuarioID);
+
+          localStorage.setItem("usuarioID", usuarios[i].usuarioID);
+
+          
+          return false;
         }
       }
 
-      return false;
+      alert("Usuario no hallado");
+      return true;
     },
+
     verificarRegistro() {
+      let error = false;
+
+      //TODO: Hallar la funcion async await para comprobar correo
+      /*let usuarios = this.obtenerTodosLosUsuarios();
+      console.log(usuarios["data"]);
+
+      for (let i = 0; i < usuarios.length; i++) {
+        if (usuarios[i].correo == this.valoresRegistroUsuario.correo) {
+          console.log("Hallado");
+          alert("El correo ya está en uso");
+          error = true;
+          return error;
+        }
+      }*/
       if (
         this.valoresRegistroUsuario.nombre == "" ||
         this.valoresRegistroUsuario.correo == "" ||
@@ -73,16 +89,16 @@ const app = Vue.createApp({
         this.valoresRegistroUsuario.confirmarPassword == ""
       ) {
         alert("Datos incompletos");
-        return true;
-      } else if (
+        error = true;
+        return error;
+      }
+      if (
         this.valoresRegistroUsuario.password !==
         this.valoresRegistroUsuario.confirmarPassword
       ) {
         alert("Las contraseñas no coinciden");
-        return true;
-      } else if (this.verificarUsuarioExiste() == true) {
-        alert("Usuario o correo ya en uso");
-        return true;
+        error = true;
+        return error;
       } else {
         return false;
       }
@@ -90,11 +106,12 @@ const app = Vue.createApp({
     manejarEnvioRegistroUsuario() {
       console.log("registro");
       let error = this.verificarRegistro();
+      console.log("error" + error);
       if (error == false) {
         this.registrarUsuario();
         console.log("Registro Exitoso");
         alert("Registro exitoso");
-        location.reload();
+        //location.reload();
       } else {
         console.log("Hubo un error");
       }
@@ -108,7 +125,7 @@ const app = Vue.createApp({
             correo: this.valoresRegistroUsuario.correo,
             nombre: this.valoresRegistroUsuario.nombre,
             idProyectos: 23,
-          },
+          }
         );
         console.log(response);
       } catch (error) {
@@ -132,10 +149,10 @@ const app = Vue.createApp({
       console.log("Buscar Usuarios");
       try {
         const response = await axios.get(
-          "http://localhost:8081/api/usuarios/all",
+          "http://localhost:8081/api/usuarios/all"
         );
-        console.log(response['data']);
-        return response;
+        console.log(response);
+        return response["data"];
       } catch (error) {
         console.log(error);
         if (error.response) {

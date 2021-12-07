@@ -3,6 +3,8 @@
 document.querySelector("#addproject").addEventListener("click", function () {
   document.querySelector(".popup").classList.add("active");
 });
+let usuarioID = localStorage.getItem("usuarioID");
+console.log(usuarioID);
 
 //makes the create project popup not visible
 document
@@ -41,18 +43,61 @@ function loadProjects() {
   //search trough all the projects and list them in the projects tab
 }
 
-let formularioProyecto;
-function crearProyecto() {
-  formularioProyecto = document.forms["formularioProyecto"];
+async function registrarProyecto(
+  nombreProyecto,
+  motivacionProyecto,
+  descripcionproyecto,
+  fechaculminacionProyecto
+) {
+  try {
+    const response = await axios.post(
+      "http://localhost:8081/api/proyectos/create",
+      {
+        nombre: nombreProyecto.value,
+        idUsuarios: usuarioID,
+        motivacion: motivacionProyecto.value,
+        idMeta: 2,
+        descripcion: descripcionproyecto.value,
+        fechaFin: fechaculminacionProyecto.value,
+      }
+    );
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+    if (error.response) {
+      // get response with a status code not in range 2xx
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // no response
+      console.log(error.request);
+    } else {
+      // Something wrong in setting up the request
+      console.log("Error", error.message);
+    }
+    console.log(error.config);
+  }
+}
+
+async function crearProyecto() {
   let nombreProyecto = formularioProyecto["nombreProyecto"];
   let motivacionProyecto = formularioProyecto["motivacionProyecto"];
   let descripcionproyecto = formularioProyecto["descripcionproyecto"];
   let fechaculminacionProyecto = formularioProyecto["fechaculminacionProyecto"];
 
-  console.log(nombreProyecto.value);
-  console.log(motivacionProyecto.value);
-  console.log(descripcionproyecto.value);
-  console.log(fechaculminacionProyecto.value);
+  await registrarProyecto(
+    nombreProyecto,
+    motivacionProyecto,
+    descripcionproyecto,
+    fechaculminacionProyecto
+  );
+  alert("Proyecto creado");
+
+  // console.log(nombreProyecto.value);
+  // console.log(motivacionProyecto.value);
+  // console.log(descripcionproyecto.value);
+  //console.log(fechaculminacionProyecto.value);
 }
 
 function verificarCamposformularioProyecto(
@@ -67,7 +112,7 @@ function verificarCamposformularioProyecto(
     descripcionproyecto == "" ||
     fechaculminacionProyecto == ""
   ) {
-    alert("Datos incompletos")
+    alert("Datos incompletos");
     return "Campos Vacios";
   }
   //else if{
