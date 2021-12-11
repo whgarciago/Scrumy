@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid">
-
     <div class="row">
       <div class="col-12 col-sm-10 col-md-8 offset-sm-1 offset-md-2">
         <div id="signUp" class="mt-5">

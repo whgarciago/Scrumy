@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import SignUp from "./views/SignUp";
+import LoginForm from '@/components/LoginForm';
+import SignUpForm from '@/components/SignUpForm';
 import Login from "./views/Login";
 import Home from "./views/Home";
 import AddRole from "./components/AddRole";
@@ -15,42 +17,27 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: "/registro",
-      name: "signup",
-      component: SignUp
-    },
-    {
-      path: "/",
+      path: "/login",
       alias: "/iniciar-sesion",
       name: "login",
-      component: Login
-    },
-    {
-      path: '/mis-cursos',
-      name: 'courses',
-      component: Courses
+      component: Login,
+      children:[
+        {
+          path: "/loginform",
+          name: "loginform",
+          component: LoginForm
+        },
+        {
+          path: "/signup",
+          name: "signupform",
+          component: SignUpForm
+        },
+      ]
     },
     {
       path: "/principal",
       name: "home",
       component: Home,
-      children: [
-        {
-          path: "nuevo-rol",
-          name: "add-role",
-          component: AddRole
-        },
-        {
-          path: "roles",
-          name: "roles",
-          component: Roles
-        },
-        {
-          path: "/profesor/crear-curso",
-          name: "crear-curso",
-          component: AddCourse
-        } 
-      ]
     }
   ]
 })

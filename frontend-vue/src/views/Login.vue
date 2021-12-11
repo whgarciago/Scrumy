@@ -1,40 +1,17 @@
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12 col-sm-10 col-md-8 offset-sm-1 offset-md-2">
-        <div class="mt-5">
-          <form class="border border-primary rounded form-inline" @submit="login">
+  <div class="row col-12 vh-100 align-items-center">
+    <div class="col-6 ">
 
-            <h2 class="col-12 text-center text-primary mt-3 mb-5">Iniciar Sesi&oacute;n</h2>
-
-            <div class="form-group col-12">
-              <label for="username" class="custom-label col-md-3">Nombre de Usuario</label>
-              <input id="username" class="form-control col-12 col-sm-10 col-md-7 offset-sm-1" type="text"
-                     placeholder="Nombres" v-model="username" required/>
-            </div>
-
-            <div class="form-group col-12">
-              <label for="password" class="custom-label col-md-3">Contrase&ntilde;a</label>
-              <input id="password" class="form-control col-12 col-sm-10 col-md-7 offset-sm-1" type="password"
-                     placeholder="Contraseña" v-model="password" required/>
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-5 offset-md-2 text-center mb-3">
-                <span class="text-primary">
-                  <small>
-                    <router-link :to="{ name: 'signup' }">&iquest;No tienes una cuenta? &iexcl;Registrate!</router-link>
-                  </small>
-                </span>
-            </div>
-            <div class="col-12 col-sm-5 col-md-4 mb-3">
-              <button class="col-sm-10 col-md-10 offset-sm-1 offset-md-2 btn btn-primary" type="submit">
-                Iniciar Sesi&oacute;n
-              </button>
-            </div>
-
-          </form>
-        </div>
+      <img :src="logoURL" alt="logo_scrumy" class="col-12 ">
+      
+      <div class="d-flex flex-column justify-content-center my-5 col-12 p-5">
+        <button v-on:click= "showLogInForm"> Iniciar Sesión</button>
+        <button v-on:click= "showSignUpForm"> Registrarse</button>
       </div>
+
+    </div>
+    <div class="col-6 ">
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -42,18 +19,25 @@
     import axios from 'axios';
     import {setAuthenticationToken} from '@/dataStorage';
 
+    import logo from "../assets/logo_scrumy.png"
+
     const path = "/oauth/token";
 
     export default {
-        name: "Login.vue",
+        name: "Login",
         components: {},
         data(){
-            return {
-                username: '',
-                password: ''
-            }
+          return{
+            logoURL:logo
+          }
         },
         methods: {
+          showLogInForm(){
+            this.$router.push({ name: 'loginform'} )
+          },
+          showSignUpForm(){
+            this.$router.push({ name: 'signupform'} )
+          },
             login( event ){
                 axios
                 .post( this.$store.state.backURL + path, // URL
