@@ -1,6 +1,6 @@
 <template>
-  <div class="row col-12 vh-100 align-items-center">
-    <div class="col-6 ">
+  <div class="row col-12 vh-100 align-items-center image">
+    <div class="col-5 ">
 
       <img :src="logoURL" alt="logo_scrumy" class="col-12 ">
       
@@ -10,7 +10,7 @@
       </div>
 
     </div>
-    <div class="col-6 ">
+    <div class="col-7 ">
       <router-view></router-view>
     </div>
   </div>
@@ -101,4 +101,8 @@
       display: none !important;
     }
   }
+  .image{
+    background-color: whitesmoke
+  }
+  
 </style>
