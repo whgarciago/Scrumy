@@ -54,11 +54,10 @@ const app = Vue.createApp({
       for (let i = 0; i < usuarios.length; i++) {
         if (usuarios[i].correo == this.valoresInicioDeSesionUsuario.correo) {
           console.log("hallado");
-          console.log( usuarios[i].usuarioID);
+          console.log( usuarios[i]);
 
           localStorage.setItem("usuarioID", usuarios[i].usuarioID);
-
-          
+          if(this.valoresInicioDeSesionUsuario.password == usuarios[i].contraseña)
           return false;
         }
       }
@@ -110,8 +109,8 @@ const app = Vue.createApp({
       if (error == false) {
         this.registrarUsuario();
         console.log("Registro Exitoso");
-        alert("Registro exitoso");
-        //location.reload();
+        alert("Registro exitoso, por favor inicia sesión");
+        location.reload();
       } else {
         console.log("Hubo un error");
       }

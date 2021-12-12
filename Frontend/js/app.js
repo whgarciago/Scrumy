@@ -1,26 +1,12 @@
 //makes the create project popup  visible
 
-document.querySelector("#addproject").addEventListener("click", function () {
-  document.querySelector(".popup").classList.add("active");
-});
+
 let usuarioID = localStorage.getItem("usuarioID");
 console.log(usuarioID);
 
 let proyectos = [];
 
-//makes the create project popup not visible
-document
-  .querySelector(".popup .cancel-create-project-button")
-  .addEventListener("click", function () {
-    document.querySelector(".popup").classList.remove("active");
-  });
 
-//makes the create project popup not visible pressing the "cancelar" button
-document
-  .querySelector(".popup .form div .cancelCreateProjectButton")
-  .addEventListener("click", function () {
-    document.querySelector(".popup").classList.remove("active");
-  });
 /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
 function navbarResponse() {
   var x = document.getElementById("myTopNavigationBar");
@@ -166,6 +152,9 @@ function verificarCamposformularioProyecto(
 }
 function abrirPopup(){
   document.querySelector(".popup").classList.add("active");
+}
+function cancelarCrearProyecto(){
+  document.querySelector(".popup").classList.remove("active");
 }
 
 function cargarProyectos() {
