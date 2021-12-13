@@ -8,4 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface repoMeta extends JpaRepository <Meta, Integer>{
     List<Meta> findByMetaID(int Meta);
+    
+    List<Meta> findByidProyecto(int idProyecto);
+
 }

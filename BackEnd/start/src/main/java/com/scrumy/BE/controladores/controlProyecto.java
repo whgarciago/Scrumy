@@ -8,11 +8,12 @@ import com.scrumy.BE.repositorios.repoProyectos;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
+import org.hibernate.Criteria;
 import org.springframework.beans.factory.annotation.*;
 
 //removido para poder acceder localmente desde cualquier ip
-//@CrossOrigin(origins = "http://localhost:8081")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8081")
+//@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class controlProyecto {
@@ -22,11 +23,11 @@ public class controlProyecto {
 
 
     @GetMapping("/proyectos/all")
-    public ResponseEntity<List<Proyectos>> getAllProjectsByUser(@RequestParam int id){
+    public ResponseEntity<List<Proyectos>> getAllProjectsByidUsuarEntity(@RequestParam int id){
 
         try{
             List<Proyectos> listaProyectos = new ArrayList<Proyectos>();
-            RP.findAll().forEach(listaProyectos::add);
+            RP.findByidUsuarios(id).forEach(listaProyectos::add);
             if(listaProyectos.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }

@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
 import org.springframework.beans.factory.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:8081")
+@RestController
+@RequestMapping("/api")
+
 public class controlMeta {
     @Autowired
     repoMeta RM;
@@ -19,7 +23,7 @@ public class controlMeta {
 
         try{
             List<Meta> listaMeta = new ArrayList<Meta>();
-            RM.findAll().forEach(listaMeta::add);
+            RM.findByidProyecto(id).forEach(listaMeta::add);
             if(listaMeta.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -30,7 +34,7 @@ public class controlMeta {
     }
 
     @GetMapping("/metas/find")
-    public ResponseEntity<Optional<Meta>> getProjectsbyID(@RequestParam int id){
+    public ResponseEntity<Optional<Meta>> getMetasbyID(@RequestParam int id){
         try{
             Optional<Meta> foundProject = RM.findById(id);
             if(foundProject.isEmpty()){

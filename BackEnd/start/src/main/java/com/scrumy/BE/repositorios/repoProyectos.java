@@ -10,4 +10,6 @@ public interface repoProyectos extends JpaRepository <Proyectos, Integer> {
 
     List<Proyectos> findByProyectoID(int Proyectos);
 
+    List<Proyectos> findByidUsuarios(int idUsuario);
+
 }
