@@ -9,6 +9,7 @@ import AddRole from "./components/AddRole";
 import Courses from '@/views/Courses';
 import Roles from "@/components/Roles";
 import AddCourse from "@/components/AddCourse";
+import SmallGoals from "@/components/SmallGoals"
 
 Vue.use(Router);
 
@@ -42,6 +43,14 @@ export default new Router({
       path: "/principal",
       name: "home",
       component: Home,
-    }
+      children:[
+        {
+          path: "/smallgoals",
+          name: "smallgoals",
+          component: SmallGoals
+        },
+      ]
+    },
+
   ]
 })

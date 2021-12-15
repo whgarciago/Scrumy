@@ -1,6 +1,5 @@
 <template>
   <div id="Principal" >
-
     <div class="topNavigationBar" id="MyTopNavigationBar">
       <img id="logo" src="../assets/logo_scrumy.png">
       <div id="proyectos">
@@ -19,7 +18,7 @@
     </div>
     <div class="sidenav" v-on:mouseover="mesidenav=true" v-on:mouseout="mesidenav=false">
       <a v-for='(mini,indice) in minis' 
-      :mini="mini" :indice="mini.index" :key="mini.id"> <!--Falta incluir el href-->
+      :mini="mini" :indice="mini.index" :key="mini.id" @click="abrirComponente(indice)"> <!--Falta incluir el href-->
         <p v-show="!mesidenav"><img :src="mini"></p>
         <p v-show="mesidenav">{{nombres[indice]}}</p>
       </a>
@@ -43,13 +42,15 @@
       <form action="form" id="confproyecto" onsubmit="return false">
         <h2></h2>
 
-
       </form>
     </div>
     <h3 id="fecha"></h3>
     <div id="contenido"></div>
     <h3 id="motivacion"></h3>
     <button id="configProyecto"><img class="logos" src="../assets/config.png" ></button>
+    <div class="componente-central">
+      <router-view></router-view>    
+    </div>
   </div>
 </template>
 
@@ -64,7 +65,7 @@
         usuarioNombre: localStorage.usuarioNombre,
         minis:[require('../assets/mp.png'),require('../assets/sp.png'),require('../assets/pl.png'),require('../assets/ac.png')],
         nombres:['Metas pequeñas','Sprints','Plan','Actividades'],
-        ref:['#','#','#','#'],
+        ref:['smallgoals','#','#','#'],
         mesidenav:false,
         proyecto:{
           usuarioID: 0,
@@ -85,6 +86,11 @@
     },
     
     methods:{
+
+      abrirComponente(index){
+        this.$router.push( {name: this.ref[index]} );
+      },
+
       abrirPopup: function(){
         const popup=document.querySelector(".popup").classList.add("active");
         document.getElementById("nombreProyecto").value = "";
@@ -223,9 +229,9 @@ body{
     top: 120px;
     border-radius: 10px;
     border: 2px solid #eee;     
-  }
+}
   .sidenav:hover{
-    width: 300px;
+    width: 250px;
     
   }
   
@@ -332,7 +338,7 @@ body{
     border: 2px solid #eee;
   }
   #fecha{
-    margin: 8rem 17rem;
+    margin: 8rem 16.5rem;
     height: 30px;
     width: 350px;
     position:fixed;
@@ -432,6 +438,21 @@ body{
     font-size: 30px;
     color: rgb(255, 255, 255);
     text-align: center;
+  }
+
+  .componente-central{
+    background: rgb(21, 73, 198,0.6);
+    position: absolute;
+    top: 0%;
+    left: 45%;
+    opacity: 1;
+    transform:translate(-50%,50%) scale(1.25);
+    width: 50%;
+    height: 50%;
+    margin: 0;
+    padding: 0;
+    box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
   }
   
 </style>
