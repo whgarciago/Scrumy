@@ -12,8 +12,8 @@ import org.hibernate.Criteria;
 import org.springframework.beans.factory.annotation.*;
 
 //removido para poder acceder localmente desde cualquier ip
-@CrossOrigin(origins = "http://localhost:8081")
-//@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class controlProyecto {

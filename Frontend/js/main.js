@@ -20,7 +20,7 @@ const app = Vue.createApp({
   methods: {
     mostrarFormularioIniciarSesion() {
       this.formClassValueIniciarSesion = "formulario-inicio-sesion";
-      this.formClassValueRegistro = "formulario-registro inactive";
+      this.formClassValueRegistro = "frmulario-registro inactive";
     },
 
     mostrarFormularioIniciarRegistro() {
@@ -57,6 +57,7 @@ const app = Vue.createApp({
           console.log( usuarios[i]);
 
           localStorage.setItem("usuarioID", usuarios[i].usuarioID);
+          localStorage.setItem("pruebaasdfasdfasdf", usuarios[i].usuarioID);
           if(this.valoresInicioDeSesionUsuario.password == usuarios[i].contraseña)
           return false;
         }

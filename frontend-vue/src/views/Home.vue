@@ -1,6 +1,6 @@
 <template>
-  <div id="Principal">
-    
+  <div id="Principal" >
+
     <div class="topNavigationBar" id="MyTopNavigationBar">
       <img id="logo" src="../assets/logo_scrumy.png">
       <div id="proyectos">
@@ -13,7 +13,7 @@
       </div>
       <a href="#home" class="userbutton">
         <!--img src="./assets/usuario.png" width="40px"-->
-        <b id="neg">{{usuario}}</b>    Configuración
+        <b id="neg">{{usuarioNombre}}</b>    Configuración
       </a>
       
     </div>
@@ -35,7 +35,7 @@
           <input type="text" class="descripcion" id="descripcionproyecto" placeholder="Descripción" v-model="proyecto.descripcion"><br>
           <label for="fecha-culminación">Fecha de culminación</label>
           <input type="date" id="fechaculminacionProyecto" v-model="proyecto.fecha"><br>
-          <button class="CrearProyecto" @click="CrearProyecto()">Crear</button>
+          <button class="CrearProyecto" @click="CrearProyecto()" >Crear</button>
           <button class="cancelarCrearProyecto" @click="cerrarPopup()">Cancelar</button>
       </form>
     </div>
@@ -52,13 +52,16 @@
     <button id="configProyecto"><img class="logos" src="../assets/config.png" ></button>
   </div>
 </template>
-<script>
 
+
+<script>
+ import axios from 'axios';
   export default{
     name: "Principal",
     data(){
       return{
-        usuario: 'Usuario1',
+        usuarioID: localStorage.usuarioID ,
+        usuarioNombre: localStorage.usuarioNombre,
         minis:[require('../assets/mp.png'),require('../assets/sp.png'),require('../assets/pl.png'),require('../assets/ac.png')],
         nombres:['Metas pequeñas','Sprints','Plan','Actividades'],
         ref:['#','#','#','#'],
@@ -75,11 +78,10 @@
           descripcion:'',
           fecha:''
         },
-        proyectos:[
-
-        ]
+        proyectos:[] 
       }
     },
+    
     methods:{
       abrirPopup: function(){
         const popup=document.querySelector(".popup").classList.add("active");
@@ -110,8 +112,48 @@
         this.proyectoactual.motivacion=proyecto.motivacion;
         this.proyectoactual.descripcion=proyecto.descripcion;
         this.proyectoactual.fecha=proyecto.fecha;
-      }
+      },
 
+    
+    async obtenerProyectosDeBackend() {
+      try {
+        const response = await axios.get(
+          "http://localhost:8081/api/proyectos/all",
+          {
+            params: {
+              id: this.usuarioID,
+            },
+          }
+        );
+        this.proyectos = response["data"];
+        console.log(proyectos);
+        console.log("try");
+      } catch (error) {
+        console.log(error);
+        if (error.response) {
+          // get response with a status code not in range 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          console.log("catch 1");
+        } else if (error.request) {
+          // no response
+          console.log(error.request);
+          console.log("catch 2");
+        } else {
+          // Something wrong in setting up the request
+          console.log("Error", error.message);
+          console.log("catch 3");
+        }
+        console.log(error.config);
+        console.log("catch 4");
+      }
+    }
+
+    },
+    mounted(){
+      this.obtenerProyectosDeBackend();
+      console.log("created");
     }
   }
 

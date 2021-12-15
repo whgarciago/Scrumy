@@ -59,6 +59,7 @@ export default {
     return {
       email: "",
       password: "",
+      nombre:"",
       users: [],
     };
   },
@@ -74,8 +75,10 @@ export default {
             for (let i = 0; i < this.users.length; i++) {
               if (this.users[i].correo == this.email) {
                 console.log("hallado");
+                console.log(this.users[i].nombre);
                 this.$router.push({ name: "home" });
                 localStorage.setItem("usuarioID", this.users[i].usuarioID);
+                localStorage.setItem("usuarioNombre",this.users[i].nombre)
               }
             }
           }
