@@ -54,7 +54,7 @@ public class controlProyecto {
     @PostMapping("/proyectos/create")
     public ResponseEntity<Proyectos> createProyecto(@RequestBody Proyectos u){
         try{
-            Proyectos tdb = RP.save(new Proyectos(u.getNombre(), u.getIdUsuarios(),u.getMotivacion(),u.getIdMeta(),u.getDescripcion(),u.getFechaFin()));
+            Proyectos tdb = RP.save(new Proyectos(u.getNombre(), u.getIdUsuarios(),u.getMotivacion(),u.getDescripcion(),u.getFechaFin()));
             return new ResponseEntity<>(tdb,HttpStatus.CREATED);
         }catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

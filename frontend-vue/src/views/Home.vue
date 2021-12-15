@@ -35,7 +35,7 @@
           <input type="text" class="descripcion" id="descripcionproyecto" placeholder="Descripción" v-model="proyecto.descripcion"><br>
           <label for="fecha-culminación">Fecha de culminación</label>
           <input type="date" id="fechaculminacionProyecto" v-model="proyecto.fecha"><br>
-          <button class="CrearProyecto" @click="CrearProyecto()" >Crear</button>
+          <button class="CrearProyecto" @click="CrearProyecto(usuarioID)" >Crear</button>
           <button class="cancelarCrearProyecto" @click="cerrarPopup()">Cancelar</button>
       </form>
     </div>
@@ -67,12 +67,14 @@
         ref:['#','#','#','#'],
         mesidenav:false,
         proyecto:{
+          usuarioID: 0,
           nombre:'',
           motivacion:'',
           descripcion:'',
           fecha:''
         },
         proyectoactual:{
+          usuarioID: 0,
           nombre:'',
           motivacion:'',
           descripcion:'',
@@ -93,21 +95,53 @@
       cerrarPopup: function(){
         document.querySelector(".popup").classList.remove("active");
       },
-      CrearProyecto: function(){
+      async CrearProyecto(usuarioID) {
         const {nombre,motivacion,descripcion,fecha}= this.proyecto;
         this.proyectos.push({
+          usuarioID,
           nombre,
           motivacion,
           descripcion,
           fecha
         })
+        try {
+        const response = await axios.post("http://localhost:8081/api/proyectos/create",
+          {
+            //(u.getNombre(), u.getIdUsuarios(),u.getMotivacion(),u.getIdMeta(),u.getDescripcion(),u.getFechaFin())
+              idUsuarios: usuarioID,
+              nombre: nombre,
+              motivacion: motivacion,
+              fechaFin: fecha,
+              descripcion : descripcion
+          }
+        );
+        console.log(usuarioID);
+        console.log(nombre);
+        console.log("se ejecuto funcion crear proyecto");
+      } catch (error) {
+        console.log(error);
+        if (error.response) {
+          // get response with a status code not in range 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // no response
+          console.log(error.request);
+        } else {
+          // Something wrong in setting up the request
+          console.log("Error", error.message);
+        }
+        console.log(error.config);
+      }
         this.cerrarPopup();
       },
       caracProyecto(proyecto){
         var moti=document.getElementById("motivacion");
         moti.innerHTML="Recuerda que tu motivación es: "+ proyecto.motivacion;
         var fec=document.getElementById("fecha");
-        fec.innerHTML="La fecha de culminación es "+ proyecto.fecha;
+        fec.innerHTML="La fecha de culminación es "+ proyecto.fechaFin;
+
         this.proyectoactual.nombre=proyecto.nombre;
         this.proyectoactual.motivacion=proyecto.motivacion;
         this.proyectoactual.descripcion=proyecto.descripcion;
@@ -126,8 +160,6 @@
           }
         );
         this.proyectos = response["data"];
-        console.log(proyectos);
-        console.log("try");
       } catch (error) {
         console.log(error);
         if (error.response) {
@@ -135,25 +167,20 @@
           console.log(error.response.data);
           console.log(error.response.status);
           console.log(error.response.headers);
-          console.log("catch 1");
         } else if (error.request) {
           // no response
           console.log(error.request);
-          console.log("catch 2");
         } else {
           // Something wrong in setting up the request
           console.log("Error", error.message);
-          console.log("catch 3");
         }
         console.log(error.config);
-        console.log("catch 4");
       }
     }
 
     },
     mounted(){
       this.obtenerProyectosDeBackend();
-      console.log("created");
     }
   }
 
