@@ -39,6 +39,13 @@
           <button class="cancelarCrearProyecto" @click="cerrarPopup()">Cancelar</button>
       </form>
     </div>
+    <div class="ConfigProyecto">
+      <form action="form" id="confproyecto" onsubmit="return false">
+        <h2></h2>
+
+
+      </form>
+    </div>
     <h3 id="fecha"></h3>
     <div id="contenido"></div>
     <h3 id="motivacion"></h3>
@@ -62,6 +69,12 @@
           descripcion:'',
           fecha:''
         },
+        proyectoactual:{
+          nombre:'',
+          motivacion:'',
+          descripcion:'',
+          fecha:''
+        },
         proyectos:[
 
         ]
@@ -69,7 +82,7 @@
     },
     methods:{
       abrirPopup: function(){
-        document.querySelector(".popup").classList.add("active");
+        const popup=document.querySelector(".popup").classList.add("active");
         document.getElementById("nombreProyecto").value = "";
         document.getElementById("motivacionProyecto").value = "";
         document.getElementById("descripcionproyecto").value = "";
@@ -93,6 +106,10 @@
         moti.innerHTML="Recuerda que tu motivación es: "+ proyecto.motivacion;
         var fec=document.getElementById("fecha");
         fec.innerHTML="La fecha de culminación es "+ proyecto.fecha;
+        this.proyectoactual.nombre=proyecto.nombre;
+        this.proyectoactual.motivacion=proyecto.motivacion;
+        this.proyectoactual.descripcion=proyecto.descripcion;
+        this.proyectoactual.fecha=proyecto.fecha;
       }
 
     }
@@ -202,19 +219,6 @@ body{
                 opacity 200ms ease-in-out 200 ms,
                 transform 20ms ease-in-out 0 ms;
 
-  }
-  .popup .close-btn{
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 15px;
-    height: 15px;
-    background: #888;
-    color: #eee;
-    text-align: center;
-    line-height: 15px;
-    border-radius: 15px;
-    cursor: pointer;
   }
 
   .topNavigationBar .userbutton {
@@ -365,12 +369,11 @@ body{
 <!--COSAS QUE HACER:
     -Cuando selecciono un proyecto debería quedarse "presionado" el boton 
     -Los botones no están en responsive-design
-    -Se puede reusar el popup con innerHTML
     -Falta redireccionar bien los botones de metas, sprints, plan y act
       tambien config, config de proyecto y retro (crear esas ventanas)
     -Plantear un popup similar para los botones del punto anterior
     -limitar el numero de proyectos a crear
-    -ENLAZAR CON EL BACKEND
+    -Crear metodos para guardar los proyectos en base de datos
     -(quizas mover todo lo de Style a un .css)
 
     BUGS: 
