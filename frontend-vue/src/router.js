@@ -47,7 +47,7 @@ export default new Router({
         {
           path: "/smallgoals",
           name: "smallgoals",
-          component: SmallGoals
+          component: SmallGoals,
         },
       ]
     },
