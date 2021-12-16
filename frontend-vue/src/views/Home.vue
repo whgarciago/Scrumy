@@ -78,6 +78,7 @@
       cerrarPopup: function(){
         document.querySelector(".popup").classList.remove("active");
       },
+<<<<<<< Updated upstream
       CrearProyecto: function(){
         const {nombre,motivacion,descripcion,fecha}= this.proyecto;
         this.proyectos.push({
@@ -86,13 +87,108 @@
           descripcion,
           fecha
         })
+=======
+      cerrarModificarProyecto(){
+        document.querySelector(".ConfigProyecto").classList.remove("active");
+      },
+      async CrearProyecto(usuarioID) {
+      
+      const {nombre,motivacion,descripcion,fechaFin}= this.proyecto;
+       
+        try {
+        const response = await axios.post("http://localhost:8081/api/proyectos/create",
+          {
+            //(u.getNombre(), u.getIdUsuarios(),u.getMotivacion(),u.getIdMeta(),u.getDescripcion(),u.getFechaFin())
+              idUsuarios: usuarioID,
+              nombre: nombre,
+              motivacion: motivacion,
+              fechaFin: fechaFin,
+              descripcion : descripcion
+          }
+        );
+        console.log(id)
+        console.log(usuarioID);
+        console.log(nombre);
+        console.log("se ejecuto funcion crear proyecto");
+      } catch (error) {
+        console.log(error);
+        if (error.response) {
+          // get response with a status code not in range 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // no response
+          console.log(error.request);
+        } else {
+          // Something wrong in setting up the request
+          console.log("Error", error.message);
+        }
+        console.log(error.config);
+      }
+        var moti=document.getElementById("motivacion");
+        moti.innerHTML="Recuerda que tu motivación es: "+ this.proyectoActual.motivacion;
+        var fec=document.getElementById("fecha");
+        fec.innerHTML="La fecha de culminación es "+ this.proyectoActual.fechaFin;
+        this.obtenerProyectosDeBackend();
+>>>>>>> Stashed changes
         this.cerrarPopup();
       },
       caracProyecto(proyecto){
+<<<<<<< Updated upstream
+=======
+
+        this.proyectoActual.id = proyecto.proyectoID;
+        this.proyectoActual.usuarioID = proyecto.usuarioID;
+        this.proyectoActual.nombre=proyecto.nombre;
+        this.proyectoActual.motivacion=proyecto.motivacion;
+        this.proyectoActual.descripcion=proyecto.descripcion;
+        this.proyectoActual.fechaFin=proyecto.fechaFin;
+        this.$store.state.activeProject = this.proyectoActual.id;
+        console.log(this.$store.state.activeProject);
+>>>>>>> Stashed changes
         var moti=document.getElementById("motivacion");
         moti.innerHTML="Recuerda que tu motivación es: "+ proyecto.motivacion;
         var fec=document.getElementById("fecha");
+<<<<<<< Updated upstream
         fec.innerHTML="La fecha de culminación es "+ proyecto.fecha;
+=======
+        fec.innerHTML="La fecha de culminación es "+ this.proyectoActual.fechaFin;
+        this.$router.push({ name: "home" });
+
+        console.log("carac ejecutada");
+
+      },
+
+    
+    async obtenerProyectosDeBackend() {
+      try {
+        const response = await axios.get(
+          "http://localhost:8081/api/proyectos/all",
+          {
+            params: {
+              id: this.usuarioID,
+            },
+          }
+        );
+        this.proyectos = response["data"];
+        //console.log(this.proyectos[0].proyectoID);
+      } catch (error) {
+        console.log(error);
+        if (error.response) {
+          // get response with a status code not in range 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // no response
+          console.log(error.request);
+        } else {
+          // Something wrong in setting up the request
+          console.log("Error", error.message);
+        }
+        console.log(error.config);
+>>>>>>> Stashed changes
       }
 
     }
