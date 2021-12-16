@@ -231,7 +231,7 @@
         moti.innerHTML="Recuerda que tu motivación es: "+ this.proyectoActual.motivacion;
         var fec=document.getElementById("fecha");
         fec.innerHTML="La fecha de culminación es "+ this.proyectoActual.fechaFin;
-
+        this.$router.push({ name: "home" });
         console.log("carac ejecutada");
 
       },
