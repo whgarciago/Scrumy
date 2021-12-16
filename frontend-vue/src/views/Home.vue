@@ -219,13 +219,16 @@
       },
 
       caracProyecto(proyecto){
-
+        
         this.proyectoActual.id = proyecto.proyectoID;
         this.proyectoActual.usuarioID = proyecto.usuarioID;
         this.proyectoActual.nombre=proyecto.nombre;
         this.proyectoActual.motivacion=proyecto.motivacion;
         this.proyectoActual.descripcion=proyecto.descripcion;
         this.proyectoActual.fechaFin=proyecto.fechaFin;
+
+        //Actualiza id de proyecto en store con el seleccionado
+        this.$store.state.activeProject = this.proyectoActual.id;
 
         var moti=document.getElementById("motivacion");
         moti.innerHTML="Recuerda que tu motivación es: "+ this.proyectoActual.motivacion;
