@@ -80,7 +80,7 @@ public class controlProyecto {
             Proyectos p = proyectdata.get();            
             p.setDescripcion(updProyect.getDescripcion());
             p.setFechaFin(updProyect.getFechaFin());
-            p.setIdMeta(updProyect.getIdMeta());
+            //p.setIdMeta(updProyect.getIdMeta());
             p.setIdUsuarios(updProyect.getIdUsuarios());
             p.setMotivacion(updProyect.getMotivacion());
             p.setNombre(updProyect.getNombre());

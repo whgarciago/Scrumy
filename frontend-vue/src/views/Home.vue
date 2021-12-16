@@ -1,11 +1,19 @@
 <template>
   <div id="Principal" >
+
+
+    <!-- Logo, botones de proyectos y usuario -->
     <div class="topNavigationBar" id="MyTopNavigationBar">
       <img id="logo" src="../assets/logo_scrumy.png">
+
+      <!-- botones de proyectos -->
       <div id="proyectos">
+
+        <!-- botones de proyectos existentes -->
         <button class="botonesProyectos" v-for="proy in proyectos" :key="proy.id" @click="caracProyecto(proy)">
           {{proy.nombre}}
         </button>
+        <!-- boton para agregar proyectos -->
         <button class="botonesProyectos" id="añadirproyecto" @click="abrirPopup()" ><!--falta abrirPopup()-->
         +
         </button>
@@ -19,6 +27,7 @@
     <div class="sidenav" v-on:mouseover="mesidenav=true" v-on:mouseout="mesidenav=false">
       <a v-for='(mini,indice) in minis' 
       :mini="mini" :indice="mini.index" :key="mini.id" @click="abrirComponente(indice)"> <!--Falta incluir el href-->
+
         <p v-show="!mesidenav"><img :src="mini"></p>
         <p v-show="mesidenav">{{nombres[indice]}}</p>
       </a>
@@ -26,6 +35,9 @@
     <button id="retroicon"> 
       <img class="logos" src="../assets/retro.png" >
     </button>
+    <div class="componente-central">
+      <router-view></router-view>    
+    </div>
     <div class="popup">
       <form class="form" id="formularioProyecto" onsubmit="return false">
           <h2 id="tituloPopup">Crear Proyecto</h2>
@@ -33,61 +45,78 @@
           <input type="text" id="motivacionProyecto" placeholder="Motivación" v-model="proyecto.motivacion">
           <input type="text" class="descripcion" id="descripcionproyecto" placeholder="Descripción" v-model="proyecto.descripcion"><br>
           <label for="fecha-culminación">Fecha de culminación</label>
-          <input type="date" id="fechaculminacionProyecto" v-model="proyecto.fecha"><br>
+          <input type="date" id="fechaculminacionProyecto" v-model="proyecto.fechaFin"><br>
           <button class="CrearProyecto" @click="CrearProyecto(usuarioID)" >Crear</button>
           <button class="cancelarCrearProyecto" @click="cerrarPopup()">Cancelar</button>
       </form>
     </div>
-    <div class="ConfigProyecto">
-      <form action="form" id="confproyecto" onsubmit="return false">
-        <h2></h2>
 
-      </form>
+    <!--Ventana configuracion de proyecto -->
+    <div class="ConfigProyecto">
+      <form class="form" id="confproyecto" onsubmit="return false">
+        <h2 class="tituloConfigProyecto">Configuracion de proyecto</h2>
+        <input type="text" id="nombreProyecto" placeholder="Nombre" v-model="proyectoActual.nombre">
+        <input type="text" id="motivacionProyecto" placeholder="Motivación" v-model="proyectoActual.motivacion">
+        <input type="text" class="descripcion" id="descripcionproyecto" placeholder="Descripción" v-model="proyectoActual.descripcion"><br>
+        <label for="fecha-culminación">Fecha de culminación</label>
+        <input type="date" id="fechaculminacionProyecto" v-model="proyectoActual.fechaFin"><br>
+        <button class="CrearProyecto" @click="ModificarProyecto()" >Guardar cambios</button>
+        <button class="cancelarCrearProyecto" @click="cerrarModificarProyecto()">Cancelar</button>
+        </form>
     </div>
     <h3 id="fecha"></h3>
     <div id="contenido"></div>
     <h3 id="motivacion"></h3>
-    <button id="configProyecto"><img class="logos" src="../assets/config.png" ></button>
-    <div class="componente-central">
-      <router-view></router-view>    
-    </div>
+    <!--Boton configuracion de proyecto -->
+    <button id="botonConfigProyecto" @click ="abrirConfigProyecto()"> <img class="logos" src="../assets/config.png" ></button>
+
   </div>
 </template>
 
 
 <script>
- import axios from 'axios';
+ import axios from 'axios'; 
+  
   export default{
     name: "Principal",
     data(){
       return{
         usuarioID: localStorage.usuarioID ,
         usuarioNombre: localStorage.usuarioNombre,
+        proyectoID: localStorage.proyectoID,
+
         minis:[require('../assets/mp.png'),require('../assets/sp.png'),require('../assets/pl.png'),require('../assets/ac.png')],
         nombres:['Metas pequeñas','Sprints','Plan','Actividades'],
         ref:['smallgoals','#','#','#'],
         mesidenav:false,
         proyecto:{
+          id : 0,
           usuarioID: 0,
           nombre:'',
           motivacion:'',
           descripcion:'',
-          fecha:''
+          fechaFin:''
         },
-        proyectoactual:{
-          usuarioID: 0,
+        proyectoActual:{
+          id : 0,
+          usuarioID: '',
           nombre:'',
           motivacion:'',
           descripcion:'',
-          fecha:''
+          fechaFin:''
         },
-        proyectos:[] 
+        proyectos: [] 
       }
     },
     
     methods:{
 
+      abrirConfigProyecto(){
+        document.querySelector(".ConfigProyecto").classList.add("active");
+      },
+
       abrirComponente(index){
+        document.querySelector(".componente-central").classList.add("active");
         this.$router.push( {name: this.ref[index]} );
       },
 
@@ -98,18 +127,16 @@
         document.getElementById("descripcionproyecto").value = "";
         document.getElementById("fechaculminacionProyecto").value = "";
       },
+
       cerrarPopup: function(){
         document.querySelector(".popup").classList.remove("active");
       },
+      cerrarModificarProyecto(){
+        document.querySelector(".ConfigProyecto").classList.remove("active");
+      },
       async CrearProyecto(usuarioID) {
-        const {nombre,motivacion,descripcion,fecha}= this.proyecto;
-        this.proyectos.push({
-          usuarioID,
-          nombre,
-          motivacion,
-          descripcion,
-          fecha
-        })
+      const {nombre,motivacion,descripcion,fechaFin}= this.proyecto;
+       
         try {
         const response = await axios.post("http://localhost:8081/api/proyectos/create",
           {
@@ -117,10 +144,11 @@
               idUsuarios: usuarioID,
               nombre: nombre,
               motivacion: motivacion,
-              fechaFin: fecha,
+              fechaFin: fechaFin,
               descripcion : descripcion
           }
         );
+        console.log(id)
         console.log(usuarioID);
         console.log(nombre);
         console.log("se ejecuto funcion crear proyecto");
@@ -140,18 +168,72 @@
         }
         console.log(error.config);
       }
+        var moti=document.getElementById("motivacion");
+        moti.innerHTML="Recuerda que tu motivación es: "+ this.proyectoActual.motivacion;
+        var fec=document.getElementById("fecha");
+        fec.innerHTML="La fecha de culminación es "+ this.proyectoActual.fechaFin;
+        this.obtenerProyectosDeBackend();
         this.cerrarPopup();
       },
-      caracProyecto(proyecto){
-        var moti=document.getElementById("motivacion");
-        moti.innerHTML="Recuerda que tu motivación es: "+ proyecto.motivacion;
-        var fec=document.getElementById("fecha");
-        fec.innerHTML="La fecha de culminación es "+ proyecto.fechaFin;
 
-        this.proyectoactual.nombre=proyecto.nombre;
-        this.proyectoactual.motivacion=proyecto.motivacion;
-        this.proyectoactual.descripcion=proyecto.descripcion;
-        this.proyectoactual.fecha=proyecto.fecha;
+      //Funcion para modificar los atributos de un poryecto
+      async ModificarProyecto( ) {
+        console.log(typeof(this.proyectoActual.id));
+        //Se guardan los parametros del formulario en el objeto proyecto actual
+        const {nombre,motivacion,descripcion,fechaFin}= this.proyectoActual;
+        try {
+        const response = await axios.put( "http://localhost:8081/api/proyectos/update?id="+ this.proyectoActual.id,
+          {
+              idUsuarios: this.usuarioID,
+              nombre: nombre,
+              motivacion: motivacion,
+              fechaFin: fechaFin,
+              descripcion : descripcion
+          }
+        );
+        console.log(this.usuarioID);
+        console.log(nombre);
+        console.log("se ejecuto funcion modificar proyecto");
+      } catch (error) {
+        console.log(error);
+        if (error.response) {
+          // get response with a status code not in range 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // no response
+          console.log(error.request);
+        } else {
+          // Something wrong in setting up the request
+          console.log("Error", error.message);
+        }
+        console.log(error.config);
+      }
+        var moti=document.getElementById("motivacion");
+        moti.innerHTML="Recuerda que tu motivación es: "+ this.proyectoActual.motivacion;
+        var fec=document.getElementById("fecha");
+        fec.innerHTML="La fecha de culminación es "+ this.proyectoActual.fechaFin;
+        this.obtenerProyectosDeBackend();
+        this.cerrarModificarProyecto();
+      },
+
+      caracProyecto(proyecto){
+
+        this.proyectoActual.id = proyecto.proyectoID;
+        this.proyectoActual.usuarioID = proyecto.usuarioID;
+        this.proyectoActual.nombre=proyecto.nombre;
+        this.proyectoActual.motivacion=proyecto.motivacion;
+        this.proyectoActual.descripcion=proyecto.descripcion;
+        this.proyectoActual.fechaFin=proyecto.fechaFin;
+
+        var moti=document.getElementById("motivacion");
+        moti.innerHTML="Recuerda que tu motivación es: "+ this.proyectoActual.motivacion;
+        var fec=document.getElementById("fecha");
+        fec.innerHTML="La fecha de culminación es "+ this.proyectoActual.fechaFin;
+
+        console.log("carac ejecutada");
+
       },
 
     
@@ -166,6 +248,7 @@
           }
         );
         this.proyectos = response["data"];
+        //console.log(this.proyectos[0].proyectoID);
       } catch (error) {
         console.log(error);
         if (error.response) {
@@ -296,6 +379,38 @@ body{
 
   }
 
+
+  .ConfigProyecto{
+     background: rgb(123, 163, 209);
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    opacity: 0;
+    display: none;
+    transform:translate(-50%,50%) scale(1.25);
+    width: 500px;
+    padding: 20px 30px;
+    background: #fff;
+    box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    transition: top 0ms ease-in-out 200ms,
+                opacity 200ms ease-in-out 200 ms,
+                transform 20ms ease-in-out 0 ms;
+  }
+
+  .ConfigProyecto.active{
+    display: block;
+    background: rgb(123, 163, 209,0.5);
+    top: 10%;
+    left: 50%;
+    opacity: 1;
+    transform:translate(-50%,50%) scale(1);
+    transition: top 0ms ease-in-out 0ms,
+                opacity 200ms ease-in-out 200 ms,
+                transform 20ms ease-in-out 0 ms;
+
+  }
+
   .topNavigationBar .userbutton {
     font-size :22px;
     color: rgb(21, 73, 198,0.6);
@@ -374,7 +489,7 @@ body{
     color: rgb(21, 73, 198);
     background-color:rgb(255, 255, 255); 
   }
-  #configProyecto{
+  #botonConfigProyecto{
      margin-top: 800px;
     margin-left: 90%;
     height: 80px;
@@ -387,7 +502,7 @@ body{
     position:fixed;
     border: 2px solid #eee;
   }
-  #configProyecto:hover, #retroicon:hover{
+  #botonConfigProyecto, #retroicon:hover{
     height: 85px;
     width: 85px;
   }
@@ -440,8 +555,25 @@ body{
     text-align: center;
   }
 
+
   .componente-central{
     background: rgb(21, 73, 198,0.6);
+    display: none;
+    position: absolute;
+    top: 0%;
+    left: 45%;
+    opacity: 1;
+    transform:translate(-50%,50%) scale(1.25);
+    width: 50%;
+    height: 50%;
+    margin: 0;
+    padding: 0;
+    box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+  }
+  .componente-central.active{
+    background: rgb(21, 73, 198,0.6);
+    display: block;
     position: absolute;
     top: 0%;
     left: 45%;
