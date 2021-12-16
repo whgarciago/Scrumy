@@ -188,7 +188,7 @@ h3 {
   z-index: 100;
   background: #fff;
   position: absolute;
-  top: 10%;
+  top: -10%;
   left: 50%;
   opacity: 0;
   display: none;
@@ -216,7 +216,7 @@ h3 {
   color: rgb(21, 73, 198, 0.6);
   display: block;
   background: #fff;
-  top: 10%;
+  top: -10%;
   left: 50%;
   opacity: 1;
   transform: translate(-50%, 50%) scale(1);

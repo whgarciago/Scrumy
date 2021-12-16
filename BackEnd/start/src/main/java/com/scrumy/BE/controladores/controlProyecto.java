@@ -8,7 +8,7 @@ import com.scrumy.BE.repositorios.repoProyectos;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
-import org.hibernate.Criteria;
+
 import org.springframework.beans.factory.annotation.*;
 
 //removido para poder acceder localmente desde cualquier ip

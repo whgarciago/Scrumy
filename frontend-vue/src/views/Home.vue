@@ -174,6 +174,7 @@
         fec.innerHTML="La fecha de culminación es "+ this.proyectoActual.fechaFin;
         this.obtenerProyectosDeBackend();
         this.cerrarPopup();
+        
       },
 
       //Funcion para modificar los atributos de un poryecto
