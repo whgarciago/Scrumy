@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     backURL: 'http://localhost:8081/api',
-    activeProject: 123,
+    activeProject: 0,
   },
   mutations: {
 

@@ -79,11 +79,12 @@ export default {
     axios
       .get(this.$store.state.backURL + pathGet, {
         params: {
-          id: 123,
+          id: this.$store.state.activeProject,
         },
       })
       .then((response) => {
         this.goals = response["data"];
+        console.log(this.$store.state.activeProject);
       })
       .catch((response) => {
         alert("No es posible conectar con el backend en este momento");
@@ -114,6 +115,7 @@ export default {
   methods: {
     abrirPopup: function() {
       document.querySelector(".create-goal-popup").classList.add("active");
+      console.log(this.$store.state.activeProject);
     },
     cerrarPopup: function() {
       document.querySelector(".create-goal-popup").classList.remove("active");
@@ -132,7 +134,7 @@ export default {
           nombre: this.formGoal.name,
           descripcion: this.formGoal.description,
           estado: this.formGoal.state,
-          idProyecto: 123,
+          idProyecto: this.$store.state.activeProject,
           idSprint: 1,
         })
         .then((response) => {
@@ -153,7 +155,7 @@ export default {
       axios
         .get(this.$store.state.backURL + pathGet, {
           params: {
-            id: 123,
+            id: this.$store.state.activeProject,
           },
         })
         .then((response) => {
