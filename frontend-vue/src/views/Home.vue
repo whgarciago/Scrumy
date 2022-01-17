@@ -18,26 +18,31 @@
         +
         </button>
       </div>
+      <!--Nombre de usuario y configuración-->
       <a href="#home" class="userbutton">
-        <!--img src="./assets/usuario.png" width="40px"-->
         <b id="neg">{{usuarioNombre}}</b>    Configuración
       </a>
       
     </div>
+    
+    <!--Barra de 4 botones de la izquierda-->
     <div class="sidenav" v-on:mouseover="mesidenav=true" v-on:mouseout="mesidenav=false">
       <a v-for='(mini,indice) in minis' 
-      :mini="mini" :indice="mini.index" :key="mini.id" @click="abrirComponente(indice)"> <!--Falta incluir el href-->
-
-        <p v-show="!mesidenav"><img :src="mini"></p>
-        <p v-show="mesidenav">{{nombres[indice]}}</p>
+      :mini="mini" :indice="mini.index" :key="mini.id" @click="abrirComponente(indice)">
+        <!--para cada elemento en minis se le asocia una función de abrirComponente-->
+        <p v-show="!mesidenav"><img :src="mini"></p><!--Si el mouse no esta encima, se muestra el logo-->
+        <p v-show="mesidenav">{{nombres[indice]}}</p><!--Si esta encima, se muestra el texto-->
       </a>
     </div>
+    <!--Icono de Retro-->
     <button id="retroicon"> 
       <img class="logos" src="../assets/retro.png" >
     </button>
+    <!--Div para desplegar los componentes de cada boton-->
     <div class="componente-central">
       <router-view></router-view>    
     </div>
+    <!--Popup de crear nuevo proyecto-->
     <div class="popup">
       <form class="form" id="formularioProyecto" onsubmit="return false">
           <h2 id="tituloPopup">Crear Proyecto</h2>
@@ -64,8 +69,11 @@
         <button class="cancelarCrearProyecto" @click="cerrarModificarProyecto()">Cancelar</button>
         </form>
     </div>
+    <!--Fecha de culminación, el contenido se llena con un script-->
     <h3 id="fecha"></h3>
+    <!--Descripción del proyecto , el contenido se llena con un script-->
     <div id="contenido"></div>
+    <!--Motivación del proyecto, el contenido se llena con un script-->
     <h3 id="motivacion"></h3>
     <!--Boton configuracion de proyecto -->
     <button id="botonConfigProyecto" @click ="abrirConfigProyecto()"> <img class="logos" src="../assets/config.png" ></button>
@@ -81,14 +89,18 @@
     name: "Principal",
     data(){
       return{
-        usuarioID: localStorage.usuarioID ,
-        usuarioNombre: localStorage.usuarioNombre,
-        proyectoID: localStorage.proyectoID,
-
+        usuarioID: localStorage.usuarioID , //trae el usuario del backend
+        usuarioNombre: localStorage.usuarioNombre, //trae el nombre del usuario
+        proyectoID: localStorage.proyectoID,//trae el ID del proyecto
+        //minis es un "arreglo" con los logos de los 4 botones
         minis:[require('../assets/mp.png'),require('../assets/sp.png'),require('../assets/pl.png'),require('../assets/ac.png')],
+        //nombres es un arreglo con los nombres de los 4 botones
         nombres:['Metas pequeñas','Sprints','Plan','Actividades'],
+        //ref es el arreglo que relaciona los botones con sus componentes
         ref:['smallgoals','#','#','#'],
+        //mesidenav es falso cuando el mouse no esta encima de los botones
         mesidenav:false,
+        //proyecto es el objeto base para manejar, se llena en el Popup de crear nuevo proyecto
         proyecto:{
           id : 0,
           usuarioID: 0,
@@ -97,6 +109,7 @@
           descripcion:'',
           fechaFin:''
         },
+        //proyecto actual es el proyecto en el cual se ubica actualmente
         proyectoActual:{
           id : 0,
           usuarioID: '',
@@ -105,21 +118,22 @@
           descripcion:'',
           fechaFin:''
         },
+        //proyectos traidos desde el backend
         proyectos: [] 
       }
     },
     
     methods:{
-
+      //abre el Popup de configuración de proyecto
       abrirConfigProyecto(){
         document.querySelector(".ConfigProyecto").classList.add("active");
       },
-
+      //abre el componente central y carga su respectivo contenido según el boton presionado
       abrirComponente(index){
         document.querySelector(".componente-central").classList.add("active");
         this.$router.push( {name: this.ref[index]} );
       },
-
+      //Abre el Popup para añadir un nuevo proyecto
       abrirPopup: function(){
         const popup=document.querySelector(".popup").classList.add("active");
         document.getElementById("nombreProyecto").value = "";
@@ -127,20 +141,22 @@
         document.getElementById("descripcionproyecto").value = "";
         document.getElementById("fechaculminacionProyecto").value = "";
       },
-
+      //Cierra el Popup para añadir un nuevo proyecto
       cerrarPopup: function(){
         document.querySelector(".popup").classList.remove("active");
       },
+      //Cierra el Popup de configuración de proyecto
       cerrarModificarProyecto(){
         document.querySelector(".ConfigProyecto").classList.remove("active");
       },
+      //Se ejecuta cuando se presiona el boton "crear" de añadir nuevo proyecto
+      //toma los objetos del objeto "proyecto" y los guarda en el Backend
       async CrearProyecto(usuarioID) {
       const {nombre,motivacion,descripcion,fechaFin}= this.proyecto;
        
         try {
         const response = await axios.post("http://localhost:8081/api/proyectos/create",
           {
-            //(u.getNombre(), u.getIdUsuarios(),u.getMotivacion(),u.getIdMeta(),u.getDescripcion(),u.getFechaFin())
               idUsuarios: usuarioID,
               nombre: nombre,
               motivacion: motivacion,
@@ -155,29 +171,32 @@
       } catch (error) {
         console.log(error);
         if (error.response) {
-          // get response with a status code not in range 2xx
+          // Respuesta con codigo fuera de rango
           console.log(error.response.data);
           console.log(error.response.status);
           console.log(error.response.headers);
         } else if (error.request) {
-          // no response
+          // No respuesta
           console.log(error.request);
         } else {
-          // Something wrong in setting up the request
+          // Error en el envío de petición
           console.log("Error", error.message);
         }
         console.log(error.config);
       }
+      //Actualiza los mensajes en motivación y fecha 
         var moti=document.getElementById("motivacion");
         moti.innerHTML="Recuerda que tu motivación es: "+ this.proyectoActual.motivacion;
         var fec=document.getElementById("fecha");
         fec.innerHTML="La fecha de culminación es "+ this.proyectoActual.fechaFin;
+        //Ejecuta obtenerProyectosDeBackend (linea 266)
         this.obtenerProyectosDeBackend();
+        //Cierra el Popup de añadir nuevo proyecto (linea 145)
         this.cerrarPopup();
         
       },
 
-      //Funcion para modificar los atributos de un poryecto
+      //Funcion para modificar los atributos de un proyecto
       async ModificarProyecto( ) {
         console.log(typeof(this.proyectoActual.id));
         //Se guardan los parametros del formulario en el objeto proyecto actual
@@ -198,27 +217,31 @@
       } catch (error) {
         console.log(error);
         if (error.response) {
-          // get response with a status code not in range 2xx
+          // Respuesta con codigo fuera de rango
           console.log(error.response.data);
           console.log(error.response.status);
           console.log(error.response.headers);
         } else if (error.request) {
-          // no response
+          // No respuesta
           console.log(error.request);
         } else {
-          // Something wrong in setting up the request
+          // Error en el envío de petición
           console.log("Error", error.message);
         }
         console.log(error.config);
       }
+        //actualiza los mensajes de motivación y fecha
         var moti=document.getElementById("motivacion");
         moti.innerHTML="Recuerda que tu motivación es: "+ this.proyectoActual.motivacion;
         var fec=document.getElementById("fecha");
         fec.innerHTML="La fecha de culminación es "+ this.proyectoActual.fechaFin;
+        //Ejecuta obtenerProyectosDeBackend (linea 266)
         this.obtenerProyectosDeBackend();
+        //Cierra el Popup de ModificarProyecto (linea 149)
         this.cerrarModificarProyecto();
       },
-
+      //Cuando se selecciona un proyecto en la barra de arriba, caracProyecto trae
+      //dicho proyecto desde el Backend y actualiza los datos
       caracProyecto(proyecto){
         
         this.proyectoActual.id = proyecto.proyectoID;
@@ -230,17 +253,16 @@
 
         //Actualiza id de proyecto en store con el seleccionado
         this.$store.state.activeProject = this.proyectoActual.id;
-
+        //actualiza la motivación
         var moti=document.getElementById("motivacion");
         moti.innerHTML="Recuerda que tu motivación es: "+ this.proyectoActual.motivacion;
+        //actualiza la fecha
         var fec=document.getElementById("fecha");
         fec.innerHTML="La fecha de culminación es "+ this.proyectoActual.fechaFin;
         this.$router.push({ name: "home" });
         console.log("carac ejecutada");
-
       },
-
-    
+    //Obtiene los proyectos del Backend para mostrarlos en los botones
     async obtenerProyectosDeBackend() {
       try {
         const response = await axios.get(
@@ -252,19 +274,18 @@
           }
         );
         this.proyectos = response["data"];
-        //console.log(this.proyectos[0].proyectoID);
       } catch (error) {
         console.log(error);
         if (error.response) {
-          // get response with a status code not in range 2xx
+          // respuesta con codigo fuera de rango
           console.log(error.response.data);
           console.log(error.response.status);
           console.log(error.response.headers);
         } else if (error.request) {
-          // no response
+          // no respuesta
           console.log(error.request);
         } else {
-          // Something wrong in setting up the request
+          // Error en el envío de petición
           console.log("Error", error.message);
         }
         console.log(error.config);
@@ -272,6 +293,7 @@
     }
 
     },
+    //Carga los proyectos del backend apenas inicia la pagina
     mounted(){
       this.obtenerProyectosDeBackend();
     }
