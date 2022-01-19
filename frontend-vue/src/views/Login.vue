@@ -1,16 +1,16 @@
 <template>
-  <div class="row col-12 vh-100 align-items-center image">
+  <div class="row col-12 vh-100 align-items-center whole-page p-0 m-0">
     <div class="col-5 ">
 
       <img :src="logoURL" alt="logo_scrumy" class="col-12 ">
       
-      <div class="d-flex flex-column justify-content-center my-5 col-12 p-5">
-        <button v-on:click= "showLogInForm"> Iniciar Sesión</button>
-        <button v-on:click= "showSignUpForm"> Registrarse</button>
+      <div class="d-flex flex-column justify-content-center my-5 col-12 p-5 ">
+        <button v-on:click= "showLogInForm " class="m-2"> Iniciar Sesión</button>
+        <button v-on:click= "showSignUpForm" class="m-2"> Registrarse</button>
       </div>
 
     </div>
-    <div class="col-7 ">
+    <div class="col-7">
       <router-view></router-view>
     </div>
   </div>
@@ -22,6 +22,8 @@
     import logo from "../assets/logo_scrumy.png"
 
     const path = "/oauth/token";
+
+    
 
     export default {
         name: "Login",
@@ -101,8 +103,17 @@
       display: none !important;
     }
   }
-  .image{
-    background-color: whitesmoke
-  }
+
+  .whole-page{
+    background-color: cornflowerblue;
+    background-image: url("../assets/background_picture.jpg");
+    background-size: cover;
+    height:  100%;
+    background-repeat:no-repeat;
+    background-position:center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+
   
 </style>

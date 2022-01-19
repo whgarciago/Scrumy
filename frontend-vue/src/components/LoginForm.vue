@@ -34,9 +34,9 @@
             />
           </div>
 
-          <div class="col-12 col-sm-5 col-md-4 mb-3">
+          <div class="col-12 col-sm-5 col-md-4 mb-3 justify-content-end">
             <button
-              class="col-sm-10 col-md-10 offset-sm-1 offset-md-2 btn btn-primary align-self-end"
+              class="col-sm-10 col-md-10 btn btn-primary "
               type="submit"
             >
               Iniciar Sesión
@@ -59,6 +59,7 @@ export default {
     return {
       email: "",
       password: "",
+      nombre:"",
       users: [],
     };
   },
@@ -74,8 +75,10 @@ export default {
             for (let i = 0; i < this.users.length; i++) {
               if (this.users[i].correo == this.email) {
                 console.log("hallado");
+                console.log(this.users[i].nombre);
                 this.$router.push({ name: "home" });
                 localStorage.setItem("usuarioID", this.users[i].usuarioID);
+                localStorage.setItem("usuarioNombre",this.users[i].nombre)
               }
             }
           }

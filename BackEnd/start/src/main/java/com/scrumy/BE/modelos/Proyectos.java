@@ -34,11 +34,11 @@ public class Proyectos {
     public Proyectos() {
     }
 
-    public Proyectos(String nombre, int idUsuarios, String motivacion, int idMeta, String descripcion, Date fechaFin) {
+    public Proyectos(String nombre, int idUsuarios, String motivacion,  String descripcion, Date fechaFin) {
         this.nombre = nombre;
         this.idUsuarios = idUsuarios;
         this.motivacion = motivacion;
-        this.idMeta = idMeta;
+        //this.idMeta = idMeta;
         this.descripcion = descripcion;
         this.fechaFin = fechaFin;
     }

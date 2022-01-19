@@ -1,11 +1,9 @@
 //makes the create project popup  visible
 
-
 let usuarioID = localStorage.getItem("usuarioID");
 console.log(usuarioID);
 
 let proyectos = [];
-
 
 /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
 function navbarResponse() {
@@ -150,15 +148,14 @@ function verificarCamposformularioProyecto(
     return true;
   }
 }
-function abrirPopup(){
+function abrirPopup() {
   document.querySelector(".popup").classList.add("active");
 }
-function cancelarCrearProyecto(){
+function cancelarCrearProyecto() {
   document.querySelector(".popup").classList.remove("active");
 }
 
 function cargarProyectos() {
-  
   let proyectosHTML = "";
   console.log(proyectos);
   for (let proyecto of proyectos) {
@@ -176,4 +173,3 @@ function crearProyectoHTML(proyecto) {
   `;
   return proyectoHTML;
 }
-
