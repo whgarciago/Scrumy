@@ -1,16 +1,16 @@
 <template>
   <div class="col-12 m-0 p-2 h-100 component">
-    <div class="col-12 h-15 d-inline-block">
-      <h2>Metas pequeñas</h2>
+    <div class="col-12 h-15 d-inline-block titleMetas">
+      <h2>Metas</h2>
     </div>
-    <div class="row col-12 h-75 justify-content pl-5">
+    <div class="row col-12 h-75 justify-content-center pl-5 overflow-auto">
       <div
         v-for="(goal, index) in goals"
         :goal="goal"
         :indice="goal.index"
         :key="goal.id"
       >
-        <div class="card text-center" style="width: 18rem; height:100% ">
+        <div class="card text-center" style="width: 18rem">
           <div class="card-body" @click="abrirGoalPopup(goal)">
             <h3 class="card-subtitle mb-2 ">
               {{ index + 1 }}. {{ goal.nombre }}
@@ -27,7 +27,7 @@
 
     <div class="create-goal-popup">
       <form class="form" id="formularioProyecto" onsubmit="return false">
-        <h3>Nueva Meta Pequeña</h3>
+        <h3>Nueva Meta</h3>
         <label for="goalName">Nombre</label><br />
         <input
           type="text"
@@ -61,6 +61,29 @@
       <h4>Descripción: {{ activeGoal.descripcion }}</h4>
       <button class="cancelarCrearMeta" @click="cerrarGoalPopup()">
         Cerrar
+      </button>
+      <button class="difficulties-button" @click="openDifficultyPopup()">
+        Dificultades
+      </button>
+    </div>
+
+    <div class="goal-difficulty-popup">
+      <h1>Añadir Dificultad</h1>
+      <textarea
+        name="textDescription"
+        id="goalDescription"
+        class="  w-100 goalDescription"
+        placeholder="Descripción"
+        cols="30"
+        rows="3"
+        v-model="formGoal.description"
+        required
+      ></textarea>
+      <button class="cancelarCrearMeta" @click="saveDifficultyPopup()">
+        Guardar
+      </button>
+      <button class="difficulties-button" @click="closeDifficultyPopup()">
+        Cancelar
       </button>
     </div>
   </div>
@@ -120,6 +143,15 @@ export default {
     cerrarPopup: function() {
       document.querySelector(".create-goal-popup").classList.remove("active");
     },
+    openDifficultyPopup: function() {
+      document.querySelector(".goal-difficulty-popup").classList.add("active");
+      document.querySelector(".goal-popup").classList.remove("active");
+    },
+    closeDifficultyPopup: function() {
+      document
+        .querySelector(".goal-difficulty-popup")
+        .classList.remove("active");
+    },
 
     abrirGoalPopup: function(goal) {
       this.activeGoal = goal;
@@ -127,6 +159,11 @@ export default {
     },
     cerrarGoalPopup: function() {
       document.querySelector(".goal-popup").classList.remove("active");
+    },
+
+    saveDifficultyPopup: function() {
+      alert('Dificultad creada')
+
     },
     crearMeta() {
       axios
@@ -150,7 +187,6 @@ export default {
           alert("No es posible conectar con el backend en este momento");
         });
     },
-
     cargarMetas() {
       axios
         .get(this.$store.state.backURL + pathGet, {
@@ -184,7 +220,8 @@ h3 {
   color: #fff;
 }
 
-.create-goal-popup {
+.create-goal-popup,
+.goal-difficulty-popup {
   z-index: 100;
   background: #fff;
   position: absolute;
@@ -202,17 +239,20 @@ h3 {
     transform 20ms ease-in-out 0 ms;
   font-size: large;
 }
-.create-goal-popup label {
+.create-goal-popup label,
+.goal-difficulty-popup {
   color: rgb(21, 73, 198, 0.6);
 }
-.create-goal-popup textarea {
+.create-goal-popup textarea,
+.goal-difficulty-popup textarea {
   background-color: #7ba9d1;
   color: #fff;
   font-size: large;
   overflow: hidden;
   resize: none;
 }
-.create-goal-popup.active {
+.create-goal-popup.active,
+.goal-difficulty-popup.active {
   color: rgb(21, 73, 198, 0.6);
   display: block;
   background: #fff;
@@ -227,6 +267,19 @@ h3 {
 .crearMeta,
 .cancelarCrearMeta {
   margin-left: 10px;
+  width: 40%;
+  padding: 12px 0px 10px 5px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  background: rgb(123, 163, 209, 0.5);
+  color: black;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.difficulties-button {
+  margin-left: 50px;
   width: 40%;
   padding: 12px 0px 10px 5px;
   border: none;
@@ -283,5 +336,9 @@ h3 {
 .card {
   cursor: pointer;
   color: rgb(21, 73, 198, 0.6);
+}
+.titleMetas {
+  border-bottom: 2px solid rgb(156, 156, 156);
+  margin-bottom: 5px;
 }
 </style>
