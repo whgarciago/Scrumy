@@ -11,7 +11,7 @@ public class Actividades {
     private int actividadID;
 
     @Column(name = "Dificultad")
-    private int dificultad;
+    private String dificultad;
 
     @Column(name = "Nombre")
     private String nombre;
@@ -27,7 +27,7 @@ public class Actividades {
     public Actividades() {
     }
 
-    public Actividades(int dificultad, String nombre, String descripcion, int idMeta) {
+    public Actividades(String dificultad, String nombre, String descripcion, int idMeta) {
         this.dificultad = dificultad;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -43,11 +43,11 @@ public class Actividades {
         this.actividadID = actividadID;
     }
 
-    public int getDificultad() {
+    public String getDificultad() {
         return this.dificultad;
     }
 
-    public void setDificultad(int dificultad) {
+    public void setDificultad(String dificultad) {
         this.dificultad = dificultad;
     }
 
