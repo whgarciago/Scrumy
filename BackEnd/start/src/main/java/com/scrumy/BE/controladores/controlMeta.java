@@ -51,7 +51,7 @@ public class controlMeta {
     @PostMapping("/metas/create")
     public ResponseEntity<Meta> createMeta(@RequestBody Meta m){
         try{
-            Meta tdb = RM.save(new Meta(m.getNombre(), m.getIdProyecto() , m.getEstado() , m.getIdSprint() , m.getDescripcion(), m.getActividadID()));
+            Meta tdb = RM.save(new Meta(m.getNombre(), m.getIdProyecto() , m.getEstado() , m.getIdSprint() , m.getDescripcion(), m.getActividadID(), m.getDificultad()));
             return new ResponseEntity<>(tdb,HttpStatus.CREATED);
         }catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

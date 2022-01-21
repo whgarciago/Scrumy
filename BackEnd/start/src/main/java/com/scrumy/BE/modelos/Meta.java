@@ -29,6 +29,9 @@ public class Meta {
     @Column(name = "Actividad")
     private int actividadID;
 
+    @Column(name = "Dificultad")
+    private String dificultad;
+
     //Constructores
     public Meta() {
     }
@@ -42,6 +45,17 @@ public class Meta {
         this.actividadID = actividadID;
     }
 
+
+    public Meta(String nombre, int idProyecto, int estado, int idSprint, String descripcion, int actividadID, String dificultad) {
+        this.nombre = nombre;
+        this.idProyecto = idProyecto;
+        this.estado = estado;
+        this.idSprint = idSprint;
+        this.descripcion = descripcion;
+        this.actividadID = actividadID;
+        this.dificultad = dificultad;
+    }
+    
 
     public Meta(int metaID, String nombre, int idProyecto, int estado, String descripcion) {
         this.metaID = metaID;
@@ -108,6 +122,15 @@ public class Meta {
     }
 
 
+    public String getDificultad() {
+        return this.dificultad;
+    }
+
+    public void setDificultad(String dificultad) {
+        this.dificultad = dificultad;
+    }
+
+
     @Override
     public String toString() {
         return "{" +
@@ -118,7 +141,9 @@ public class Meta {
             ", idSprint='" + getIdSprint() + "'" +
             ", descripcion='" + getDescripcion() + "'" +
             ", actividadID='" + getActividadID() + "'" +
+            ", dificultad='" + getDificultad() + "'" +
             "}";
     }
+    
     
 }
