@@ -88,6 +88,20 @@ public class controlMeta {
         }
     }
 
+    @PutMapping("/metas/updateDificulties")
+    public ResponseEntity<Meta> updateDificultyInMeta(@RequestParam int id, @RequestBody Meta updMeta){
+        Optional<Meta> metadata = RM.findById(id);
+            
+        if(metadata.isPresent()){
+            Meta m = metadata.get();            
+            m.setDificultad(updMeta.getDificultad());
+
+            return new ResponseEntity<>(RM.save(m),HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("/metas/delete/all")
     public ResponseEntity<HttpStatus> deleteAllMeta(){
         try{
