@@ -18,7 +18,7 @@ public class controlMeta {
     @Autowired
     repoMeta RM;
 
-
+    
     @GetMapping("/metas/all")
     public ResponseEntity<List<Meta>> getAllMetaByProject(@RequestParam int id){
 
@@ -94,6 +94,21 @@ public class controlMeta {
             m.setIdSprint(updMeta.getIdSprint());
             m.setDescripcion(updMeta.getDescripcion());
             m.setActividadID(updMeta.getActividadID());
+
+            return new ResponseEntity<>(RM.save(m),HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/metas/update/sprint")
+    public ResponseEntity<Meta> updateMetaSprint(@RequestParam int id, int sprintID){
+        Optional<Meta> metadata = RM.findById(id);
+
+        if(metadata.isPresent()){
+            Meta m = metadata.get();
+            m.setIdSprint(sprintID);
+            //m.setActividadID(updMeta.getActividadID());
 
             return new ResponseEntity<>(RM.save(m),HttpStatus.OK);
         }else{
