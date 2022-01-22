@@ -20,10 +20,10 @@ public class controlActividades {
     repoActividades RA;
 
     @GetMapping("/actividades/all")
-    public ResponseEntity<List<Actividades>> getAllActivities(){
+    public ResponseEntity<List<Actividades>> getAllActivitiesByMeta(@RequestParam int id){
         try{
             List<Actividades> listaActividades = new ArrayList<Actividades>();
-            RA.findAll().forEach(listaActividades::add);
+            RA.findByidMeta(id).forEach(listaActividades::add);
             if(listaActividades.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -55,6 +55,20 @@ public class controlActividades {
             }
             Actividades a = foundActivity.get();
             return new ResponseEntity<>(a.getDificultad(), HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/actividades/findState")
+    public ResponseEntity<Boolean> getStateByActivity(@RequestParam int id){
+        try{
+            Optional <Actividades> foundActivity = RA.findByActividadID(id);
+            if(foundActivity.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            Actividades a = foundActivity.get();
+            return new ResponseEntity<>(a.getEstado(), HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

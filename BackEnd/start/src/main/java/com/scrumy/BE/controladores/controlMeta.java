@@ -47,6 +47,19 @@ public class controlMeta {
         }
     }
 
+    @GetMapping("/metas/findDificulty")
+    public ResponseEntity<String> getDificultyByMeta(@RequestParam int id){
+        try{
+            Optional<Meta> foundMeta = RM.findById(id);
+            if(foundMeta.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            Meta m = foundMeta.get();
+            return new ResponseEntity<>(m.getDificultad(), HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PostMapping("/metas/create")
     public ResponseEntity<Meta> createMeta(@RequestBody Meta m){
