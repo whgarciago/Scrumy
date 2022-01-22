@@ -31,6 +31,7 @@
         <label for="goalName">Nombre</label><br />
         <input
           type="text"
+          name="goalName"
           id="goalName"
           placeholder="Nombre"
           v-model="formGoal.name"
@@ -49,9 +50,11 @@
         ></textarea>
 
         <br />
-        
-        <button class="crearMeta" type="submit" @click="crearMeta()">Crear</button>
-        <button class="cancelarCrearMeta" @click="cerrarPopup()">
+
+        <button class="crearMeta" type="submit" @click="crearMeta()">
+          Crear
+        </button>
+        <button class="cancelarCrearMeta" type="button" @click="cerrarPopup()">
           Cancelar
         </button>
       </form>
@@ -60,12 +63,17 @@
     <div class="goal-popup">
       <h1>Nombre: {{ activeGoal.nombre }}</h1>
       <h4>Descripción: {{ activeGoal.descripcion }}</h4>
-      <h5 v-if="activeGoal.dificultad!=null">Dificultad: {{activeGoal.dificultad}}</h5>
+      <h5 v-if="activeGoal.dificultad != null">
+        Dificultad: {{ activeGoal.dificultad }}
+      </h5>      
+      <button class="difficulties-button" @click="openDifficultyPopup()">
+        Dificultad
+      </button>
       <button class="cancelarCrearMeta" @click="cerrarGoalPopup()">
         Cerrar
       </button>
-      <button class="difficulties-button" @click="openDifficultyPopup()">
-        Dificultades
+      <button class="edit-goal-button" @click="openEditGoalPopup()">
+        <img src="https://img.icons8.com/material/32/000000/edit--v1.png" />
       </button>
     </div>
 
@@ -75,7 +83,7 @@
         name="textDescription"
         id="goalDescription"
         class="  w-100 goalDescription"
-        placeholder="Descripción"
+        :placeholder=[[activeGoal.dificultad]]
         cols="30"
         rows="3"
         v-model="activeGoal.dificultad"
@@ -87,6 +95,47 @@
       <button class="difficulties-button" @click="closeDifficultyPopup()">
         Cancelar
       </button>
+      <button class="delete-goal-button" @click="deleteDifficulty()">
+          <img src="https://img.icons8.com/material/32/000000/delete--v1.png" />
+        </button>
+    </div>
+
+    <div class="update-goal-popup">
+      <form class="form" id="editGoalForm" onsubmit="return false">
+        <h3>Modificar Meta</h3>
+        <label for="goalName">Nombre</label><br />
+        <input
+          type="text"
+          name="editGoalName"
+          id="editGoalName"
+          placeholder="Nombre"
+          v-model="editGoal.name"
+          required
+        />
+        <label for="proyectDescription">Descripción</label><br />
+        <textarea
+          name="editGoalDescription"
+          id="editGoalDescription"
+          class="w-100 goalDescription"
+          placeholder="Descripción"
+          cols="30"
+          rows="3"
+          v-model="editGoal.description"
+          required
+        ></textarea>
+
+        <br />
+
+        <button class="crearMeta" type="submit" @click="editGoalInBackend()">
+          Guardar
+        </button>
+        <button class="cancelarCrearMeta" type="button" @click="closeEditGoalPopup()">
+          Cancelar
+        </button>
+        <button class="delete-goal-button" @click="deleteGoal()">
+          <img src="https://img.icons8.com/material/32/000000/delete--v1.png" />
+        </button>
+      </form>
     </div>
   </div>
 </template>
@@ -97,6 +146,8 @@ import axios from "axios";
 const pathCreate = "/metas/create";
 const pathGet = "/metas/all";
 const pathUpdateDifficulty = "/metas/updateDificulties";
+const pathDeleteGoal = "/metas/remove";
+const pathUpdateGoal = "/metas/update";
 
 export default {
   name: "SmallGoals",
@@ -110,7 +161,6 @@ export default {
       })
       .then((response) => {
         this.goals = response["data"];
-        console.log(response);
       })
       .catch((response) => {
         alert("No es posible conectar con el backend en este momento");
@@ -133,6 +183,12 @@ export default {
         metaID: 0,
         nombre: "",
       },
+      editGoal: {
+        name: "",
+        description: "",
+        proyectId: this.proyectId,
+        state: 1,
+      },
 
       formGoal: {
         name: "",
@@ -146,7 +202,6 @@ export default {
   methods: {
     abrirPopup: function() {
       document.querySelector(".create-goal-popup").classList.add("active");
-      console.log(this.$store.state.activeProject);
     },
     cerrarPopup: function() {
       document.querySelector(".create-goal-popup").classList.remove("active");
@@ -161,9 +216,77 @@ export default {
         .classList.remove("active");
     },
 
+    openEditGoalPopup: function() {
+      document.querySelector(".update-goal-popup").classList.add("active");
+    },
+    closeEditGoalPopup: function() {
+      document.querySelector(".update-goal-popup").classList.remove("active");
+    },
+    editGoalInBackend: function() {
+      axios
+        .put(
+          this.$store.state.backURL + pathUpdateGoal,
+          {
+            nombre: this.editGoal.name,
+            descripcion: this.editGoal.description,
+            estado: this.formGoal.state,
+            idProyecto: this.$store.state.activeProject,
+            idSprint: 1,
+          },
+          {
+            params: {
+              id: this.activeGoal.metaID,
+            },
+          }
+        )
+        .then((response) => {
+          this.cargarMetas();
+          this.closeEditGoalPopup();
+        })
+        .catch((response) => {
+          alert("No es posible conectar con el backend en este momento");
+        });
+    },
+    deleteGoal: function() {
+      axios
+        .delete(this.$store.state.backURL + pathDeleteGoal, {
+          params: {
+            id: this.activeGoal.metaID,
+          },
+        })
+        .then((response) => {
+          this.cargarMetas();
+          this.cerrarGoalPopup();
+          this.closeEditGoalPopup();
+        })
+        .catch((response) => {
+          alert("No es posible conectar con el backend en este momento");
+        });
+    },
+    deleteDifficulty:function(){
+      axios
+        .put(
+          this.$store.state.backURL + pathUpdateDifficulty,
+          {
+            dificultad: null,
+          },
+          {
+            params: {
+              id: this.activeGoal.metaID,
+            },
+          }
+        )
+        .then((response) => {
+          this.cargarMetas();
+          this.closeDifficultyPopup();
+        })
+        .catch((response) => {
+          alert("No es posible conectar con el backend en este momento");
+        });
+      
+    },
     abrirGoalPopup: function(goal) {
       this.activeGoal = goal;
-      console.log(this.activeGoal);
 
       document.querySelector(".goal-popup").classList.add("active");
     },
@@ -185,7 +308,7 @@ export default {
           }
         )
         .then((response) => {
-          alert("Dificultad añadida");
+          this.closeDifficultyPopup();
         })
         .catch((response) => {
           alert("No es posible conectar con el backend en este momento");
@@ -201,13 +324,11 @@ export default {
           idSprint: 1,
         })
         .then((response) => {
-          console.log("meta creada");
           this.cargarMetas();
           this.formGoal.name = "";
           this.formGoal.description = "";
           this.formGoal.state = "";
           this.cerrarPopup();
-          console.log(this.$store.state.activeProject + "``````");
         })
         .catch((response) => {
           alert("No es posible conectar con el backend en este momento");
@@ -222,7 +343,6 @@ export default {
         })
         .then((response) => {
           this.goals = response["data"];
-          console.log("Metas conseguidas");
         })
         .catch((response) => {
           alert("No es posible conectar con el backend en este momento");
@@ -247,7 +367,8 @@ h3 {
 }
 
 .create-goal-popup,
-.goal-difficulty-popup {
+.goal-difficulty-popup,
+.update-goal-popup {
   z-index: 100;
   background: #fff;
   position: absolute;
@@ -266,11 +387,13 @@ h3 {
   font-size: large;
 }
 .create-goal-popup label,
-.goal-difficulty-popup {
+.goal-difficulty-popup,
+.update-goal-popup {
   color: rgb(21, 73, 198, 0.6);
 }
 .create-goal-popup textarea,
-.goal-difficulty-popup textarea {
+.goal-difficulty-popup textarea,
+.update-goal-popup textarea {
   background-color: #7ba9d1;
   color: #fff;
   font-size: large;
@@ -278,7 +401,8 @@ h3 {
   resize: none;
 }
 .create-goal-popup.active,
-.goal-difficulty-popup.active {
+.goal-difficulty-popup.active,
+.update-goal-popup.active {
   color: rgb(21, 73, 198, 0.6);
   display: block;
   background: #fff;
@@ -292,8 +416,8 @@ h3 {
 
 .crearMeta,
 .cancelarCrearMeta {
-  margin-left: 10px;
-  width: 40%;
+  margin-left: 5px;
+  width: 35%;
   padding: 12px 0px 10px 5px;
   border: none;
   outline: none;
@@ -305,8 +429,8 @@ h3 {
   font-weight: 600;
 }
 .difficulties-button {
-  margin-left: 50px;
-  width: 40%;
+  margin-left: 2px;
+  width: 30%;
   padding: 12px 0px 10px 5px;
   border: none;
   outline: none;
@@ -316,6 +440,21 @@ h3 {
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
+}
+.delete-goal-button,
+.edit-goal-button {
+  margin-left: 5px;
+  width: 50px;
+  padding: 2px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  background: rgb(123, 163, 209, 0.5);
+  color: black;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  float: right;
 }
 
 .component {
