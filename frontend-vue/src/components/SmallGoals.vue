@@ -40,7 +40,7 @@
         <textarea
           name="textDescription"
           id="goalDescription"
-          class="  w-100 goalDescription"
+          class="w-100 goalDescription"
           placeholder="Descripción"
           cols="30"
           rows="3"
@@ -49,7 +49,8 @@
         ></textarea>
 
         <br />
-        <button class="crearMeta" @click="crearMeta()">Crear</button>
+        
+        <button class="crearMeta" type="submit" @click="crearMeta()">Crear</button>
         <button class="cancelarCrearMeta" @click="cerrarPopup()">
           Cancelar
         </button>
@@ -59,6 +60,7 @@
     <div class="goal-popup">
       <h1>Nombre: {{ activeGoal.nombre }}</h1>
       <h4>Descripción: {{ activeGoal.descripcion }}</h4>
+      <h5 v-if="activeGoal.dificultad!=null">Dificultad: {{activeGoal.dificultad}}</h5>
       <button class="cancelarCrearMeta" @click="cerrarGoalPopup()">
         Cerrar
       </button>
@@ -76,7 +78,7 @@
         placeholder="Descripción"
         cols="30"
         rows="3"
-        v-model="formGoal.description"
+        v-model="activeGoal.dificultad"
         required
       ></textarea>
       <button class="cancelarCrearMeta" @click="saveDifficultyPopup()">
@@ -94,6 +96,7 @@ import axios from "axios";
 
 const pathCreate = "/metas/create";
 const pathGet = "/metas/all";
+const pathUpdateDifficulty = "/metas/updateDificulties";
 
 export default {
   name: "SmallGoals",
@@ -107,7 +110,7 @@ export default {
       })
       .then((response) => {
         this.goals = response["data"];
-        console.log(this.$store.state.activeProject);
+        console.log(response);
       })
       .catch((response) => {
         alert("No es posible conectar con el backend en este momento");
@@ -120,10 +123,15 @@ export default {
       path: "",
       goals: [""],
       activeGoal: {
-        name: "",
-        description: "",
-        proyectId: this.proyectId,
-        state: 1,
+        //this is filled with the information of a goal when the user clicks the card of a goal
+        actividadID: 0,
+        descripcion: "",
+        dificultad: "",
+        estado: 1,
+        idProyecto: 0,
+        idSprint: 0,
+        metaID: 0,
+        nombre: "",
       },
 
       formGoal: {
@@ -155,6 +163,8 @@ export default {
 
     abrirGoalPopup: function(goal) {
       this.activeGoal = goal;
+      console.log(this.activeGoal);
+
       document.querySelector(".goal-popup").classList.add("active");
     },
     cerrarGoalPopup: function() {
@@ -162,8 +172,24 @@ export default {
     },
 
     saveDifficultyPopup: function() {
-      alert('Dificultad creada')
-
+      axios
+        .put(
+          this.$store.state.backURL + pathUpdateDifficulty,
+          {
+            dificultad: this.activeGoal.dificultad,
+          },
+          {
+            params: {
+              id: this.activeGoal.metaID,
+            },
+          }
+        )
+        .then((response) => {
+          alert("Dificultad añadida");
+        })
+        .catch((response) => {
+          alert("No es posible conectar con el backend en este momento");
+        });
     },
     crearMeta() {
       axios
