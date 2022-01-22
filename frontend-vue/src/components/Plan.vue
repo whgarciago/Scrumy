@@ -16,7 +16,7 @@
       <!--El siguiente for recorre todas las metas en metas[] y los trae como divs e imprime su nombre-->
         <div v-for="meta  in metas" :key="meta" class="metas">
           <h2>{{meta.nombre}}</h2>
-          {{SetAvance(meta.metaID)}}
+          {{avances.indexOf(meta)}}
         </div>
     </div>
     
@@ -64,6 +64,7 @@ export default {
   data () {
     return {
       proyectId: this.$store.state.activeProject,
+      key: 0,
       avance:0,//Avance del sprint
       sprint:{ //Sprint actual
         id:1,
@@ -72,7 +73,8 @@ export default {
         //valores de prueba
       ], 
       metas:[], //Arreglo con las metas del sprint seleccionado
-      //actividades:[],
+      actividades:[],
+      avances:[],
 
     }
   },
@@ -80,8 +82,8 @@ export default {
 
 
     SetAvance(idMeta){
-      var suma=0;
-      var actividades=[];
+      var suma=0; //Avance de la meta
+      //let actividades=[]; 
       let pathActividades = "/actividades/all";
       axios
       //Se cargan las actividades de la meta actual
@@ -91,21 +93,30 @@ export default {
         },
       })
       .then((response) => {
-        actividades = response["data"];
+        this.actividades = response["data"];
+        //console.log(actividades[0]);
       })
       .catch((response) => {
         alert("No es posible conectar con el backend en este momento (SetAvance)");
       });
       //return this.actividades;
       //Se calcula avance
-      var cantidad = 100/actividades.length;
-      for (let index = 0; index < actividades.length; index++) {
-        if(actividades[index].estado){
-          suma += cantidad;
-        }
+      var cantidad = 100/this.actividades.length;
+      //console.log(actividades[0]);
+      for (let index = 0; index < this.actividades.length; index++) {
+       if(this.actividades[index].estado){
+         suma += cantidad;
+       }
       }
-      console.log(suma);
-      return suma;
+      this.avances.push(suma);
+      //console.log(actividades);
+      // for (let actividad in actividades){
+      //     if(actividad.estado){
+      //     suma += cantidad;
+      // }
+      // console.log(actividades[actividad]);
+      // }
+      //console.log(suma);
       //suma=suma/this.metas.length; //Divide la suma en la cantidad de metas, para hacer un promedio
       //this.avance=suma.toFixed(2);//Modifica el avance con 2 digitos
       //document.getElementById("avance").style.setProperty('--largo',this.avance); //Actualiza la barra de progreso
@@ -129,12 +140,11 @@ export default {
     TraerMetasDelSprint(event){//Trae las metas del Sprint que se le pasa como atributo y las almacena en metas[]
     //console.log('Sprint ');
       for (let i = 0; i < this.sprints.length; i++) {//Función de ejemplo, recorre todos los sprints en sprints[]
-        console.log( 'Sprint ' + (i+1));
+        //console.log( 'Sprint ' + (i+1));
         if(event.target.value == 'Sprint ' + (i+1)  ){//Si la opción elegida coincide con el nombre de un sprint
           this.sprint.id = this.sprints[i].sprintID;  //Asigna el id de ese sprint a "sprint actual"
         }
       }
-
 
       //Traemos las metas del sprint
       let pathMetas = "/metas/findBySprint";
@@ -151,8 +161,10 @@ export default {
         alert("No es posible conectar con el backend en este momento");
       });
       //this.SetAvance();//Actualiza la barra con el avance del sprint seleccionado
+      for (let i = 0; i < this.metas.length; i++) {//Función de ejemplo, recorre todos los sprints en sprints[]
+          this.SetAvance(this.metas[i].metaID);
+        }
     }
-
 
   },
   mounted(){ //Al iniciar, ejecuta estos comandos
