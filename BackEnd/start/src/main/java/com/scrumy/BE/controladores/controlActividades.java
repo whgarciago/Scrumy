@@ -60,6 +60,20 @@ public class controlActividades {
         }
     }
 
+    @GetMapping("/actividades/findState")
+    public ResponseEntity<Boolean> getStateByActivity(@RequestParam int id){
+        try{
+            Optional <Actividades> foundActivity = RA.findByActividadID(id);
+            if(foundActivity.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            Actividades a = foundActivity.get();
+            return new ResponseEntity<>(a.getEstado(), HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/actividades/create")
     public ResponseEntity<Actividades> createActividad(@RequestBody Actividades a){
         try{
