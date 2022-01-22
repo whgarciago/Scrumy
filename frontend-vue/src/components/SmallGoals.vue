@@ -84,7 +84,7 @@ export default {
       })
       .then((response) => {
         this.goals = response["data"];
-        console.log(this.$store.state.activeProject);
+        //console.log(this.$store.state.activeProject);
       })
       .catch((response) => {
         alert("No es posible conectar con el backend en este momento");

@@ -33,6 +33,22 @@ public class controlMeta {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @GetMapping("/metas/findBySprint")
+    public ResponseEntity<List<Meta>> getAllMetaBySprint(@RequestParam int id){
+
+        try{
+            List<Meta> listaMeta = new ArrayList<Meta>();
+            RM.findByidSprint(id).forEach(listaMeta::add);
+            if(listaMeta.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(listaMeta, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @GetMapping("/metas/find")
     public ResponseEntity<Optional<Meta>> getMetasbyID(@RequestParam int id){

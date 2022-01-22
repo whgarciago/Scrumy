@@ -14,8 +14,9 @@
     <!--Div de las metas del sprint para ordenar -->
     <div id="Plan">
       <!--El siguiente for recorre todas las metas en metas[] y los trae como divs e imprime su nombre-->
-        <div v-for="meta in metas" :key="meta.id" class="metas">
+        <div v-for="meta  in metas" :key="meta" class="metas">
           <h2>{{meta.nombre}}</h2>
+          {{SetAvance(meta.metaID)}}
         </div>
     </div>
     
@@ -71,19 +72,43 @@ export default {
         //valores de prueba
       ], 
       metas:[], //Arreglo con las metas del sprint seleccionado
-
+      //actividades:[],
 
     }
   },
   methods:{
-    SetAvance(){
+
+
+    SetAvance(idMeta){
       var suma=0;
-      for (let i = 0; i < this.metas.length; i++) { //Función de ejemplo, se supone que suma el avance de cada meta
-        suma += this.metas[i].avance;
+      var actividades=[];
+      let pathActividades = "/actividades/all";
+      axios
+      //Se cargan las actividades de la meta actual
+      .get(this.$store.state.backURL + pathActividades, {
+        params: {
+          id: idMeta,
+        },
+      })
+      .then((response) => {
+        actividades = response["data"];
+      })
+      .catch((response) => {
+        alert("No es posible conectar con el backend en este momento (SetAvance)");
+      });
+      //return this.actividades;
+      //Se calcula avance
+      var cantidad = 100/actividades.length;
+      for (let index = 0; index < actividades.length; index++) {
+        if(actividades[index].estado){
+          suma += cantidad;
+        }
       }
-      suma=suma/this.metas.length; //Divide la suma en la cantidad de metas, para hacer un promedio
-      this.avance=suma.toFixed(2);//Modifica el avance con 2 digitos
-      document.getElementById("avance").style.setProperty('--largo',this.avance); //Actualiza la barra de progreso
+      console.log(suma);
+      return suma;
+      //suma=suma/this.metas.length; //Divide la suma en la cantidad de metas, para hacer un promedio
+      //this.avance=suma.toFixed(2);//Modifica el avance con 2 digitos
+      //document.getElementById("avance").style.setProperty('--largo',this.avance); //Actualiza la barra de progreso
     },
 
     TraerSprintsBackend(){//Trae los Sprints del Backend y los almacena en sprints[]
@@ -109,8 +134,22 @@ export default {
           this.sprint.id = this.sprints[i].sprintID;  //Asigna el id de ese sprint a "sprint actual"
         }
       }
-      //Valores de prueba
-     
+
+
+      //Traemos las metas del sprint
+      let pathMetas = "/metas/findBySprint";
+      axios
+      .get(this.$store.state.backURL + pathMetas, {
+        params: {
+          id: this.sprint.id,
+        },
+      })
+      .then((response) => {
+        this.metas = response["data"];
+      })
+      .catch((response) => {
+        alert("No es posible conectar con el backend en este momento");
+      });
       //this.SetAvance();//Actualiza la barra con el avance del sprint seleccionado
     }
 
