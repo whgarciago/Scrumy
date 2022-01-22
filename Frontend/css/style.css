@@ -169,7 +169,6 @@ html{
     width:10%;
     border-style: hidden;
     font-size: 18px;
-    
   }
   
   .formatoCambioSprint2{
@@ -206,6 +205,18 @@ html{
     color:#15a8e2;
   }
 
+  .opcionAgregarSprint{
+    width: 8%;
+    position: absolute;
+    top: 200px;
+    left: 80px;
+    font-size: 50px;
+    background-color:#ffffff;
+    border-radius: 20%;
+    border-style: solid;
+    color:#15a8e2;
+  }
+
   .opcionBasura{
     position: absolute;
     bottom: 8px;
@@ -218,6 +229,17 @@ html{
     height: 65px;
   }
 
+  .metaMod{
+    position: relative;
+    background-color:#15a8e2;
+    width:110%;
+    height: 10%;
+    right: 10px;
+    border-style: solid black;
+    font-size: 18px;
+  }
+
+
   #tituloActividad{
 
     background-color:#7ba3d1;
@@ -225,6 +247,25 @@ html{
     border-radius: 5%;
     width :40%;
  } 
+
+ #fechaLimiteSprint{
+  background-color:#7ba3d1;
+  border-style: hidden;
+  border-radius: 5%;
+  width :40%;
+} 
+
+.opcionAgregarSprint{
+  width: 8%;
+  position: absolute;
+  top: 200px;
+  left: 80px;
+  font-size: 50px;
+  background-color:#ffffff;
+  border-radius: 20%;
+  border-style: solid;
+  color:#15a8e2;
+}
 
   .botonCrear{
     color:black;
@@ -247,6 +288,37 @@ html{
     position: absolute;
     right: 15px;
     bottom: 10px;
+  }
+
+  .VentanaSprints{
+    border-style: solid black;
+    background-color: #ffffff;
+    position: absolute;
+    top: 20%;
+    left: 5%;  
+    right: 30%;
+    width: 15%;
+    height: 40%;
+    padding: 20px 30px;
+    
+  }
+  
+  #sprintArrow{
+    position: absolute;
+    left: 205px;
+    top:200px;
+    }
+  
+  .VentanaSprints h3{
+    text-align: center;
+  }
+
+  .metaLeft{
+    background-color:#15a8e2;
+    width:90px;
+    height: 40px;
+    border-style: solid black;
+    font-size: 18px;
   }
 /*Cambios hechos*/  
   

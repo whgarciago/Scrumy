@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/css_properties_reset.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./css/style.css" type="text/css">
+  <script src="https://unpkg.com/vue@next"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>Scrumy</title>
+</head>
+
+<body onload="loadApp()">
+  
+  <div class="topNavigationBar" id="myTopNavigationBar">
+    <a href="#home" class="logobutton"><img src="images/logo_scrumy.png" alt="Logo de pagina" class="logo"></a>
+    <div onload= "cargarProyectos()" class="projectstabcontainer" id="projectstab">
+      <button id="addproject" onclick="abrirPopup()" >
+        <i class="fa fa-plus-square addproject" aria-hidden="true"></i>
+      </button>
+    </div>
+    <a href="#home" class="userbutton">
+      <i class="fa fa-user-circle-o usericon" aria-hidden="true"></i>Usuario 1 Configuración
+    </a>
+
+    <a href="javascript:void(0);" class="icon" onclick="navbarResponse()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+  <div class="sidenav">
+    <a href="#">MP</a>
+    <a href="#">SP</a>
+    <a href="#">PI</a>
+    <a href="#">AC</a>
+  </div>
+
+  <div class="retroicon">
+    <i class="fa fa-book " aria-hidden="true"></i>Retro
+  </div>
+
+  <!--Página inicial Sprints Mockup 15-->
+  <form class="newpart" id="Actividades">
+    <h2> Sprints </h2>
+    <button class = "opcionAgregarSprint" type="button">+</button>
+
+  <!--Página inicial para agregar sprints Mockup 16-->
+  <div class="newpart1">
+    <h2 style="text-align:center">Nuevo Sprint</h2>
+    <div>
+      <label for="tituloSprint">Título:</label><br>
+      <input type="text" id="tituloSprint">
+    </div>
+    <div>
+      <label for="fechaLimiteSprint">Fecha límite: </label><br>
+      <input type="text" id="fechaLimiteSprint">
+    </div>
+    <button class="botonCrear">Crear</button>
+    <button class="botonCancelar">Cancelar</button>
+    </div>
+
+    <!--División de metas por sprint  Mockup 17-->
+    <form class="newpart" id="Sprints">
+        <h2> Sprints </h2>
+        <button class = "opcionAgregarSprint1" type="button">+</button>
+        <div class="VentanaSprints">
+          <h3>Sprint 1</h3>
+          <button class = "meta">Meta 1</button>
+          <button class = "meta">Meta 5</button>
+          <p>Fecha XX/XX/XXXX </P>
+        </div>
+        <button class = "metaLeft first">Meta 2</button>
+        <button class = "metaLeft second">Meta 3</button>
+        <button class = "metaLeft third">Meta 4</button>
+        <img id="sprintArrow"src="https://img.icons8.com/ios-glyphs/60/4a90e2/right--v1.png"/>
+
+    <!--Modificar Sprints mockup 18-->
+        <div class="VentanaSprints">
+        <h3>Sprint 1</h3>
+        <button class = "metaMod">Meta 1</button><br><br>
+        <button class = "metaMod">Meta 5</button>
+        <p id="fecha">Fecha XX/XX/XXXX </P>
+      </div>
+     <button class = "opcionBasura" type="button"><img src="https://img.icons8.com/glyph-neue/50/4a90e2/trash.png"/></button
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>
