@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/css_properties_reset.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./css/style.css" type="text/css">
+  <script src="https://unpkg.com/vue@next"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>Scrumy</title>
+</head>
+
+<body onload="loadApp()">
+  
+  <div class="topNavigationBar" id="myTopNavigationBar">
+    <a href="#home" class="logobutton"><img src="images/logo_scrumy.png" alt="Logo de pagina" class="logo"></a>
+    <div onload= "cargarProyectos()" class="projectstabcontainer" id="projectstab">
+      <button id="addproject" onclick="abrirPopup()" >
+        <i class="fa fa-plus-square addproject" aria-hidden="true"></i>
+      </button>
+    </div>
+    <a href="#home" class="userbutton">
+      <i class="fa fa-user-circle-o usericon" aria-hidden="true"></i>Usuario 1 Configuración
+    </a>
+
+    <a href="javascript:void(0);" class="icon" onclick="navbarResponse()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+  <div class="sidenav">
+    <a href="#">MP</a>
+    <a href="#">SP</a>
+    <a href="#">PI</a>
+    <a href="#">AC</a>
+  </div>
+
+  <div class="retroicon">
+    <i class="fa fa-book " aria-hidden="true"></i>Retro
+  </div>
+
+  <form class="newpart" id="Actividades">
+    <div class = "cambioSprint">
+      <button class ="formatoCambioSprint1"><img src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/10/ffffff/external-down-arrows-kmg-design-glyph-kmg-design.png"/></button>
+      <button class ="formatoCambioSprint2">Sprint 1</button>
+    </div>
+    <button class = "meta">Meta 1</button>
+    <button class = "meta">Meta 2</button>
+    <button class = "meta">Meta 3</button>
+    <button class = "meta">Meta 4</button>
+    <!-- Aún no se ve bien la imagen-->
+    <!--<img src="images/Flecha.jpeg"/>-->
+    <!--<img src="https://img.icons8.com/ios/200/ffffff/long-arrow-right.png"/><br><br>-->
+    <h2 style= "font-size: 25px; font-weight: bold;">Actividades</h2>
+    <div class= "cuadroActividad">
+      <input type="checkbox" name="done" id="actividadHecha">
+      <p>Nueva actividad 1</p>
+    </div>
+    
+    <button class = "opcionAgregar" type="button">+</button>
+    <button class = "opcionBasura" type="button"><img src="https://img.icons8.com/glyph-neue/50/4a90e2/trash.png"/></button
+
+
+      <!--Agregar una actividad-->
+      <div class="newpart1">
+        
+          <h2 style="text-align:center">Nueva Actividad</h2>
+          <div>
+            <label for="tituloActividad">Título:</label><br>
+            <input style="width = 40%" type="text" id="tituloActividad">
+          </div>
+          <div>
+            <label>Prerequisitos:</label><br>
+          </div>
+          <button class="botonCrear">Crear</button>
+          <button class="botonCancelar">Cancelar</button>
+      </div>
+
+      <!--Eliminar una actividad-->
+      <div class="newpart1">
+        <form  id="nuevaActividad">
+          <h2 style="text-align:center">Eliminar actividades</h2>
+          <div class = "cuadroActividadagregar">
+            <input type="checkbox" name="done" id="actividadHecha">
+            <p >Nueva actividad 1</p>
+          </div>
+          <div class = "cuadroActividadagregar">  
+            <input type="checkbox" name="done" id="actividadHecha">
+            <p>Nueva actividad 2</p>
+          </div>
+          <button class="botonCrear">Eliminar</button>
+          <button class="botonCancelar">Cancelar</button>
+      </div>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>
