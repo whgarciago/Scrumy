@@ -18,7 +18,7 @@ public class controlMeta {
     @Autowired
     repoMeta RM;
 
-
+    
     @GetMapping("/metas/all")
     public ResponseEntity<List<Meta>> getAllMetaByProject(@RequestParam int id){
 
