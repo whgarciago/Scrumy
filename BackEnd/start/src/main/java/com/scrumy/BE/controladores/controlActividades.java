@@ -20,10 +20,10 @@ public class controlActividades {
     repoActividades RA;
 
     @GetMapping("/actividades/all")
-    public ResponseEntity<List<Actividades>> getAllActivities(){
+    public ResponseEntity<List<Actividades>> getAllActivitiesByMeta(@RequestParam int id){
         try{
             List<Actividades> listaActividades = new ArrayList<Actividades>();
-            RA.findAll().forEach(listaActividades::add);
+            RA.findByidMeta(id).forEach(listaActividades::add);
             if(listaActividades.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
