@@ -22,17 +22,22 @@ public class Actividades {
     @Column(name = "IDMeta")
     private int idMeta;
 
+    @Column(name = "Estado")
+    private boolean estado;
+
     //Constructores
 
     public Actividades() {
     }
 
-    public Actividades(String dificultad, String nombre, String descripcion, int idMeta) {
-        this.dificultad = dificultad;
+    
+    public Actividades(String nombre, String descripcion, int idMeta) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.idMeta = idMeta;
+        this.estado = false;
     }
+
     
     //Getters y Setters
     public int getActividadID() {
@@ -74,6 +79,20 @@ public class Actividades {
     public void setIdMeta(int idMeta) {
         this.idMeta = idMeta;
     }
+
+
+    public boolean isEstado() {
+        return this.estado;
+    }
+
+    public boolean getEstado() {
+        return this.estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
 
     //metodo ToString
     @Override

@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface repoActividades extends JpaRepository<Actividades,Integer>{
     Optional<Actividades> findByActividadID(int ActividadID);
+
+    List<Actividades> findByidMeta(int idMeta);
 }
