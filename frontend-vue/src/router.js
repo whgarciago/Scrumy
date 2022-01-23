@@ -6,6 +6,7 @@ import Login from "./views/Login";
 import Home from "./views/Home";
 import SmallGoals from "@/components/SmallGoals";
 import UserInfo from "./views/UserInfo";
+import Plan from "@/components/Plan";
 
 Vue.use(Router);
 
@@ -40,6 +41,11 @@ export default new Router({
       name: "home",
       component: Home,
       children: [
+        {
+          path: "/Plan",
+          name: "Plan",
+          component: Plan,
+        },
         {
           path: "/smallgoals",
           name: "smallgoals",

@@ -10,8 +10,8 @@ import org.springframework.http.*;
 import org.springframework.beans.factory.annotation.*;
 
 //Inhabilitado por pruebas, habilitar para permitir conexiones IP
-@CrossOrigin(origins = "http://localhost:8081")
-//@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class controlActividades {
@@ -55,6 +55,20 @@ public class controlActividades {
             }
             Actividades a = foundActivity.get();
             return new ResponseEntity<>(a.getDificultad(), HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/actividades/findState")
+    public ResponseEntity<Boolean> getStateByActivity(@RequestParam int id){
+        try{
+            Optional <Actividades> foundActivity = RA.findByActividadID(id);
+            if(foundActivity.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            Actividades a = foundActivity.get();
+            return new ResponseEntity<>(a.getEstado(), HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
