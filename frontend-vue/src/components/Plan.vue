@@ -3,26 +3,28 @@
 
     <!--Div del Titulo y el selector de sprints -->
     <div id="Sprints"> 
-        <h1>Plan de Organización</h1>
-        <select name="menu" id="menu" @change="TraerMetasDelSprint($event)" v-model="key"> <!--Selector de sprints -->
-          <!--El siguiente for recorre todos los sprints en sprints[], los trae como opciones del selector y muestra su nombre-->
-          //<option v-for="spr in sprints" :key="spr.sprintID">Sprint {{sprints.indexOf(spr) +1 }}</option>
-
-        </select>
+        <h1>Avance </h1>
     </div>
+    <h5 id= "escoge">Escoge el sprint</h5>
+    <select name="menu" id="menu" @change="TraerMetasDelSprint($event)" v-model="key"> <!--Selector de sprints -->s
+          <!--El siguiente for recorre todos los sprints en sprints[], los trae como opciones del selector y muestra su nombre-->
+          <option v-for="spr in sprints" :key="spr.sprintID"  selected="selected" >Sprint {{sprints.indexOf(spr) +1 }}</option>
+          {{ActualizarBarra()}}
+        </select>
 
     <!--Div de las metas del sprint para ordenar -->
     <div id="Plan">
       <!--El siguiente for recorre todas las metas en metas[] y los trae como divs e imprime su nombre-->
-        <div v-for="meta in metas" :key="meta.id" class="metas">
+        <div v-for="meta   in metas" :key="meta.id" class="metas"> 
           <h2>{{meta.nombre}}</h2>
+          <div>
+            
+          </div>
         </div>
     </div>
-    
 
     <!--Div de la barra de progreso del sprint -->
     <div id="BarraProgreso">
-          {{sprint.id}}
       <h3>Tu avance en el Sprint es: </h3>
       <div id="barra"><!--Div que es literalmente la barra de progreso -->
         <div id="avance"><!--Div que es el avance dentro de la barra -->
@@ -63,6 +65,7 @@ export default {
   data () {
     return {
       proyectId: this.$store.state.activeProject,
+      key: 0,
       avance:0,//Avance del sprint
       sprint:{ //Sprint actual
         id:1,
@@ -71,19 +74,37 @@ export default {
         //valores de prueba
       ], 
       metas:[], //Arreglo con las metas del sprint seleccionado
-
+      actividades:[],
+      avances:[],
 
     }
   },
   methods:{
-    SetAvance(){
-      var suma=0;
-      for (let i = 0; i < this.metas.length; i++) { //Función de ejemplo, se supone que suma el avance de cada meta
-        suma += this.metas[i].avance;
-      }
-      suma=suma/this.metas.length; //Divide la suma en la cantidad de metas, para hacer un promedio
-      this.avance=suma.toFixed(2);//Modifica el avance con 2 digitos
-      document.getElementById("avance").style.setProperty('--largo',this.avance); //Actualiza la barra de progreso
+    SetAvance(idMeta){
+      var suma=0; //Avance de la meta
+      //let actividades=[]; 
+      let pathActividades = "/actividades/all";
+      axios
+      //Se cargan las actividades de la meta actual
+      .get(this.$store.state.backURL + pathActividades, {
+        params: {
+          id: idMeta,
+        },
+      })
+      .then((response) => {
+        this.actividades = response["data"];
+        var cantidad = 100/this.actividades.length;
+        for (let index = 0; index < this.actividades.length; index++) {
+          if(this.actividades[index].estado){
+            suma += cantidad;
+          }
+        }
+      this.avances.push(suma);
+      })
+      .catch((response) => {
+        alert("No es posible conectar con el backend en este momento (SetAvance)");
+      });
+      //console.log('Se ejecuto SEt avance');+
     },
 
     TraerSprintsBackend(){//Trae los Sprints del Backend y los almacena en sprints[]
@@ -101,19 +122,61 @@ export default {
         });
 
     },
-    TraerMetasDelSprint(event){//Trae las metas del Sprint que se le pasa como atributo y las almacena en metas[]
-    //console.log('Sprint ');
+    TraerMetasDelSprint(event){ //Trae las metas del Sprint que se le pasa como atributo y las almacena en metas[]
+      this.avances = [];
+      this.avance = 0;
+      document.getElementById("avance").style.setProperty('--largo',this.avance); //Actualiza la barra de progreso
       for (let i = 0; i < this.sprints.length; i++) {//Función de ejemplo, recorre todos los sprints en sprints[]
-        console.log( 'Sprint ' + (i+1));
+        //console.log( 'Sprint ' + (i+1));
         if(event.target.value == 'Sprint ' + (i+1)  ){//Si la opción elegida coincide con el nombre de un sprint
           this.sprint.id = this.sprints[i].sprintID;  //Asigna el id de ese sprint a "sprint actual"
         }
       }
-      //Valores de prueba
-     
-      //this.SetAvance();//Actualiza la barra con el avance del sprint seleccionado
-    }
 
+      //Traemos las metas del sprint
+      let pathMetas = "/metas/findBySprint";
+      axios
+      .get(this.$store.state.backURL + pathMetas, {
+        params: {
+          id: this.sprint.id,
+        },
+      })
+      .then((response) => {
+        this.metas = response["data"];
+        //console.log(this.metas.length);
+        for (let i = 0; i < this.metas.length; i++) {//Función de ejemplo, recorre todos los sprints en sprints[]
+          this.SetAvance(this.metas[i].metaID);
+        }
+
+      })
+      .catch((response) => {
+        alert("No es posible conectar con el backend en este momento");
+      });
+      //this.SetAvance();//Actualiza la barra con el avance del sprint seleccionado
+    },
+    ActualizarBarra() {
+      if(this.avances.length != 0){
+      var sum = 0;
+      var avanceMeta = document.getElementById("Plan").childNodes;
+
+        //console.log(this.avances.length);
+        for (let index = 0; index < this.avances.length; index++) {
+          sum += this.avances[index];
+          var primerHijo = avanceMeta[index].firstChild;
+          var segundoHijo = primerHijo.nextSibling;
+          if(this.avances[index]!=0){
+            segundoHijo.innerHTML = this.avances[index] + '%';
+          }
+          segundoHijo.style.setProperty('--variable',this.avances[index]); 
+        }
+      //Barras individuales
+
+      //Actualizamos barra sprint
+      sum= sum/this.avances.length; //Divide la suma en la cantidad de metas, para hacer un promedio
+      this.avance= sum.toFixed(2);//Modifica el avance con 2 digitos
+      document.getElementById("avance").style.setProperty('--largo',this.avance); //Actualiza la barra de progreso
+      }
+    }
 
   },
   mounted(){ //Al iniciar, ejecuta estos comandos
@@ -140,19 +203,26 @@ html,body{
 #Sprints{
   height: 15%;
   text-align: left;
-  padding: 20px;
+  padding: 15px;
   color: white;
 }
 #Sprints h1{display: inline;  color: white;} 
-#menu{
-  float: right;
-  width: 25%;
-  height: 75%;
+#menu {
+  position :absolute;
+  top :13%;
+  right: 6%;
+  width: 12%;
+  height: 5%;
   border-radius: 20px;
-  font-size: 20px;
-  
+  font-size: 15px;
 }
-
+#escoge {
+  display: inline;  
+  color: white;
+  position :absolute;
+  top :7%;
+  right: 2%;
+  }
 #Plan{
   height: 60%;
   text-align: center;
@@ -163,18 +233,30 @@ html,body{
   align-items: center;
 }
 .metas{
-  background-color: white;
+  border-width: 1px;
+  border-color: white;
+  border-style: solid;
+  overflow: hidden;
   color: #163350;
-  font-size: 30px;
+  font-size: 15px;
   --dim:15;
-  width: calc(var(--dim)*1%);
+  width: calc(var(--dim)*2%);
   height: calc(var(--dim)*2%);
   text-align: center;
   top: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
+  border-radius: 6px;
+
+}
+.metas div {
+  --variable:0;
+  background-color: rgb(50, 205, 159);
+  height: 100%;
+  width: calc(var(--variable)*1%);
+  border-radius: 3px;
+}
+.metas h2{
+  color: rgb(255, 255, 255);
+  font-size: 25px;
 }
 
 
