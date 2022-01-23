@@ -260,7 +260,7 @@
         var fec=document.getElementById("fecha");
         fec.innerHTML="La fecha de culminación es "+ this.proyectoActual.fechaFin;
         this.$router.push({ name: "home" });
-        console.log("carac ejecutada");
+        //console.log("carac ejecutada");
       },
     //Obtiene los proyectos del Backend para mostrarlos en los botones
     async obtenerProyectosDeBackend() {
