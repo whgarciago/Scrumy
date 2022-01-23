@@ -19,7 +19,7 @@
         </button>
       </div>
       <!--Nombre de usuario y configuración-->
-      <a href="#home" class="userbutton">
+      <a @click="goToSettings()"  class="userbutton">
         <b id="neg">{{usuarioNombre}}</b>    Configuración
       </a>
       
@@ -290,13 +290,18 @@
         }
         console.log(error.config);
       }
-    }
+    },
+    
+    goToSettings(){
+      this.$router.push({ name: "settings" });
+    },
 
     },
     //Carga los proyectos del backend apenas inicia la pagina
     mounted(){
       this.obtenerProyectosDeBackend();
     }
+
   }
 
 </script>

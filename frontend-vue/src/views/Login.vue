@@ -39,42 +39,7 @@
           },
           showSignUpForm(){
             this.$router.push({ name: 'signupform'} )
-          },
-            login( event ){
-                axios
-                .post( this.$store.state.backURL + path, // URL
-                    { }, // Body
-                    {
-                        headers: {
-                          'Content-Type': 'application/json'
-                        },
-                        params: {
-                            username: this.username,
-                            password: this.password,
-                            grant_type: 'password'
-                        },
-                        auth: {
-                            username: "soft-eng-ii",
-                            password: "secret",
-                        }
-                    }
-                ).then( response => {
-                    if( response.status !== 200 ){
-                        alert( "Error en la autenticación" );
-                    }else{
-                        setAuthenticationToken( response.data.access_token );
-                        this.$router.push( {name: 'home'} );
-                    }
-                } ).catch( error => {
-                    if( error.response.status === 400 ){
-                      alert( "Credenciales incorrectas" );
-                    }else{
-                      alert( "¡Parece que hubo un error de comunicación con el servidor!" );
-                    }
-                } );
-
-                event.preventDefault();
-            }
+          }
         }
     }
 </script>
