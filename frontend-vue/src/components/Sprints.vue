@@ -5,7 +5,11 @@
     >
       <h2>Sprints</h2>
 
-      <button class=" ml-auto add" @click="openCreateSprintPopup()">
+      <button
+        v-if="sprints.length < 10"
+        class=" ml-auto add"
+        @click="openCreateSprintPopup()"
+      >
         <img src="../assets/addbutton.png" />
       </button>
     </div>
@@ -13,55 +17,58 @@
     <div class="d-flex flex-row col-12 h-75 m-0 p-0 justify-content-center">
       <!-- Lista de sprints lateral izquierdo-->
       <div
-        class=" row col-8  overflow-auto align-items-center justify-content-center"
+        class=" column col-8  overflow-auto align-items-center justify-content-center"
       >
-        <div
+        <button
+          class="btn btn-primary mb-2 mx-1"
           v-for="(sprint, index) in sprints"
           :sprint="sprint"
           :key="sprint.id"
+          @click="selectSprint(sprint, index + 1)"
         >
+          Sprint {{ index + 1 }}
+        </button>
+        <div class="d-flex align-items-center justify-content-center">
           <div
-            class="card bg-light mb-3 h-"
-            @click="openSprintInfoPopup()"
+            v-if="actualSprint.index > 0"
+            class="card bg-light mb-3 "
             style="max-width: 18rem;"
           >
-            <div class="card-header">Sprint {{ index + 1 }}</div>
+            <div class="card-header">Sprint {{ actualSprint.index }}</div>
             <div class="card-body">
               <h5 class="card-title">Metas del Sprint</h5>
-              <p class="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
+              <p
+                v-for="(goal, index) in currentGoals"
+                :goal="goal"
+                :key="goal.MetaID"
+              >
+                {{ index + 1 }}. {{ goal.nombre }}
               </p>
             </div>
-            <div class="card-footer">
-              Del {{ sprint.fechaInicio }} al {{ sprint.fechaFinalizacion }}
-            </div>
+            <div class="card-footer"></div>
           </div>
         </div>
       </div>
 
       <!-- Lista de metas lateral derecho-->
-      <div class="col-4 scroll ml-3  ">
-        {{this.seleccion}}
+      <div class="col-4 scroll ml-3">
+        <div class="container goals-list">Metas existentes</div>
+        <br />
         <div v-for="goal in goals" :goal="goal" :key="goal.id">
-          <div class="container goals-list" @click="selectGoal(goal)">
+          <button
+            class="btn goals-list col-12 p-0 m-0"
+            @click="updateGoalSprint(goal)"
+          >
             {{ goal.nombre }}
-
-            <select v-model="seleccion" class="float-right bl-1" name="select"  >
-              <option
-                v-for="(sprintLocal, index2) in sprints"
-                :sprintLocal="sprintLocal"
-                :key="sprintLocal.id"
-                :value="sprintLocal.sprintID">{{sprintLocal.sprintID}}
-              > {{index2+1}} </option>
-            </select>
-          </div>
+          </button>
         </div>
-        <button @click="updateGoalSprint()"> gagaga</button>
       </div>
     </div>
 
-    <div class="col-12 h-15 d-inline-block text-right"></div>
+    <div class="col-12 h-15 d-inline-block text-right">
+      Selecciona una meta para agregarla al sprint actual
+      <button @click="getCurrentDate()">Pruebas</button>
+    </div>
 
     <div class="create-sprint-popup">
       <form
@@ -72,11 +79,12 @@
         <h3>Nuevo Sprint</h3>
 
         <label for="sprintStartDate">Fecha de Inicio</label>
+        <datepicker :disabled-dates="state.disabledDates"></datepicker>
         <input
           type="date"
           id="sprintStartDate"
           v-model="sprintCreateForm.startDate"
-          min="2022-01-25"
+          :min="[[actualDate]]"
         /><br />
         <label for="sprintDeadline">Fecha de culminación</label>
         <input
@@ -98,41 +106,62 @@
       </form>
     </div>
     <div class="col-12 h-15 d-inline-block text-right"></div>
-
-    <div class="sprint-info-popup">
-      <form
-        class="form"
-        id="formularioProyecto"
-        @submit.prevent="createSprint()"
-      >
-        <button
-          class="cancelarCrearMeta"
-          type="button"
-          @click="closeSprintInfoPopup()"
-        >
-          Cancelar
-        </button>
-      </form>
-    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Datepicker from "vuejs-datepicker";
+
 const pathGetSprints = "/sprints/all";
 const pathCreateSprint = "/sprints/create";
 const pathGetGoals = "/metas/all";
 const pathUpdateGoalSprint = "/metas/update/sprint";
+const pathGetGoalsBySprintId = "/metas/findBySprint";
 
 export default {
   name: "sprints",
+  components: {
+    Datepicker,
+  },
 
   data() {
     return {
+      state: {
+        disabledDates: {
+          to: new Date(2022, 0, 24), // Disable all dates up to specific date
+          dates: [
+            // Disable an array of dates
+            new Date(2016, 9, 16),
+          ],
+          ranges: [
+            {
+              // Disable dates in given ranges (exclusive).
+              from: new Date(2016, 11, 25),
+              to: new Date(2016, 11, 30),
+            },
+            {
+              from: new Date(2017, 1, 12),
+              to: new Date(2017, 2, 25),
+            },
+          ],
+        },
+      },
       proyectId: this.$store.state.activeProject,
       sprints: [],
+      actualDate: "",
+      goalsBySprint: [],
+      currentGoals: [],
+      actualSprint: {
+        index: 0,
+        sprintID: 0,
+        startDate: "",
+        deadLine: "",
+        proyectId: "",
+        goals: [],
+      },
       sprintsLength: 0,
-      selectedGoalId:0,
+      selectedGoalId: 0,
       goals: [],
       seleccion: 0,
       sprintCreateForm: {
@@ -145,14 +174,17 @@ export default {
   created() {
     this.loadGoals();
     this.getSprints();
+    this.getCurrentDate();
   },
 
   methods: {
-
-    selectGoal(goal){
-      this.selectedGoalId=goal.metaID
-      console.log('meta '+ this.selectedGoalId);
-      console.log('sprint '+this.seleccion);
+    selectGoal(goal) {
+      this.selectedGoalId = goal.metaID;
+    },
+    selectSprint(sprint, index) {
+      this.actualSprint = sprint;
+      this.actualSprint.index = index;
+      this.getGoalsBySprintId(this.actualSprint.sprintID);
     },
     createSprint() {
       axios
@@ -180,7 +212,6 @@ export default {
         })
         .then((response) => {
           this.sprints = response["data"];
-          console.log(this.sprints);
         })
         .catch((response) => {
           alert("No es posible conectar con el backend en este momento");
@@ -202,23 +233,51 @@ export default {
         });
     },
 
-    updateGoalSprint() {
+    updateGoalSprint(goal) {
+      this.selectGoal(goal);
       axios
         .put(
-          this.$store.state.backURL + pathUpdateGoalSprint
-          //this.$store.state.backURL + pathUpdateGoalSprint + "?id=" + 317 
-          //+'&sprintID='+312
-          ,{},
+          this.$store.state.backURL + pathUpdateGoalSprint,
+          {},
           {
             params: {
-               id: 315,
-               sprintID:312,
-              // id: this.selectedGoalId,
-              // sprintID: this.seleccion
+              id: this.selectedGoalId,
+              sprintID: 323,
             },
           }
         )
-        .then((response) => {})
+        .then((response) => {
+          this.getGoalsBySprintId(this.actualSprint.sprintID);
+        })
+        .catch((response) => {
+          alert("No es posible conectar con el backend en este momento");
+        });
+    },
+
+    getCurrentDate() {
+      const dateObj = new Date();
+      const currentDate =
+        dateObj.getFullYear() +
+        "-" +
+        dateObj.getMonth() +
+        "-" +
+        dateObj.getDate();
+
+      this.actualDate = currentDate;
+      console.log(currentDate);
+    },
+
+    getGoalsBySprintId(sprintId) {
+      axios
+        .get(this.$store.state.backURL + pathGetGoalsBySprintId, {
+          params: {
+            id: sprintId,
+          },
+        })
+        .then((response) => {
+          this.currentGoals = response["data"];
+          console.log(this.currentGoals);
+        })
         .catch((response) => {
           alert("No es posible conectar con el backend en este momento");
         });
@@ -293,7 +352,7 @@ h3 {
   color: rgb(21, 73, 198, 0.6);
   display: block;
   background: #fff;
-  top: -10%;
+  top: -30%;
   left: 50%;
   opacity: 1;
   transform: translate(-50%, 50%) scale(1);
