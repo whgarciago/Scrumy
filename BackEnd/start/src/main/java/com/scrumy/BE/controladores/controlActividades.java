@@ -10,8 +10,8 @@ import org.springframework.http.*;
 import org.springframework.beans.factory.annotation.*;
 
 //Inhabilitado por pruebas, habilitar para permitir conexiones IP
-@CrossOrigin(origins = "http://localhost:8081")
-//@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class controlActividades {
@@ -126,14 +126,4 @@ public class controlActividades {
         }
     }
 
-
-    @DeleteMapping("/actividades/delete/all")
-    public ResponseEntity<HttpStatus> deleteAllActividades(){
-        try{
-            RA.deleteAll();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

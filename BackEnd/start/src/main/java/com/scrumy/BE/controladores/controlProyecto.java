@@ -94,14 +94,5 @@ public class controlProyecto {
         }
     }
 
-    @DeleteMapping("/proyectos/delete/all")
-    public ResponseEntity<HttpStatus> deleteAllProyectos(){
-        try{
-            RP.deleteAll();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }
 

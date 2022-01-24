@@ -10,8 +10,8 @@ import org.springframework.http.*;
 import org.springframework.beans.factory.annotation.*;
 
 //removido para poder acceder localmente desde cualquier ip
-@CrossOrigin(origins = "http://localhost:8081")
-//@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class controlSprints {
@@ -21,7 +21,7 @@ public class controlSprints {
 
 
     @GetMapping("/sprints/all")
-    public ResponseEntity<List<Sprints>> getAllSprintsbyIdUsuario (@RequestParam int id){
+    public ResponseEntity<List<Sprints>> getAllSprintsByProyectoID (@RequestParam int id){
         try{
             List<Sprints> listaSprints = new ArrayList<Sprints>();
             RS.findByidProyecto(id).forEach(listaSprints::add);
@@ -85,13 +85,4 @@ public class controlSprints {
         }
     }
 
-    @DeleteMapping("/sprints/delete/all")
-    public ResponseEntity<HttpStatus> deleteAllProyectos(){
-        try{
-            RS.deleteAll();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

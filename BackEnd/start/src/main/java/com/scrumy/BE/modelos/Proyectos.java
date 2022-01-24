@@ -11,23 +11,23 @@ public class Proyectos {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int proyectoID;
 
-    @Column(name = "Nombre")
+    @Column(name = "Nombre",nullable = false)
     private String nombre;
 
-    @Column(name = "Usuario")
+    @Column(name = "Usuario",nullable = false)
     private int idUsuarios;
 
-    @Column(name = "Motivacion")
+    @Column(name = "Motivacion",nullable = false)
     private String motivacion;
 
     //Tenemos que volverlo arreglo
-    @Column(name = "Meta")
-    private int idMeta; 
+    //@Column(name = "Meta")
+    //private int idMeta; 
 
     @Column(name = "Descripcion")
     private String descripcion;
 
-    @Column(name = "FechaFin")
+    @Column(name = "FechaFin",nullable = false)
     private Date fechaFin;
 
     //Constructores
@@ -75,13 +75,13 @@ public class Proyectos {
         this.motivacion = motivacion;
     }
 
-    public int getIdMeta() {
+    /*public int getIdMeta() {
         return this.idMeta;
     }
 
     public void setIdMeta(int idMeta) {
         this.idMeta = idMeta;
-    }
+    }*/
 
     public String getDescripcion() {
         return this.descripcion;
@@ -106,7 +106,7 @@ public class Proyectos {
             ", nombre='" + getNombre() + "'" +
             ", idUsuarios='" + getIdUsuarios() + "'" +
             ", motivacion='" + getMotivacion() + "'" +
-            ", idUMeta='" + getIdMeta() + "'" +
+            //", idUMeta='" + getIdMeta() + "'" +
             ", descripcion='" + getDescripcion() + "'" +
             ", fechaFin='" + getFechaFin() + "'" +
             "}";

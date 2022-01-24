@@ -10,19 +10,19 @@ public class Actividades {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int actividadID;
 
-    @Column(name = "Dificultad")
+    @Column(name = "Dificultad",nullable = false)
     private String dificultad;
 
-    @Column(name = "Nombre")
+    @Column(name = "Nombre",nullable = false)
     private String nombre;
 
     @Column(name = "Descripcion")
     private String descripcion;
 
-    @Column(name = "IDMeta")
+    @Column(name = "IDMeta",nullable = false)
     private int idMeta;
 
-    @Column(name = "Estado")
+    @Column(name = "Estado",nullable = false)
     private boolean estado;
 
     //Constructores
