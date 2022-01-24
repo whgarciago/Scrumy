@@ -21,7 +21,7 @@ public class controlSprints {
 
 
     @GetMapping("/sprints/all")
-    public ResponseEntity<List<Sprints>> getAllSprintsByProyectoID (@RequestParam int id){
+    public ResponseEntity<List<Sprints>> getAllSprintsbyProyectoID (@RequestParam int id){
         try{
             List<Sprints> listaSprints = new ArrayList<Sprints>();
             RS.findByidProyecto(id).forEach(listaSprints::add);
