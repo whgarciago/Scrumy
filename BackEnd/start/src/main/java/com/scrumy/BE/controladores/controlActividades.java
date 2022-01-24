@@ -46,6 +46,41 @@ public class controlActividades {
         }
     }
 
+    @GetMapping("/actividades/findMeta")
+    public ResponseEntity<List<Actividades>> getActivitiesByMetaID(@RequestParam int id){
+        try{
+            List <Actividades> foundActivity = RA.findByidMeta(id);
+            if(foundActivity.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(foundActivity, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/metas/avanceMeta")
+    public Double avanceByMetaID(@RequestParam int id){
+        try{
+            List <Actividades> foundActivity = RA.findByidMeta(id);
+            if(foundActivity.isEmpty()){
+                return 0.0;
+            }
+            double actCompletas = 0.0;
+            for(int i = 0; i<foundActivity.size();i++){
+                if(foundActivity.get(i).getEstado() == true){
+                    actCompletas = actCompletas + 1.0;
+                }else{
+                    continue;
+                }
+            }
+            double d = Double.valueOf(foundActivity.size());
+            return (actCompletas/d)*100.0;
+        }catch(Exception e){
+            return -1.0;
+        }
+    }
+
     @GetMapping("/actividades/findDificulty")
     public ResponseEntity<String> getDificultyByActivity(@RequestParam int id){
         try{
@@ -63,7 +98,7 @@ public class controlActividades {
     @PostMapping("/actividades/create")
     public ResponseEntity<Actividades> createActividad(@RequestBody Actividades a){
         try{
-            Actividades tdb = RA.save(new Actividades(a.getNombre(), a.getDescripcion(), a.getIdMeta()));
+            Actividades tdb = RA.save(new Actividades(a.getDificultad(),a.getNombre(),a.getDescripcion(),a.getIdMeta(),a.getEstado()));
             return new ResponseEntity<>(tdb, HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -89,6 +124,8 @@ public class controlActividades {
             a.setDescripcion(updActividad.getDescripcion());
             a.setIdMeta(updActividad.getIdMeta());
             a.setNombre(updActividad.getNombre());
+            a.setDificultad(updActividad.getDificultad());
+            a.setEstado(updActividad.getEstado());
             
 
             return new ResponseEntity<>(RA.save(a), HttpStatus.OK);

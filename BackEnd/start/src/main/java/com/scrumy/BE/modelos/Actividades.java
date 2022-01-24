@@ -38,6 +38,16 @@ public class Actividades {
         this.estado = false;
     }
 
+
+    public Actividades(String dificultad, String nombre, String descripcion, int idMeta, boolean estado) {
+        this.dificultad = dificultad;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.idMeta = idMeta;
+        this.estado = estado;
+    }
+
+
     
     //Getters y Setters
     public int getActividadID() {
