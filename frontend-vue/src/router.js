@@ -4,7 +4,10 @@ import LoginForm from '@/components/LoginForm';
 import SignUpForm from '@/components/SignUpForm';
 import Login from "./views/Login";
 import Home from "./views/Home";
-import SmallGoals from "@/components/SmallGoals"
+import SmallGoals from "@/components/SmallGoals";
+import UserInfo from "./views/UserInfo";
+import Plan from "@/components/Plan";
+import Activities from "@/components/Activities";
 
 Vue.use(Router);
 
@@ -39,6 +42,11 @@ export default new Router({
       name: "home",
       component: Home,
       children:[
+        {
+          path: "/Activities",
+          name: "Activities",
+          component: Activities,
+        },
         {
           path: "/smallgoals",
           name: "smallgoals",
