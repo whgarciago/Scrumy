@@ -203,17 +203,18 @@ export default {
     },
 
     updateGoalSprint() {
-      console.log('Penis');
       axios
         .put(
-          this.$store.state.backURL + pathUpdateGoalSprint,
-          {
-            //idSprint: this.seleccion,
-            idSprint: 312,
-          },
+          this.$store.state.backURL + pathUpdateGoalSprint
+          //this.$store.state.backURL + pathUpdateGoalSprint + "?id=" + 317 
+          //+'&sprintID='+312
+          ,{},
           {
             params: {
-              id: this.selectedGoalId
+               id: 315,
+               sprintID:312,
+              // id: this.selectedGoalId,
+              // sprintID: this.seleccion
             },
           }
         )
