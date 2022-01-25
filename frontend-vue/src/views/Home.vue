@@ -50,7 +50,7 @@
           <input type="text" id="motivacionProyecto" placeholder="Motivación" v-model="proyecto.motivacion">
           <input type="text" class="descripcion" id="descripcionproyecto" placeholder="Descripción" v-model="proyecto.descripcion"><br>
           <label for="fecha-culminación">Fecha de culminación</label>
-          <input type="date" id="fechaculminacionProyecto" v-model="proyecto.fechaFin"><br>
+          <input type="date" id="fechaculminacionProyecto" min="2022-01-25" v-model="proyecto.fechaFin"><br>
           <button class="CrearProyecto" @click="CrearProyecto(usuarioID)" >Crear</button>
           <button class="cancelarCrearProyecto" @click="cerrarPopup()">Cancelar</button>
       </form>
@@ -95,9 +95,9 @@
         //minis es un "arreglo" con los logos de los 4 botones
         minis:[require('../assets/mp.png'),require('../assets/sp.png'),require('../assets/pl.png'),require('../assets/ac.png')],
         //nombres es un arreglo con los nombres de los 4 botones
-        nombres:['Metas pequeñas','Sprints','Plan','Actividades'],
+        nombres:['Metas','Sprints','Plan','Actividades'],
         //ref es el arreglo que relaciona los botones con sus componentes
-        ref:['smallgoals','#','Plan','#'],
+        ref:['smallgoals','sprints','Plan','#'],
         //mesidenav es falso cuando el mouse no esta encima de los botones
         mesidenav:false,
         //proyecto es el objeto base para manejar, se llena en el Popup de crear nuevo proyecto

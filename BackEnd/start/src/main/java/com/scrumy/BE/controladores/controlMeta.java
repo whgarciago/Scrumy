@@ -118,7 +118,7 @@ public class controlMeta {
     }
 
     @PutMapping("/metas/update/sprint")
-    public ResponseEntity<Meta> updateMetaSprint(@RequestParam int id, int sprintID){
+    public ResponseEntity<Meta> updateMetaSprint(@RequestParam int id,@RequestParam int sprintID){
         Optional<Meta> metadata = RM.findById(id);
 
         if(metadata.isPresent()){

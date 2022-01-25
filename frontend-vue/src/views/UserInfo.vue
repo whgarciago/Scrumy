@@ -50,7 +50,7 @@
 
         <div class="form-group col-12">
           <label class="custom-label col-md-3 display" for="password"
-            >Contrase&ntilde;a</label
+            >Nueva Contrase&ntilde;a</label
           >
           <input
             id="password"
@@ -62,23 +62,8 @@
           />
         </div>
 
-        <div class="form-group col-12">
-          <label class="custom-label col-md-3 display" for="cPassword"
-            >Confirmar Contrase&ntilde;a</label
-          >
-          <input
-            id="cPassword"
-            class="form-control col-12 col-sm-10 col-md-7 offset-sm-1"
-            type="password"
-            placeholder="Confirmar Contraseña"
-            v-model="cPassword"
-            required
-            :class="{
-              'is-invalid': cPassword !== '' && cPassword !== password,
-              'is-valid': cPassword !== '' && cPassword === password,
-            }"
-          />
-        </div>
+
+ 
 
         <div class="col-12 col-sm-5 col-md-4 mb-3">
           <button

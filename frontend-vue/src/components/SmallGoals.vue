@@ -5,18 +5,20 @@
     </div>
     <div class="row col-12 h-75 justify-content-center pl-5 overflow-auto">
       <div
-        v-for="(goal, index) in goals"
+        v-for="goal in goals"
         :goal="goal"
         :indice="goal.index"
         :key="goal.id"
       >
-        <div class="card text-center" style="width: 18rem">
-          <div class="card-body" @click="abrirGoalPopup(goal)">
-            <h3 class="card-subtitle mb-2 ">
-              {{ index + 1 }}. {{ goal.nombre }}
-            </h3>
+        <div class="card bg-light mb-3" @click="abrirGoalPopup(goal)" style="width: 18rem;">
+          <div class="card-header">{{goal.nombre}}</div>
+          <div class="card-body">
+            <p class="card-text">{{goal.descripcion}}
+            </p>
           </div>
         </div>
+
+      
       </div>
     </div>
     <div class="col-12 h-15 d-inline-block text-right">
@@ -65,7 +67,7 @@
       <h4>Descripción: {{ activeGoal.descripcion }}</h4>
       <h5 v-if="activeGoal.dificultad != null">
         Dificultad: {{ activeGoal.dificultad }}
-      </h5>      
+      </h5>
       <button class="difficulties-button" @click="openDifficultyPopup()">
         Dificultad
       </button>
@@ -83,7 +85,7 @@
         name="textDescription"
         id="goalDescription"
         class="  w-100 goalDescription"
-        :placeholder=[[activeGoal.dificultad]]
+        :placeholder="[[activeGoal.dificultad]]"
         cols="30"
         rows="3"
         v-model="activeGoal.dificultad"
@@ -96,8 +98,8 @@
         Cancelar
       </button>
       <button class="delete-goal-button" @click="deleteDifficulty()">
-          <img src="https://img.icons8.com/material/32/000000/delete--v1.png" />
-        </button>
+        <img src="https://img.icons8.com/material/32/000000/delete--v1.png" />
+      </button>
     </div>
 
     <div class="update-goal-popup">
@@ -129,7 +131,11 @@
         <button class="crearMeta" type="submit" @click="editGoalInBackend()">
           Guardar
         </button>
-        <button class="cancelarCrearMeta" type="button" @click="closeEditGoalPopup()">
+        <button
+          class="cancelarCrearMeta"
+          type="button"
+          @click="closeEditGoalPopup()"
+        >
           Cancelar
         </button>
         <button class="delete-goal-button" @click="deleteGoal()">
@@ -231,7 +237,7 @@ export default {
             descripcion: this.editGoal.description,
             estado: this.formGoal.state,
             idProyecto: this.$store.state.activeProject,
-            idSprint: 1,
+            idSprint: 0,
           },
           {
             params: {
@@ -263,7 +269,7 @@ export default {
           alert("No es posible conectar con el backend en este momento");
         });
     },
-    deleteDifficulty:function(){
+    deleteDifficulty: function() {
       axios
         .put(
           this.$store.state.backURL + pathUpdateDifficulty,
@@ -283,7 +289,6 @@ export default {
         .catch((response) => {
           alert("No es posible conectar con el backend en este momento");
         });
-      
     },
     abrirGoalPopup: function(goal) {
       this.activeGoal = goal;
@@ -399,6 +404,8 @@ h3 {
   font-size: large;
   overflow: hidden;
   resize: none;
+  border: 1px solid #aaa;
+  border-radius: 5px;
 }
 .create-goal-popup.active,
 .goal-difficulty-popup.active,
@@ -486,6 +493,8 @@ h3 {
   background-color: #7ba9d1;
   color: #fff;
   font-size: large;
+  border: 1px solid #aaa;
+  border-radius: 5px;
 }
 .goal-popup.active {
   color: rgb(21, 73, 198, 0.6);
