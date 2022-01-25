@@ -55,7 +55,7 @@ export default new Router({
         },
         
         {
-          path: "/Sprints",
+          path: "/sprints",
           name: "sprints",
           component: Sprints,
         },

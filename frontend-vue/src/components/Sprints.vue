@@ -6,7 +6,7 @@
       <h2>Sprints</h2>
 
       <button
-        v-if="sprints.length < 10"
+        v-if="sprints.length < 1"
         class=" ml-auto add"
         @click="openCreateSprintPopup()"
       >
@@ -17,7 +17,7 @@
     <div class="d-flex flex-row col-12 h-75 m-0 p-0 justify-content-center">
       <!-- Lista de sprints lateral izquierdo-->
       <div
-        class=" column col-8  overflow-auto align-items-center justify-content-center"
+        class=" column col-8 overflow-auto align-items-center justify-content-center"
       >
         <button
           class="btn btn-primary mb-2 mx-1"
@@ -37,26 +37,38 @@
             <div class="card-header">Sprint {{ actualSprint.index }}</div>
             <div class="card-body">
               <h5 class="card-title">Metas del Sprint</h5>
-              <p
+              <button
+                class=" btn col-12 "
+                @click="removeGoalFromSprint(goal)"
                 v-for="(goal, index) in currentGoals"
                 :goal="goal"
                 :key="goal.MetaID"
               >
                 {{ index + 1 }}. {{ goal.nombre }}
-              </p>
+              </button>
             </div>
-            <div class="card-footer"></div>
+            <div
+              class="card-footer m-auto"
+              v-for="(sprint, index) in sprints"
+              :sprint="sprint"
+              :key="sprint.id"
+            >
+              Inicio {{ sprints[index].fechaInicio }} Fin {{ sprints[index].fechaFinalizacion }}
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Lista de metas lateral derecho-->
-      <div class="col-4 scroll ml-3">
-        <div class="container goals-list">Metas existentes</div>
+      <div class="col-4 scroll ml-3 ">
+        <div class="container goals-title goals-list text-center m-1">
+          Metas Sin Sprint
+        </div>
         <br />
         <div v-for="goal in goals" :goal="goal" :key="goal.id">
           <button
-            class="btn goals-list col-12 p-0 m-0"
+            v-if="goal.idSprint == 0  && activeSprintId>0"
+            class="btn goals-list col-12 m-1"
             @click="updateGoalSprint(goal)"
           >
             {{ goal.nombre }}
@@ -66,8 +78,7 @@
     </div>
 
     <div class="col-12 h-15 d-inline-block text-right">
-      Selecciona una meta para agregarla al sprint actual
-      <button @click="getCurrentDate()">Pruebas</button>
+      <button @click="getActiveSprint()">Pruebas</button>
     </div>
 
     <div class="create-sprint-popup">
@@ -79,19 +90,20 @@
         <h3>Nuevo Sprint</h3>
 
         <label for="sprintStartDate">Fecha de Inicio</label>
-        <datepicker :disabled-dates="state.disabledDates"></datepicker>
         <input
           type="date"
           id="sprintStartDate"
           v-model="sprintCreateForm.startDate"
-          :min="[[actualDate]]"
+          min="2022-01-24"
+          max="2030-01-01"
         /><br />
         <label for="sprintDeadline">Fecha de culminación</label>
         <input
           type="date"
           id="sprintDeadline"
           v-model="sprintCreateForm.deadLine"
-          min="2022-01-25"
+          min="2022-01-24"
+          max="2030-01-01"
         /><br />
         <button class="crearMeta" type="submit">
           Crear
@@ -111,7 +123,6 @@
 
 <script>
 import axios from "axios";
-import Datepicker from "vuejs-datepicker";
 
 const pathGetSprints = "/sprints/all";
 const pathCreateSprint = "/sprints/create";
@@ -121,35 +132,13 @@ const pathGetGoalsBySprintId = "/metas/findBySprint";
 
 export default {
   name: "sprints",
-  components: {
-    Datepicker,
-  },
 
   data() {
     return {
-      state: {
-        disabledDates: {
-          to: new Date(2022, 0, 24), // Disable all dates up to specific date
-          dates: [
-            // Disable an array of dates
-            new Date(2016, 9, 16),
-          ],
-          ranges: [
-            {
-              // Disable dates in given ranges (exclusive).
-              from: new Date(2016, 11, 25),
-              to: new Date(2016, 11, 30),
-            },
-            {
-              from: new Date(2017, 1, 12),
-              to: new Date(2017, 2, 25),
-            },
-          ],
-        },
-      },
       proyectId: this.$store.state.activeProject,
       sprints: [],
-      actualDate: "",
+      actualDate: "2022-01-24",
+      activeSprintId: 0,
       goalsBySprint: [],
       currentGoals: [],
       actualSprint: {
@@ -174,7 +163,10 @@ export default {
   created() {
     this.loadGoals();
     this.getSprints();
-    this.getCurrentDate();
+    this.getActiveSprint();
+  },
+  beforeMount() {
+    this.getActiveSprint();
   },
 
   methods: {
@@ -185,8 +177,10 @@ export default {
       this.actualSprint = sprint;
       this.actualSprint.index = index;
       this.getGoalsBySprintId(this.actualSprint.sprintID);
+      this.getActiveSprint();
     },
     createSprint() {
+      this.setMinDate();
       axios
         .post(this.$store.state.backURL + pathCreateSprint, {
           idProyecto: this.proyectId,
@@ -197,6 +191,9 @@ export default {
           this.sprintCreateForm.startDate = "";
           this.sprintCreateForm.deadLine = "";
           this.getSprints();
+          this.getGoalsBySprintId(this.actualSprint.sprintID);
+
+          this.getActiveSprint();
           this.closeCreateSprintPopup();
         })
         .catch((response) => {
@@ -212,6 +209,7 @@ export default {
         })
         .then((response) => {
           this.sprints = response["data"];
+          this.getActiveSprint();
         })
         .catch((response) => {
           alert("No es posible conectar con el backend en este momento");
@@ -242,11 +240,12 @@ export default {
           {
             params: {
               id: this.selectedGoalId,
-              sprintID: 323,
+              sprintID: this.activeSprintId,
             },
           }
         )
         .then((response) => {
+          this.loadGoals();
           this.getGoalsBySprintId(this.actualSprint.sprintID);
         })
         .catch((response) => {
@@ -255,16 +254,12 @@ export default {
     },
 
     getCurrentDate() {
-      const dateObj = new Date();
-      const currentDate =
-        dateObj.getFullYear() +
-        "-" +
-        dateObj.getMonth() +
-        "-" +
-        dateObj.getDate();
-
-      this.actualDate = currentDate;
-      console.log(currentDate);
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1; //January is 0!
+      var yyyy = today.getFullYear();
+      today = yyyy + "-" + mm + "-" + dd;
+      return [yyyy, mm, dd];
     },
 
     getGoalsBySprintId(sprintId) {
@@ -276,11 +271,67 @@ export default {
         })
         .then((response) => {
           this.currentGoals = response["data"];
-          console.log(this.currentGoals);
         })
         .catch((response) => {
           alert("No es posible conectar con el backend en este momento");
         });
+    },
+
+    removeGoalFromSprint(goal) {
+      axios
+        .put(
+          this.$store.state.backURL + pathUpdateGoalSprint,
+          {},
+          {
+            params: {
+              id: goal.metaID,
+              sprintID: 0,
+            },
+          }
+        )
+        .then((response) => {
+          this.loadGoals();
+          this.getGoalsBySprintId(this.actualSprint.sprintID);
+        })
+        .catch((response) => {
+          alert("No es posible conectar con el backend en este momento");
+        });
+    },
+    getActiveSprint() {
+      let today = this.getCurrentDate();
+
+      for (let index = 0; index < this.sprints.length; index++) {
+        let fechainicioString = this.sprints[index].fechaInicio;
+        let fechaFinString = this.sprints[index].fechaFinalizacion;
+
+        let startYear = parseInt(fechainicioString.substring(0, 4), 10);
+        let startMonth = parseInt(fechainicioString.substring(5, 7), 10);
+        let startDay = parseInt(fechainicioString.substring(8, 10), 10) + 1;
+        console.log(startYear + " " + today[0]);
+        console.log(startMonth + " " + today[1]);
+        console.log(startDay + " " + today[2]);
+
+        let yyyy = parseInt(fechaFinString.substring(0, 4), 10);
+        let mm = parseInt(fechaFinString.substring(5, 7), 10);
+        let dd = parseInt(fechaFinString.substring(8, 10), 10) + 1;
+        console.log(yyyy + " " + today[0]);
+        console.log(mm + " " + today[1]);
+        console.log(dd + " " + today[2]);
+
+        if (startYear >= today[0] && today[0] <= yyyy) {
+          if (startMonth >= today[1] && today[1] <= mm) {
+            if (startDay >= today[2] && today[2] <= dd) {
+              console.log(true);
+              this.activeSprintId = this.sprints[index].sprintID;
+              console.log(this.activeSprintId);
+            } else {
+              console.log("false 1");
+            }
+          } else {
+            console.log("false 2");
+          }
+        }
+      }
     },
 
     openCreateSprintPopup: function() {
@@ -295,6 +346,11 @@ export default {
     },
     closeSprintInfoPopup: function() {
       document.querySelector(".sprint-info-popup").classList.remove("active");
+    },
+    setMinDate() {
+      let input = document.getElementById("sprintStartDate");
+      this.getCurrentDate();
+      input.setAttribute("min", this.actualDate);
     },
   },
 };
