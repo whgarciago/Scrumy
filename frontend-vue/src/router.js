@@ -7,6 +7,7 @@ import Home from "./views/Home";
 import SmallGoals from "@/components/SmallGoals";
 import UserInfo from "./views/UserInfo";
 import Plan from "@/components/Plan";
+import Activities from "@/components/Activities";
 
 Vue.use(Router);
 
@@ -41,6 +42,11 @@ export default new Router({
       name: "home",
       component: Home,
       children: [
+        {
+          path: "/Activities",
+          name: "Activities",
+          component: Activities,
+        },
         {
           path: "/Plan",
           name: "Plan",

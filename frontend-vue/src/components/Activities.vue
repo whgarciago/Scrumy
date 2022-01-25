@@ -14,7 +14,7 @@
         <button v-for="meta   in metas" :key="meta.id" class="metas" @click="BringActivities(meta.metaID)"> 
           <h2>{{meta.nombre}}</h2>
         </button>
-        <img id ="Flecha" src="../assets/flecha.png">
+        <!--<img id ="Flecha" src="../assets/flecha.png">-->
         <h1 id="tituloActividades">Actividades </h1>   
     </div>
 
@@ -69,7 +69,7 @@ const pathCreate = "/sprints/create";
 const pathGet = "/sprints/all";
 
 export default {
-  name: 'Plan',
+  name: 'Activities',
 
   beforeCreate() {
     axios
@@ -316,9 +316,9 @@ html,body{
   font-size: 15px;
   --dim:5;
   width: calc(var(--dim)*2%);
-  height: calc(var(--dim)*2%);
+  height: 50%;
   text-align: center;
-  top: 50%;
+  top: 100%;
   border-radius: 6px;
 
 }

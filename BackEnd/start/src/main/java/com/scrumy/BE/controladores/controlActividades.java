@@ -12,8 +12,8 @@ import org.springframework.http.*;
 import org.springframework.beans.factory.annotation.*;
 
 //Inhabilitado por pruebas, habilitar para permitir conexiones IP
-@CrossOrigin(origins = "http://localhost:8081")
-//@CrossOrigin(origins = "*")
+//CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class controlActividades {
