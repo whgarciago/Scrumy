@@ -2,8 +2,8 @@
   <div id="PlanDeOrganizacion"> <!--Div grande que abarca toda la pagina -->
 
     <!--Div del Titulo y el selector de sprints -->
-    <div id="Sprints"> 
-        <h1>Avance </h1>
+    <div class="col-12 h-15 d-inline-block m-2 titleMetas">
+      <h2>Avance</h2>
     </div>
     <h5 id= "escoge">Escoge el sprint</h5>
     <select name="menu" id="menu" @change="TraerMetasDelSprint($event)" v-model="key"> <!--Selector de sprints -->s
@@ -197,7 +197,10 @@ html,body{
   width: 100%;
   height: 100%;
 }
+h2{
+  color: white !important;
 
+}
 
 
 #Sprints{
@@ -206,7 +209,7 @@ html,body{
   padding: 15px;
   color: white;
 }
-#Sprints h1{display: inline;  color: white;} 
+#Sprints h2{display: inline;  color: white;} 
 #menu {
   position :absolute;
   top :13%;
@@ -285,6 +288,10 @@ html,body{
   --largo:0;
   width: calc(var(--largo)*1%);
   border-radius: 10px;
-  
 }
+.titleMetas {
+  border-bottom: 2px solid rgb(156, 156, 156);
+  margin-bottom: 5px;
+}
+
 </style>

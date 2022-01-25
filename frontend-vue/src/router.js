@@ -8,6 +8,7 @@ import SmallGoals from "@/components/SmallGoals";
 import UserInfo from "./views/UserInfo";
 import Plan from "@/components/Plan";
 import Sprints from "@/components/Sprints";
+import Activities from "@/components/Activities";
 
 
 Vue.use(Router);
@@ -44,6 +45,11 @@ export default new Router({
       component: Home,
       children: [
         {
+          path: "/Activities",
+          name: "Activities",
+          component: Activities,
+        },
+        {
           path: "/Plan",
           name: "Plan",
           component: Plan,
@@ -53,9 +59,9 @@ export default new Router({
           name: "smallgoals",
           component: SmallGoals,
         },
-        
+
         {
-          path: "/sprints",
+          path: "/Sprints",
           name: "sprints",
           component: Sprints,
         },
