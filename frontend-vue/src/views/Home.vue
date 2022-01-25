@@ -97,7 +97,7 @@
         //nombres es un arreglo con los nombres de los 4 botones
         nombres:['Metas','Sprints','Plan','Actividades'],
         //ref es el arreglo que relaciona los botones con sus componentes
-        ref:['smallgoals','#','Plan','Activities'],
+        ref:['smallgoals','sprints','Plan','Activities'],
         //mesidenav es falso cuando el mouse no esta encima de los botones
         mesidenav:false,
         //proyecto es el objeto base para manejar, se llena en el Popup de crear nuevo proyecto

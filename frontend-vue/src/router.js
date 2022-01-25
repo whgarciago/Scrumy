@@ -8,6 +8,7 @@ import SmallGoals from "@/components/SmallGoals";
 import UserInfo from "./views/UserInfo";
 import Plan from "@/components/Plan";
 import Sprints from "@/components/Sprints";
+import Activities from "@/components/Activities";
 
 
 Vue.use(Router);
@@ -60,7 +61,7 @@ export default new Router({
         },
 
         {
-          path: "/sprints",
+          path: "/Sprints",
           name: "sprints",
           component: Sprints,
         },

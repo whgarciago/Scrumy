@@ -326,7 +326,7 @@ export default {
           descripcion: this.formGoal.description,
           estado: this.formGoal.state,
           idProyecto: this.$store.state.activeProject,
-          idSprint: 1,
+          idSprint: 0,
         })
         .then((response) => {
           this.cargarMetas();

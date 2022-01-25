@@ -1,32 +1,43 @@
 <template>
-  <div id="Activities"> <!--Div grande que abarca toda la pagina -->
 
-    <!--Div del Titulo y el selector de sprints -->
-    <h5 id= "escoge">Escoge el sprint</h5><br>
-    <select name="menu" id="menu" @change="TraerMetasDelSprint($event)" v-model="key"> <!--Selector de sprints -->
+      
+      <div id="Activities col-12 m-0 p-2 h-100 ">
+        <div class="col-12 d-inline-block m-2 titleMetas">
+          <h2>Actividades</h2>
+        </div>
+       <h5 id= "escoge">Escoge el sprint</h5><br>
+      <select name="menu" id="menu" @change="TraerMetasDelSprint($event)" v-model="key"> <!--Selector de sprints -->
           <!--El siguiente for recorre todos los sprints en sprints[], los trae como opciones del selector y muestra su nombre-->
           <option v-for="spr in sprints" :key="spr.sprintID"  selected="selected" >Sprint {{sprints.indexOf(spr) +1 }}</option>
         </select>
 
-    <!--Div de las metas del sprint para ordenar -->
-    <div id="Metas">
+      <div class="d-flex flex-row col-12 m-0 p-0 justify-content-center overflow-auto">       
+         <!--Div de las metas del sprint para ordenar -->
+        <div id="Metas">
       <!--El siguiente for recorre todas las metas en metas[] y los trae como divs e imprime su nombre-->
-        <button v-for="meta   in metas" :key="meta.id" class="metas" @click="BringActivities(meta.metaID)"> 
-          <h2>{{meta.nombre}}</h2>
+        <button v-for="meta   in metas" :key="meta.id" class=" metas btn btn-primary btn-sm"  @click="BringActivities(meta.metaID)"> 
+          <h5>{{meta.nombre}}</h5>
         </button>
         <!--<img id ="Flecha" src="../assets/flecha.png">-->
-        <h1 id="tituloActividades">Actividades </h1>   
+        
     </div>
-
-    <div id="Actividades">
-        <div v-for="actividad in actividades" :key="actividad.id" class="actividades">
+      </div>  
+      <div class="d-flex flex-row col-12 h-75 m-0 p-0 justify-content-center overflow-auto" >
+        <div class=" d-flex flex-row">
+        <div v-for="actividad in actividades" :key="actividad.id" class="actividades ">
+        <div class="card bg-light mb-3" style="width: 18rem;">
+          <div class="card-header">{{actividad.nombre}}</div>
+          <div class="card-body">
+            <p class="card-text">{{actividad.descripcion}}
+            </p>
             <input type ="checkbox">
-            <h2>{{actividad.nombre}}</h2>
+          </div>
         </div>
+      </div>
     </div>
 
-    <!--Popup para crear actividad-->
-    
+      </div>
+      <!--Popup para crear actividad-->
       <div class="ventanaOpciones crearActividad">
         <div class="contenidoActividad">
           <h2>Nueva actividad</h2>
@@ -47,18 +58,19 @@
           <h2>Eliminar actividades</h2>
               <div v-for="actividad in actividades" :key="actividad.id" class="actividadesEliminar">
                   <!--Revisar si value está correcto -->
-                  <input type="checkbox" name="done" value="actividad.nombre" v-model="CheckboxDelAct">
+                  <input type="checkbox" name="done" value="actividad.actividadID" v-model="CheckboxDelAct">
                   <p>{{actividad.nombre}}</p>
               </div>  
         </div>
         <button @click="cerrarPopupDel()" class="cerrarVentana">x</button>
         <button @click="EliminarActividad()" class="textoOpcion">Eliminar</button>
       </div>
+     <!--Div grande que abarca toda la pagina -->
+    <!--Div del Titulo y el selector de sprints -->
     
-    <button @click="abrirPopupAct()" id="CreateActivityButton">+</button>
+        <button @click="abrirPopupAct()" id="CreateActivityButton">+</button>
     <button @click="abrirPopupDel()" id="DeleteActivityButton"><img src="https://img.icons8.com/glyph-neue/50/4a90e2/trash.png"/></button>
-
-
+    
   </div>
 </template>
 
@@ -105,6 +117,7 @@ export default {
       CheckboxDelAct:[],
       isHiddenCreate: false,
       isHiddenDelete: false,
+      idMetA: 0 ,
 
     }
   },
@@ -135,7 +148,7 @@ export default {
       })
       .then((response) => {
         this.actividades = response["data"];
-        
+        this.idMetA = idMeta;
       })
       .catch((response) => {
         alert("No es posible conectar con el backend en este momento 1 (SetAvance)");
@@ -186,23 +199,22 @@ export default {
       });
       //this.SetAvance();//Actualiza la barra con el avance del sprint seleccionado
     },
-
-
-  },
+    
   CrearActividad(){
       let pathCreateActivity = "/actividades/create";
       axios
-      .get(this.$store.state.backURL + pathCreateActivity, {
-        params: {
+      .post(this.$store.state.backURL + pathCreateActivity, {
+          
           id: this.sprint.id,
+          idMeta: this.idMetA,
           nombre: this.NombreActividad,
           descripcion: this.DescripcionActividad,
-        },
+
       })
       .then((response) => {
         console.log("Pudo acceder a las actividades");
-        cerrarPopupAct();
-        BringActivities(this.meta.id);
+        this.cerrarPopupAct();
+        this.BringActivities(this.idMetA);
         this.NombreActividad = "";
         this.DescripcionActividad = "";
  
@@ -212,32 +224,34 @@ export default {
       });
       //this.SetAvance();//Actualiza la barra con el avance del sprint seleccionado
  
-  },
-  auxEliminarActividad(idActividad){
+    },
+    auxEliminarActividad(idActividad){
       let pathRemoveActivity = "/actividades/remove";
       axios
-      .get(this.$store.state.backURL + pathRemoveActivity, {
+      .delete(this.$store.state.backURL + pathRemoveActivity, {
         params: {
-          id: idActividad,
+          actividadID: idActividad,
         },
       })
       .then((response) => {
         console.log("Pudo acceder a las actividades");
-        
       })
       .catch((response) => {
         alert("No es posible conectar con el backend en este momento 5");
       });
       //this.SetAvance();//Act
-  },
-  EliminarActividad(){
-    arregloActividades = this.CheckboxDelAct;
-    for (let index = 0; index < arregloActividades.length; index++) {
-        this.auxEliminarActividad(arregloActividades[index]);
+    },
+    EliminarActividad(){
+    this.arregloActividades = this.CheckboxDelAct;
+    for (let index = 0; index < this.arregloActividades.length; index++) {
+        this.auxEliminarActividad(this.arregloActividades[index]);
         
     }      
     this.cerrarPopupDel();
-    BringActivities(this.meta.id);
+    this.BringActivities(this.meta.id);
+  },
+
+
   },
 
   mounted(){ //Al iniciar, ejecuta estos comandos
@@ -265,7 +279,7 @@ html,body{
     padding: 15px;
     color: white;
     position :absolute;
-    top :30%;
+    top:  5%;
     left: 6%;
 }
 #Sprints{
@@ -279,7 +293,7 @@ html,body{
   position :absolute;
   top :13%;
   right: 6%;
-  width: 12%;
+  width: 15%;
   height: 5%;
   border-radius: 20px;
   font-size: 15px;
@@ -295,10 +309,9 @@ html,body{
   height: 20%;
   width: 70%;
   text-align: center;
-  padding: 40px;
+  padding: 1px;
   display: flex; 
 	flex-wrap: wrap;
-	justify-content: space-around;
   align-items: center;
 }
 #Flecha {
@@ -308,41 +321,34 @@ html,body{
 }
 
 .metas{
-  border-width: 1px;
-  border-color: white;
-  border-style: solid;
   overflow: hidden;
   color: #163350;
-  font-size: 15px;
+  font-size: 10px;
   --dim:5;
-  width: calc(var(--dim)*2%);
-  height: 50%;
+  width: 30%;
+  height: 35%;
   text-align: center;
   top: 100%;
   border-radius: 6px;
-
 }
-.metas div {
-  --variable:0;
-  background-color: rgb(50, 205, 159);
-  height: 100%;
-  width: calc(var(--variable)*1%);
-  border-radius: 3px;
-}
-.metas h2{
+.metas h5{
   color: rgb(255, 255, 255);
-  font-size: 25px;
+  font-size: 20px;
 }
 
 #Actividades {
     width: 100%;
     height: 65%;
+    text-align: center;
+    padding: 1px;
+    display: flex; 
+    font-size: 10px;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .actividades{
-    width: 100px;
-    border: ridge black;
-    padding: 10px;
+    height: 25%;
     margin: 40px; 
 }
 
@@ -420,9 +426,12 @@ html,body{
     position: absolute;
     bottom: 5%;
     Right: 10%;
-    border-style: solid blue;
+    border-style: solid rgb(255, 0, 149);
     background-color: #FFFFFF;
     color: #15a8e2;
   }
-
+  .titleMetas {
+  border-bottom: 2px solid rgb(156, 156, 156);
+  margin-bottom: 5px;
+  }
 </style>
