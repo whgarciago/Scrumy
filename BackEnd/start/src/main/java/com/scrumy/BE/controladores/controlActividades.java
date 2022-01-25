@@ -3,14 +3,16 @@ package com.scrumy.BE.controladores;
 import java.util.*;
 
 import com.scrumy.BE.modelos.Actividades;
+import com.scrumy.BE.modelos.Meta;
 import com.scrumy.BE.repositorios.repoActividades;
+import com.scrumy.BE.repositorios.repoMeta;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
 import org.springframework.beans.factory.annotation.*;
 
 //Inhabilitado por pruebas, habilitar para permitir conexiones IP
-//@CrossOrigin(origins = "http://localhost:8081")
+//CrossOrigin(origins = "http://localhost:8081")
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")

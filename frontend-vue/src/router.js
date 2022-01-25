@@ -44,6 +44,11 @@ export default new Router({
       component: Home,
       children: [
         {
+          path: "/Activities",
+          name: "Activities",
+          component: Activities,
+        },
+        {
           path: "/Plan",
           name: "Plan",
           component: Plan,
@@ -53,7 +58,7 @@ export default new Router({
           name: "smallgoals",
           component: SmallGoals,
         },
-        
+
         {
           path: "/sprints",
           name: "sprints",

@@ -22,12 +22,12 @@
       <a @click="goToSettings()"  class="userbutton">
         <b id="neg">{{usuarioNombre}}</b>    Configuración
       </a>
-      
+
     </div>
-    
+
     <!--Barra de 4 botones de la izquierda-->
     <div class="sidenav" v-on:mouseover="mesidenav=true" v-on:mouseout="mesidenav=false">
-      <a v-for='(mini,indice) in minis' 
+      <a v-for='(mini,indice) in minis'
       :mini="mini" :indice="mini.index" :key="mini.id" @click="abrirComponente(indice)">
         <!--para cada elemento en minis se le asocia una función de abrirComponente-->
         <p v-show="!mesidenav"><img :src="mini"></p><!--Si el mouse no esta encima, se muestra el logo-->
@@ -35,12 +35,12 @@
       </a>
     </div>
     <!--Icono de Retro-->
-    <button id="retroicon"> 
+    <button id="retroicon">
       <img class="logos" src="../assets/retro.png" >
     </button>
     <!--Div para desplegar los componentes de cada boton-->
     <div class="componente-central">
-      <router-view></router-view>    
+      <router-view></router-view>
     </div>
     <!--Popup de crear nuevo proyecto-->
     <div class="popup">
@@ -83,8 +83,8 @@
 
 
 <script>
- import axios from 'axios'; 
-  
+ import axios from 'axios';
+
   export default{
     name: "Principal",
     data(){
@@ -97,7 +97,7 @@
         //nombres es un arreglo con los nombres de los 4 botones
         nombres:['Metas','Sprints','Plan','Actividades'],
         //ref es el arreglo que relaciona los botones con sus componentes
-        ref:['smallgoals','sprints','Plan','#'],
+        ref:['smallgoals','#','Plan','Activities'],
         //mesidenav es falso cuando el mouse no esta encima de los botones
         mesidenav:false,
         //proyecto es el objeto base para manejar, se llena en el Popup de crear nuevo proyecto
@@ -119,10 +119,10 @@
           fechaFin:''
         },
         //proyectos traidos desde el backend
-        proyectos: [] 
+        proyectos: []
       }
     },
-    
+
     methods:{
       //abre el Popup de configuración de proyecto
       abrirConfigProyecto(){
@@ -153,7 +153,7 @@
       //toma los objetos del objeto "proyecto" y los guarda en el Backend
       async CrearProyecto(usuarioID) {
       const {nombre,motivacion,descripcion,fechaFin}= this.proyecto;
-       
+
         try {
         const response = await axios.post("http://localhost:8081/api/proyectos/create",
           {
@@ -184,7 +184,7 @@
         }
         console.log(error.config);
       }
-      //Actualiza los mensajes en motivación y fecha 
+      //Actualiza los mensajes en motivación y fecha
         var moti=document.getElementById("motivacion");
         moti.innerHTML="Recuerda que tu motivación es: "+ this.proyectoActual.motivacion;
         var fec=document.getElementById("fecha");
@@ -193,7 +193,7 @@
         this.obtenerProyectosDeBackend();
         //Cierra el Popup de añadir nuevo proyecto (linea 145)
         this.cerrarPopup();
-        
+
       },
 
       //Funcion para modificar los atributos de un proyecto
@@ -243,7 +243,7 @@
       //Cuando se selecciona un proyecto en la barra de arriba, caracProyecto trae
       //dicho proyecto desde el Backend y actualiza los datos
       caracProyecto(proyecto){
-        
+
         this.proyectoActual.id = proyecto.proyectoID;
         this.proyectoActual.usuarioID = proyecto.usuarioID;
         this.proyectoActual.nombre=proyecto.nombre;
@@ -291,7 +291,7 @@
         console.log(error.config);
       }
     },
-    
+
     goToSettings(){
       this.$router.push({ name: "settings" });
     },
@@ -342,13 +342,13 @@ body{
     color: white;
     top: 120px;
     border-radius: 10px;
-    border: 2px solid #eee;     
+    border: 2px solid #eee;
 }
   .sidenav:hover{
     width: 250px;
-    
+
   }
-  
+
   .sidenav a{
     line-height: 15vh;
     height: 15vh;
@@ -356,19 +356,19 @@ body{
     text-decoration: none;
     font-size: 25px;
     display: block;
-    
+
     border-bottom: 2px solid;
     border-right: 2px solid;
-    
+
   }
-  
+
   .sidenav a p:hover {
     color: rgb(21, 73, 198,0.6);
     background-color: #eee;
     border-color: #eee;
   }
 
-  .topNavigationBar { 
+  .topNavigationBar {
     position:fixed ;
     top: 0;
     background-color: rgba(255, 255, 255, 0.103);
@@ -448,7 +448,7 @@ body{
     padding-top: 40px;
     float: right;
     /*text-align: right;*/
-    
+
   }
     .topNavigationBar .userbutton:hover {
     color: rgb(255, 255, 255);
@@ -468,7 +468,7 @@ body{
     font-size: 20px;
     width: 240px;
     height: 120px;
-    
+
   }
   #retroicon{
     margin-top: 800px;
@@ -494,7 +494,7 @@ body{
     background-color: rgb(21, 73, 198,0.6);
     color: rgb(255, 255, 255);
     position:fixed;
-    border: 2px solid #eee;  
+    border: 2px solid #eee;
   }
   #motivacion{
     margin-top: 800px;
@@ -507,8 +507,8 @@ body{
     background-color: rgb(21, 73, 198,0.6);
     color: rgb(255, 255, 255);
     position:fixed;
-    border: 2px solid #eee;  
-    
+    border: 2px solid #eee;
+
   }
   .botonesProyectos{
     font-size: 20px;
@@ -518,7 +518,7 @@ body{
   }
   .botonesProyectos:hover{
     color: rgb(21, 73, 198);
-    background-color:rgb(255, 255, 255); 
+    background-color:rgb(255, 255, 255);
   }
   #botonConfigProyecto{
      margin-top: 800px;
@@ -617,10 +617,10 @@ body{
     box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
   }
-  
+
 </style>
 <!--COSAS QUE HACER:
-    -Cuando selecciono un proyecto debería quedarse "presionado" el boton 
+    -Cuando selecciono un proyecto debería quedarse "presionado" el boton
     -Los botones no están en responsive-design
     -Falta redireccionar bien los botones de metas, sprints, plan y act
       tambien config, config de proyecto y retro (crear esas ventanas)
@@ -629,7 +629,7 @@ body{
     -Crear metodos para guardar los proyectos en base de datos
     -(quizas mover todo lo de Style a un .css)
 
-    BUGS: 
+    BUGS:
     -cuando se escribe un campo en un segundo proyecto, aparecen
     los demas elementos del proyecto creado anteriormente
 -->
