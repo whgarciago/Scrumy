@@ -38,7 +38,7 @@
             <div class="card-body">
               <h5 class="card-title">Metas del Sprint</h5>
               <button
-                class=" btn col-12 "
+                class=" btn btn-sm col-12 color mb-1"
                 @click="removeGoalFromSprint(goal)"
                 v-for="(goal, index) in currentGoals"
                 :goal="goal"
@@ -451,5 +451,10 @@ select {
   border: 0;
   color: #1549c699;
   outline: 0px;
+}
+.color{
+  border: 1px solid rgb(21, 73, 198, 0.6);
+  border-radius: 5px;
+  color: #1549c699;
 }
 </style>
