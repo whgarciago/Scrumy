@@ -77,10 +77,6 @@
       </div>
     </div>
 
-    <div class="col-12 h-15 d-inline-block text-right">
-      <button @click="getActiveSprint()">Pruebas</button>
-    </div>
-
     <div class="create-sprint-popup">
       <form
         class="form"
@@ -318,19 +314,22 @@ export default {
         console.log(mm + " " + today[1]);
         console.log(dd + " " + today[2]);
 
-        if (startYear >= today[0] && today[0] <= yyyy) {
-          if (startMonth >= today[1] && today[1] <= mm) {
-            if (startDay >= today[2] && today[2] <= dd) {
               console.log(true);
               this.activeSprintId = this.sprints[index].sprintID;
               console.log(this.activeSprintId);
-            } else {
-              console.log("false 1");
-            }
-          } else {
-            console.log("false 2");
-          }
-        }
+        // if (startYear <= today[0] && today[0] <= yyyy) {
+        //   if (startMonth <= today[1] && today[1] <= mm) {
+        //     if (startDay <= today[2] && today[2] <= dd) {
+        //       console.log(true);
+        //       this.activeSprintId = this.sprints[index].sprintID;
+        //       console.log(this.activeSprintId);
+        //     } else {
+        //       console.log("false 1");
+        //     }
+        //   } else {
+        //     console.log("false 2");
+        //   }
+        // }
       }
     },
 

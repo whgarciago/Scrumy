@@ -183,7 +183,7 @@ export default {
         actividadID: 0,
         descripcion: "",
         dificultad: "",
-        estado: 1,
+        estado: 0,
         idProyecto: 0,
         idSprint: 0,
         metaID: 0,
@@ -193,14 +193,14 @@ export default {
         name: "",
         description: "",
         proyectId: this.proyectId,
-        state: 1,
+        state: 0,
       },
 
       formGoal: {
         name: "",
         description: "",
         proyectId: this.proyectId,
-        state: 1,
+        state: 0,
       },
     };
   },
