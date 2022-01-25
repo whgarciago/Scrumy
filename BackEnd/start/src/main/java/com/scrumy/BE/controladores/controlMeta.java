@@ -47,6 +47,19 @@ public class controlMeta {
         }
     }
 
+    @GetMapping("/metas/sprintfind")
+    public ResponseEntity<List<Meta>> getMetasbyIdSprint(@RequestParam int id){
+        try{
+            List<Meta> foundProject = RM.findByidSprint(id);
+            if(foundProject.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(foundProject, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @PostMapping("/metas/create")
     public ResponseEntity<Meta> createMeta(@RequestBody Meta m){

@@ -3,7 +3,9 @@ package com.scrumy.BE.controladores;
 import java.util.*;
 
 import com.scrumy.BE.modelos.Actividades;
+import com.scrumy.BE.modelos.Meta;
 import com.scrumy.BE.repositorios.repoActividades;
+import com.scrumy.BE.repositorios.repoMeta;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
@@ -18,6 +20,9 @@ public class controlActividades {
 
     @Autowired
     repoActividades RA;
+
+    @Autowired
+    repoMeta RM;
 
     @GetMapping("/actividades/all")
     public ResponseEntity<List<Actividades>> getAllActivities(){
@@ -79,6 +84,33 @@ public class controlActividades {
         }catch(Exception e){
             return -1.0;
         }
+    }
+
+    @GetMapping("/sprints/avance")
+    public Double avanceSprint(@RequestParam int id){
+        List<Meta> metas = new ArrayList<Meta>();
+        RM.findByidSprint(id).forEach(metas::add);
+        if(metas.isEmpty()){
+            return 0.0;
+        }
+        //Double d = 0.0;
+        
+        List<Actividades> Activ = new ArrayList<Actividades>();
+        for(int i = 0;i<metas.size();i++){
+            int index = metas.get(i).getMetaID();
+            RA.findByidMeta(index).forEach(Activ::add);
+        }
+
+        double completa = 0.0;
+        for(int j = 0; j < Activ.size();j++){
+            if(Activ.get(j).getEstado()){
+                completa = completa + 1.0;
+            }else{
+                continue;
+            }
+        }
+        
+        return (completa/Double.valueOf(Activ.size()))*100.0;
     }
 
     @GetMapping("/actividades/findDificulty")
