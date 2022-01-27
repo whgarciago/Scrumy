@@ -18,7 +18,7 @@ public class controlMeta {
     @Autowired
     repoMeta RM;
 
-
+    
     @GetMapping("/metas/all")
     public ResponseEntity<List<Meta>> getAllMetaByProject(@RequestParam int id){
 
@@ -33,6 +33,22 @@ public class controlMeta {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @GetMapping("/metas/findBySprint")
+    public ResponseEntity<List<Meta>> getAllMetaBySprint(@RequestParam int id){
+
+        try{
+            List<Meta> listaMeta = new ArrayList<Meta>();
+            RM.findByidSprint(id).forEach(listaMeta::add);
+            if(listaMeta.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(listaMeta, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @GetMapping("/metas/find")
     public ResponseEntity<Optional<Meta>> getMetasbyID(@RequestParam int id){
@@ -55,6 +71,19 @@ public class controlMeta {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(foundProject, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+            
+    @GetMapping("/metas/findDificulty")
+    public ResponseEntity<String> getDificultyByMeta(@RequestParam int id){
+        try{
+            Optional<Meta> foundMeta = RM.findById(id);
+            if(foundMeta.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            Meta m = foundMeta.get();
+            return new ResponseEntity<>(m.getDificultad(), HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -93,6 +122,21 @@ public class controlMeta {
             m.setEstado(updMeta.getEstado());
             m.setIdSprint(updMeta.getIdSprint());
             m.setDescripcion(updMeta.getDescripcion());
+
+            return new ResponseEntity<>(RM.save(m),HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/metas/update/sprint")
+    public ResponseEntity<Meta> updateMetaSprint(@RequestParam int id,@RequestParam int sprintID){
+        Optional<Meta> metadata = RM.findById(id);
+
+        if(metadata.isPresent()){
+            Meta m = metadata.get();
+            m.setIdSprint(sprintID);
+            //m.setActividadID(updMeta.getActividadID());
 
             return new ResponseEntity<>(RM.save(m),HttpStatus.OK);
         }else{

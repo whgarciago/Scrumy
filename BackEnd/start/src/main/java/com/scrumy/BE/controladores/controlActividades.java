@@ -25,10 +25,10 @@ public class controlActividades {
     repoMeta RM;
 
     @GetMapping("/actividades/all")
-    public ResponseEntity<List<Actividades>> getAllActivities(){
+    public ResponseEntity<List<Actividades>> getAllActivitiesByMeta(@RequestParam int id){
         try{
             List<Actividades> listaActividades = new ArrayList<Actividades>();
-            RA.findAll().forEach(listaActividades::add);
+            RA.findByidMeta(id).forEach(listaActividades::add);
             if(listaActividades.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -94,7 +94,7 @@ public class controlActividades {
             return 0.0;
         }
         //Double d = 0.0;
-        
+
         List<Actividades> Activ = new ArrayList<Actividades>();
         for(int i = 0;i<metas.size();i++){
             int index = metas.get(i).getMetaID();
@@ -109,7 +109,7 @@ public class controlActividades {
                 continue;
             }
         }
-        
+
         return (completa/Double.valueOf(Activ.size()))*100.0;
     }
 
@@ -127,6 +127,20 @@ public class controlActividades {
         }
     }
 
+    @GetMapping("/actividades/findState")
+    public ResponseEntity<Boolean> getStateByActivity(@RequestParam int id){
+        try{
+            Optional <Actividades> foundActivity = RA.findByActividadID(id);
+            if(foundActivity.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            Actividades a = foundActivity.get();
+            return new ResponseEntity<>(a.getEstado(), HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/actividades/create")
     public ResponseEntity<Actividades> createActividad(@RequestBody Actividades a){
         try{
@@ -134,7 +148,7 @@ public class controlActividades {
             return new ResponseEntity<>(tdb, HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }  
+        }
     }
 
     @DeleteMapping("/actividades/remove")
@@ -146,7 +160,7 @@ public class controlActividades {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     @PutMapping("/actividades/update")
     public ResponseEntity<Actividades> updateActividad(@RequestParam int id, @RequestBody Actividades updActividad){
         Optional<Actividades> activitydata = RA.findById(id);
@@ -158,7 +172,7 @@ public class controlActividades {
             a.setNombre(updActividad.getNombre());
             a.setDificultad(updActividad.getDificultad());
             a.setEstado(updActividad.getEstado());
-            
+
 
             return new ResponseEntity<>(RA.save(a), HttpStatus.OK);
         }else{
@@ -173,7 +187,7 @@ public class controlActividades {
         if(activitydata.isPresent()){
             Actividades a = activitydata.get();
             a.setDificultad(updActividad.getDificultad());
-            
+
             return new ResponseEntity<>(RA.save(a), HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
