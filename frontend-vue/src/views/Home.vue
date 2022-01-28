@@ -78,17 +78,20 @@
       </div>
       <!--contenido-->
       <div
-        class="d-flex flex-column h-100 col-8 m-0 ml-5 pt-3 content-color "
+        class="d-flex flex-column h-100 col-8 m-1 ml-5 pt-3 content-color "
         v-if="proyectoActual.nombre != ''"
       >
-        <div class=" ">
-          <h2> {{ proyectoActual.nombre }}</h2>
-          <h4>{{ proyectoActual.fechaFin }}</h4>
-          <h4>{{ proyectoActual.descripcion }}</h4>
-          <h3 > Tu motivación es: {{ proyectoActual.motivacion }}</h3>
+        <div class="p-2 bg-secondary ">
+          <h1>Información del Proyecto</h1>
+          <h2 v-if="proyectoActual.nombre===''">Selecciona un proyecto</h2>
+
+          <h2>Nombre: {{ proyectoActual.nombre }}</h2>
+          <h4>Fecha de finalización: {{ proyectoActual.fechaFin }}</h4>
+          <h4>Descripción: {{ proyectoActual.descripcion }}</h4>
+          <h3 >Tu motivación es: {{ proyectoActual.motivacion }}</h3>
         </div>
         <!--componente -->
-        <div class="col-12  componente-central overflow-auto">
+        <div class="col-12 mt-2 componente-central overflow-auto bg-secondary">
           <router-view></router-view>
         </div>
       </div>
