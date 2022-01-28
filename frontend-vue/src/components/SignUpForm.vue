@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="row d-flex justify-content-center">
-      <div class="col-10 ">
+      <div class="col-8 ">
         <div id="signUp" class="mt-5">
 
           <form class="border border-primary rounded form-inline" @submit="signUp">
@@ -73,7 +73,7 @@
             nombre: this.username.trim(),
             idProyectos: 23,
         }).then(response => {
-            this.$router.push({ name: 'login'} )
+            this.$router.push({ name: "loginform" }).catch(err=>{})
         }).catch( response => {
           alert( "No es posible conectar con el backend en este momento" );
         });

@@ -1,6 +1,6 @@
 <template>
   <div class="row d-flex justify-content-center">
-    <div class="col-10">
+    <div class="col-8">
       <div id="login">
         <form
           class="border border-primary rounded form-inline"
@@ -36,7 +36,7 @@
 
           <div class="col-12 col-sm-5 col-md-4 mb-3 justify-content-end">
             <button
-              class="col-sm-10 col-md-10 btn btn-primary "
+              class=" col-12 col-sm-12 col-md-12 btn btn-primary "
               type="submit"
             >
               Iniciar Sesión
