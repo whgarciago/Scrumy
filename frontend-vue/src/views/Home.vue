@@ -1,7 +1,7 @@
 <template>
-  <div class=" col-12 m-0 p-0 ">
+  <div class="d-flex flex-column vh-100 col-12 m-0 p-0 overflow-hidden">
     <nav class="navbar navbar-expand-lg navbar-dark navbar-color ">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand pl-5" href="#">Scrumy</a>
       <button
         class="navbar-toggler my-0 p-0"
         type="button"
@@ -17,7 +17,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto pl-5">
           <li
-            class="nav-item active px-3 py-2"
+            class="nav-item active px-3 py-2 btn-navbar rounded"
             v-for="(nombre, indice) in nombres"
             :nombre="nombre"
             :indice="nombre.index"
@@ -30,7 +30,7 @@
           </li>
         </ul>
         <ul class="navbar-nav mr-4">
-          <li class="nav-item dropdown mr-4">
+          <li class="nav-item dropdown mr-4 btn btn-outline-warning">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -43,7 +43,9 @@
               {{ usuarioNombre }}
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="" @click="goToSettings()">Configuracion</a>
+              <a class="dropdown-item" href="" @click="goToSettings()"
+                >Configuracion</a
+              >
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="">Cerrar sesión</a>
             </div>
@@ -52,22 +54,23 @@
       </div>
     </nav>
 
-    <div class="d-flex h-75">
-      <div class="col-2 m-0 mt-3 p-0 overflow-auto ">
-        <div class="col-12 m-0 p-0 mb-3">
+    <div class="d-flex flex-row h-100  ">
+      <div class="col-4 col-lg-3  m-0 p-0 pt-3 bg-secondary">
+        <div class="col-12 mx-auto p-0 text-center ">
+          <h3>Mis proyectos</h3>
+
           <button
-            class="btn btn-primary col-12"
+            class="btn col-10 btn-crear-proyecto mt-3 mb-1"
             id="añadirproyecto"
             @click="abrirPopup()"
           >
             <!--falta abrirPopup()-->
             Crear Proyecto
           </button>
-        </div>
-        <div class="col-12 d-inline m-0 p-0 text-center">
-          <h3>Mis proyectos</h3>
+          <hr class="hr-proyectos col-9">
+
           <button
-            class="btn btn-secondary my-1 col-12"
+            class="btn btn-side-navbar my-1 col-10"
             v-for="proy in proyectos"
             :key="proy.id"
             @click="seleccionarProyecto(proy)"
@@ -77,21 +80,32 @@
         </div>
       </div>
       <!--contenido-->
+
       <div
-        class="d-flex flex-column h-100 col-8 m-1 ml-5 pt-3 content-color "
+        class="d-flex flex-column h-100 col-8 col-lg-7 m-auto pt-3 content-color bg-secondary"
         v-if="proyectoActual.nombre != ''"
       >
-        <div class="p-2 bg-secondary ">
-          <h1>Información del Proyecto</h1>
-          <h2 v-if="proyectoActual.nombre===''">Selecciona un proyecto</h2>
+        <div class="p-2">
+          <div class="card text-center">
+            <div class="card-header">
+              Información del Proyecto
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ proyectoActual.nombre }}</h5>
+              <h5 class="card-title">
+                Fecha de finalización: {{ proyectoActual.fechaFin }}
+              </h5>
 
-          <h2>Nombre: {{ proyectoActual.nombre }}</h2>
-          <h4>Fecha de finalización: {{ proyectoActual.fechaFin }}</h4>
-          <h4>Descripción: {{ proyectoActual.descripcion }}</h4>
-          <h3 >Tu motivación es: {{ proyectoActual.motivacion }}</h3>
+              <p class="card-text">
+                {{ proyectoActual.descripcion }}
+              </p>
+            </div>
+          </div>
         </div>
         <!--componente -->
-        <div class="col-12 mt-2 componente-central overflow-auto bg-secondary">
+        <div
+          class="col-12 mt-4 componente-central border border-light overflow-auto"
+        >
           <router-view></router-view>
         </div>
       </div>
@@ -427,8 +441,6 @@ h2,
   right: 2em;
 }
 
-
-
 .sidenav {
   margin-top: 5px;
   width: 80px;
@@ -671,14 +683,29 @@ input {
 }
 
 .navbar-color {
-  background-color: rgb(21, 73, 198);
+  background-color: #1d3461;
+}
+.barralado {
+  background-color: #376996;
+}
+.componente-central {
+  min-height: 65vh;
+  max-height: 65vh;
+}
+.btn-crear-proyecto {
+  background-color: #6290c8;
+}
+.btn-side-navbar {
+  background-color: #829cbc;
+}
+.btn-navbar:hover {
+  background-color: #aaa;
 }
 .content-color {
-  
+  background-color: #6290c8;
 }
-.componente-central{
-  min-height:60vh;
-  max-height:60vh;
+.hr-proyectos{
+  border-top: 2px solid #1d3461;
 }
 </style>
 <!--COSAS QUE HACER:
