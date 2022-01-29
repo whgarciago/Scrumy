@@ -77,6 +77,7 @@
           >
             {{ proy.nombre }}
           </button>
+          <!--<button @click="compararFechas()">Pruebas</button>-->
         </div>
       </div>
       <!--contenido-->
@@ -104,9 +105,9 @@
         </div>
         <!--componente -->
         <div
-          class="col-12 mt-4 componente-central border border-light overflow-auto"
+          class="col-12 m-0 p-0 mt-4  componente-central border border-light overflow-auto"
         >
-          <router-view></router-view>
+          <router-view class="bg-light"></router-view>
         </div>
       </div>
     </div>
@@ -139,10 +140,12 @@
         /><br />
         <label for="fecha-culminación">Fecha de culminación</label>
         <input
-          type="date"
-          id="fechaculminacionProyecto"
-          min="2022-01-25"
+          type="datetime-local"
+          id="meeting-time"
+          name="meeting-time"
           v-model="proyecto.fechaFin"
+          value="2022-01-29T19:30"
+          min="2022-01-29T19:30"
         /><br />
         <button class="CrearProyecto" @click="CrearProyecto(usuarioID)">
           Crear
@@ -249,6 +252,16 @@ export default {
   },
 
   methods: {
+    compararFechas() {
+      let today = new Date().toISOString()
+      let fecha = new Date(this.proyecto.fechaFin).toISOString()
+
+      console.log((today<=fecha))
+
+      console.log("Fecha fin: " + fecha);
+      console.log("Fecha Actual: " + today);
+    },
+
     //abre el Popup de configuración de proyecto
     abrirConfigProyecto() {
       document.querySelector(".ConfigProyecto").classList.add("active");
@@ -289,9 +302,6 @@ export default {
             descripcion: descripcion,
           }
         );
-        console.log(id);
-        console.log(usuarioID);
-        console.log(nombre);
         console.log("se ejecuto funcion crear proyecto");
       } catch (error) {
         console.log(error);
@@ -309,13 +319,6 @@ export default {
         }
         console.log(error.config);
       }
-      //Actualiza los mensajes en motivación y fecha
-      var moti = document.getElementById("motivacion");
-      moti.innerHTML =
-        "Recuerda que tu motivación es: " + this.proyectoActual.motivacion;
-      var fec = document.getElementById("fecha");
-      fec.innerHTML =
-        "La fecha de culminación es " + this.proyectoActual.fechaFin;
       //Ejecuta obtenerProyectosDeBackend (linea 266)
       this.obtenerProyectosDeBackend();
       //Cierra el Popup de añadir nuevo proyecto (linea 145)
@@ -704,7 +707,7 @@ input {
 .content-color {
   background-color: #6290c8;
 }
-.hr-proyectos{
+.hr-proyectos {
   border-top: 2px solid #1d3461;
 }
 </style>

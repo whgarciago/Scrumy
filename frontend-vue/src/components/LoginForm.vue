@@ -4,7 +4,7 @@
       <div id="login">
         <form
           class="border border-primary rounded form-inline"
-          @submit.prevent="login"
+          @submit.prevent="loginVerification()"
         >
           <h2 class="col-12 text-center text-primary mt-3 mb-5">Inicio</h2>
 
@@ -59,28 +59,37 @@ export default {
     return {
       email: "",
       password: "",
-      nombre:"",
+      nombre: "",
       users: [],
     };
   },
   methods: {
-    login() {
-      axios
+    async loginVerification() {
+      await this.login();
+      console.log(this.users);
+      for (let index = 0; index < this.users.length; index++) {
+        if (this.users[index].correo == this.email) {
+          console.log("Concuerdan nombres");
+          if ((this.users[index].contraseña = this.password)) {
+            localStorage.setItem("usuarioID", this.users[index].usuarioID);
+            localStorage.setItem("usuarioNombre", this.users[index].nombre);
+            this.$router.push({ name: "home" });
+          }
+          else{
+            alert('Correo o contraseña incorrectos')
+          }
+        }
+      }
+
+    },
+    async login() {
+      await axios
         .get(this.$store.state.backURL + path)
         .then((response) => {
           if (response.status !== 200) {
             alert("Error en la autenticación");
           } else {
             this.users = response["data"];
-            for (let i = 0; i < this.users.length; i++) {
-              if (this.users[i].correo == this.email) {
-                console.log("hallado");
-                console.log(this.users[i].nombre);
-                this.$router.push({ name: "home" });
-                localStorage.setItem("usuarioID", this.users[i].usuarioID);
-                localStorage.setItem("usuarioNombre",this.users[i].nombre)
-              }
-            }
           }
         })
         .catch((error) => {
