@@ -55,7 +55,7 @@
     </nav>
 
     <div class="d-flex flex-row h-100  ">
-      <div class="col-4 col-lg-3  m-0 p-0 pt-3 bg-secondary">
+      <div class="col-4 col-lg-2  m-0 p-0 pt-3 bg-secondary">
         <div class="col-12 mx-auto p-0 text-center ">
           <h3>Mis proyectos</h3>
 
@@ -82,7 +82,7 @@
       <!--contenido-->
 
       <div
-        class="d-flex flex-column h-100 col-8 col-lg-7 m-auto pt-3 content-color bg-secondary"
+        class="d-flex flex-column h-100 col-8 col-lg-6 m-auto pt-3 content-color bg-secondary"
         v-if="proyectoActual.nombre != ''"
       >
         <div class="p-2">
