@@ -164,13 +164,13 @@ export default {
 
         //console.log(this.avances.length);
         for (let index = 0; index < this.avances.length; index++) {
-          sum += this.avances[index];
+          sum += this.avances[index].value;
           var primerHijo = avanceMeta[index].firstChild;
           var segundoHijo = primerHijo.nextSibling;
-          if(this.avances[index]!=0){
-            segundoHijo.innerHTML = this.avances[index] + '%';
+          if(this.avances[index].value!=0){
+            segundoHijo.innerHTML = this.avances[index].value + '%';
           }
-          segundoHijo.style.setProperty('--variable',this.avances[index]); 
+          segundoHijo.style.setProperty('--variable',this.avances[index].value); 
         }
       //Barras individuales
 
