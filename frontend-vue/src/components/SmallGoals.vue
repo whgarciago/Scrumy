@@ -3,7 +3,7 @@
     <div
       class=" d-flex flex-row col-12 m-0 mb-1 pb-2 align-items-center  titleMetas"
     >
-      <h2>Sprints</h2>
+      <h2>Metas</h2>
 
       <button
         class=" ml-auto add"

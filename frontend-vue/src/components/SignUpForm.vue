@@ -118,7 +118,7 @@ export default {
           idProyectos: null,
         })
         .then((response) => {
-          this.$router.push({ name: "loginform" }).catch((err) => {});
+          this.$router.push({ name: "loginform" }).catch((err) => {}); 
         })
         .catch((response) => {
           alert("No es posible conectar con el backend en este momento");

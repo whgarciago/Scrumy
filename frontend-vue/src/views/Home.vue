@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column vh-100 col-12 m-0 p-0 overflow-hidden">
     <nav class="navbar navbar-expand-lg navbar-dark navbar-color ">
-      <a class="navbar-brand pl-5" href="#">Scrumy</a>
+      <a class="navbar-brand pl-5" href="#"><img :src="logo_URL" alt="Logo de Pagina Scrumy" class="img-fluid" @click="goToHome()"></a>
       <button
         class="navbar-toggler my-0 p-0"
         type="button"
@@ -57,7 +57,7 @@
     <div class="d-flex flex-row h-100  ">
       <div class="col-4 col-lg-2  m-0 p-0 pt-3 bg-secondary">
         <div class="col-12 mx-auto p-0 text-center ">
-          <h3>Mis proyectos</h3>
+          <h3 class="text-light">Mis proyectos</h3>
 
           <button
             class="btn col-10 btn-crear-proyecto mt-3 mb-1"
@@ -83,7 +83,7 @@
       <!--contenido-->
 
       <div
-        class="d-flex flex-column h-100 col-8 col-lg-6 m-auto pt-3 content-color bg-secondary"
+        class="d-flex flex-column h-100 col-8 col-lg-7 m-auto pt-3 content-color "
         v-if="proyectoActual.nombre != ''"
       >
         <div class="p-2">
@@ -107,7 +107,7 @@
         <div
           class="col-12 m-0 p-0 mt-4  componente-central border border-light overflow-auto"
         >
-          <router-view class="bg-light"></router-view>
+          <router-view class=""></router-view>
         </div>
       </div>
     </div>
@@ -207,11 +207,13 @@
 
 <script>
 import axios from "axios";
+import logo from "../assets/logo_S_48px.png";
 
 export default {
   name: "Principal",
   data() {
     return {
+      logo_URL:logo,
       usuarioID: localStorage.usuarioID, //trae el usuario del backend
       usuarioNombre: localStorage.usuarioNombre, //trae el nombre del usuario
       proyectoID: localStorage.proyectoID, //trae el ID del proyecto
@@ -268,7 +270,7 @@ export default {
     },
     //abre el componente central y carga su respectivo contenido según el boton presionado
     abrirComponente(index) {
-      this.$router.push({ name: this.ref[index] });
+      this.$router.push({ name: this.ref[index] }).catch((err=>{}));;
     },
     //Abre el Popup para añadir un nuevo proyecto
     abrirPopup: function() {
@@ -420,13 +422,17 @@ export default {
     },
 
     goToSettings() {
-      this.$router.push({ name: "settings" });
+      this.$router.push({ name: "settings" }).catch((err=>{}));
     },
+    goToHome(){
+      this.$router.push({ name: "home" }).catch((err=>{}));
+    }
   },
   //Carga los proyectos del backend apenas inicia la pagina
   mounted() {
     this.obtenerProyectosDeBackend();
-  },
+  }
+
 };
 </script>
 
@@ -705,7 +711,7 @@ input {
   background-color: #aaa;
 }
 .content-color {
-  background-color: #6290c8;
+  background-color: #a9b2b9;
 }
 .hr-proyectos {
   border-top: 2px solid #1d3461;
