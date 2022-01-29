@@ -12,6 +12,5 @@ public interface repoMeta extends JpaRepository <Meta, Integer>{
     List<Meta> findByidProyecto(int idProyecto);
 
     
-    List<Meta> findByidSprint(int idProyecto);
 
 }

@@ -76,15 +76,15 @@ export default {
       metas:[], //Arreglo con las metas del sprint seleccionado
       actividades:[],
       avances:[],
+      valid: 0,
 
     }
   },
   methods:{
-    SetAvance(idMeta){
-      var suma=0; //Avance de la meta
-      //let actividades=[]; 
-      let pathActividades = "/actividades/all";
-      axios
+    //Retorna el avance individual
+    async AvanceMeta(idMeta){
+      let pathActividades = "/metas/avanceMeta";
+      await axios
       //Se cargan las actividades de la meta actual
       .get(this.$store.state.backURL + pathActividades, {
         params: {
@@ -92,18 +92,19 @@ export default {
         },
       })
       .then((response) => {
-        this.actividades = response["data"];
-        var cantidad = 100/this.actividades.length;
-        for (let index = 0; index < this.actividades.length; index++) {
-          if(this.actividades[index].estado){
-            suma += cantidad;
-          }
-        }
-      this.avances.push(suma);
+        this.valid = response["data"];
       })
       .catch((response) => {
         alert("No es posible conectar con el backend en este momento (SetAvance)");
       });
+
+    },
+    //
+    async SetAvance(idMeta,i){
+      var suma=0; //Avance de la meta
+      await this.AvanceMeta(idMeta)
+      console.log(this.valid);
+      this.avances.push({key: idMeta , value: this.valid});
       //console.log('Se ejecuto SEt avance');+
     },
 
@@ -126,7 +127,8 @@ export default {
       this.avances = [];
       this.avance = 0;
       document.getElementById("avance").style.setProperty('--largo',this.avance); //Actualiza la barra de progreso
-      for (let i = 0; i < this.sprints.length; i++) {//Función de ejemplo, recorre todos los sprints en sprints[]
+      //Recorre los sprints y selecciona el que escogio el ususario
+      for (let i = 0; i < this.sprints.length; i++) {
         //console.log( 'Sprint ' + (i+1));
         if(event.target.value == 'Sprint ' + (i+1)  ){//Si la opción elegida coincide con el nombre de un sprint
           this.sprint.id = this.sprints[i].sprintID;  //Asigna el id de ese sprint a "sprint actual"
@@ -143,11 +145,12 @@ export default {
       })
       .then((response) => {
         this.metas = response["data"];
+        this.avances = new Array(this.metas.length);
         //console.log(this.metas.length);
-        for (let i = 0; i < this.metas.length; i++) {//Función de ejemplo, recorre todos los sprints en sprints[]
-          this.SetAvance(this.metas[i].metaID);
+        for (let i = 0; i < this.metas.length; i++) {
+          this.SetAvance(this.metas[i].metaID,i );
         }
-
+        console.log(this.avances);
       })
       .catch((response) => {
         alert("No es posible conectar con el backend en este momento");

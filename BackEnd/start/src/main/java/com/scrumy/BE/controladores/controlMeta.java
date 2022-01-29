@@ -74,6 +74,7 @@ public class controlMeta {
         }catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
             
     @GetMapping("/metas/findDificulty")
     public ResponseEntity<String> getDificultyByMeta(@RequestParam int id){
