@@ -5,7 +5,7 @@
         <div id="signUp" class="mt-5">
           <form
             class="border border-primary rounded form-inline"
-            @submit.prevent="signUpVerification"
+            @submit.prevent="signUpVerification()"
           >
             <h2 class="col-12 text-center text-primary mt-3 mb-5">Registro</h2>
 
@@ -118,7 +118,7 @@ export default {
           idProyectos: null,
         })
         .then((response) => {
-          this.$router.push({ name: "loginform" }).catch((err) => {}); 
+          this.$router.push({ name: "loginform" }).catch((err) => {});
         })
         .catch((response) => {
           alert("No es posible conectar con el backend en este momento");

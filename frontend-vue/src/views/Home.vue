@@ -1,7 +1,13 @@
 <template>
   <div class="d-flex flex-column vh-100 col-12 m-0 p-0 overflow-hidden">
     <nav class="navbar navbar-expand-lg navbar-dark navbar-color ">
-      <a class="navbar-brand pl-5" href="#"><img :src="logo_URL" alt="Logo de Pagina Scrumy" class="img-fluid" @click="goToHome()"></a>
+      <a class="navbar-brand pl-5" href="#"
+        ><img
+          :src="logo_URL"
+          alt="Logo de Pagina Scrumy"
+          class="img-fluid"
+          @click="goToHome()"
+      /></a>
       <button
         class="navbar-toggler my-0 p-0"
         type="button"
@@ -47,7 +53,7 @@
                 >Configuracion</a
               >
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="">Cerrar sesión</a>
+              <a class="dropdown-item" @click="cerrarSesion()" href="">Cerrar sesión</a>
             </div>
           </li>
         </ul>
@@ -67,7 +73,7 @@
             <!--falta abrirPopup()-->
             Crear Proyecto
           </button>
-          <hr class="hr-proyectos col-9">
+          <hr class="hr-proyectos col-9" />
 
           <button
             class="btn btn-side-navbar my-1 col-10"
@@ -213,7 +219,7 @@ export default {
   name: "Principal",
   data() {
     return {
-      logo_URL:logo,
+      logo_URL: logo,
       usuarioID: localStorage.usuarioID, //trae el usuario del backend
       usuarioNombre: localStorage.usuarioNombre, //trae el nombre del usuario
       proyectoID: localStorage.proyectoID, //trae el ID del proyecto
@@ -255,13 +261,18 @@ export default {
 
   methods: {
     compararFechas() {
-      let today = new Date().toISOString()
-      let fecha = new Date(this.proyecto.fechaFin).toISOString()
+      let today = new Date().toISOString();
+      let fecha = new Date(this.proyecto.fechaFin).toISOString();
 
-      console.log((today<=fecha))
+      console.log(today <= fecha);
 
       console.log("Fecha fin: " + fecha);
       console.log("Fecha Actual: " + today);
+    },
+    cerrarSesion() {
+      localStorage.setItem("usuarioID", -1);
+      localStorage.setItem("usuarioNombre", null);
+      this.$router.push({ name: "loginform" });
     },
 
     //abre el Popup de configuración de proyecto
@@ -270,7 +281,7 @@ export default {
     },
     //abre el componente central y carga su respectivo contenido según el boton presionado
     abrirComponente(index) {
-      this.$router.push({ name: this.ref[index] }).catch((err=>{}));;
+      this.$router.push({ name: this.ref[index] }).catch((err) => {});
     },
     //Abre el Popup para añadir un nuevo proyecto
     abrirPopup: function() {
@@ -422,17 +433,16 @@ export default {
     },
 
     goToSettings() {
-      this.$router.push({ name: "settings" }).catch((err=>{}));
+      this.$router.push({ name: "settings" }).catch((err) => {});
     },
-    goToHome(){
-      this.$router.push({ name: "home" }).catch((err=>{}));
-    }
+    goToHome() {
+      this.$router.push({ name: "home" }).catch((err) => {});
+    },
   },
   //Carga los proyectos del backend apenas inicia la pagina
   mounted() {
     this.obtenerProyectosDeBackend();
-  }
-
+  },
 };
 </script>
 
