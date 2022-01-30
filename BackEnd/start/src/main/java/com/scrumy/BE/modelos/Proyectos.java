@@ -1,7 +1,6 @@
 package com.scrumy.BE.modelos;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 @Entity
 @Table (name = "proyecto")
@@ -28,13 +27,13 @@ public class Proyectos {
     private String descripcion;
 
     @Column(name = "FechaFin",nullable = false)
-    private Date fechaFin;
+    private String fechaFin;
 
     //Constructores
     public Proyectos() {
     }
 
-    public Proyectos(String nombre, int idUsuarios, String motivacion,  String descripcion, Date fechaFin) {
+    public Proyectos(String nombre, int idUsuarios, String motivacion,  String descripcion, String fechaFin) {
         this.nombre = nombre;
         this.idUsuarios = idUsuarios;
         this.motivacion = motivacion;
@@ -91,11 +90,11 @@ public class Proyectos {
         this.descripcion = descripcion;
     }
 
-    public Date getFechaFin() {
+    public String getFechaFin() {
         return this.fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(String fechaFin) {
         this.fechaFin = fechaFin;
     }
 
