@@ -9,7 +9,7 @@
     <select name="menu" id="menu" @change="TraerMetasDelSprint($event)" v-model="key"> <!--Selector de sprints -->s
           <!--El siguiente for recorre todos los sprints en sprints[], los trae como opciones del selector y muestra su nombre-->
           <option v-for="spr in sprints" :key="spr.sprintID"  selected="selected" >Sprint {{sprints.indexOf(spr) +1 }}</option>
-          {{ActualizarBarra()}}
+          {{}}
         </select>
 
     <!--Div de las metas del sprint para ordenar -->
@@ -104,7 +104,7 @@ export default {
       var suma=0; //Avance de la meta
       await this.AvanceMeta(idMeta)
       console.log(this.valid);
-      this.avances.push({key: idMeta , value: this.valid});
+      this.avances.push({key: i , value: this.valid});
       //console.log('Se ejecuto SEt avance');+
     },
 
@@ -150,6 +150,7 @@ export default {
         for (let i = 0; i < this.metas.length; i++) {
           this.SetAvance(this.metas[i].metaID,i );
         }
+        this.ActualizarBarra();
         console.log(this.avances);
       })
       .catch((response) => {
@@ -161,16 +162,23 @@ export default {
       if(this.avances.length != 0){
       var sum = 0;
       var avanceMeta = document.getElementById("Plan").childNodes;
+      //console.log(avanceMeta);
+      var llaves = Object.keys(this.avances);
+      console.log(llaves);
 
         //console.log(this.avances.length);
-        for (let index = 0; index < this.avances.length; index++) {
-          sum += this.avances[index].value;
-          var primerHijo = avanceMeta[index].firstChild;
+        for ( var key in this.avances) {
+          console.log(key);
+          console.log(this.avances[key]);
+          sum += this.avances[key];
+          var index = avance[key];
+          
+          var primerHijo = avanceMeta[key].firstChild;
           var segundoHijo = primerHijo.nextSibling;
-          if(this.avances[index].value!=0){
-            segundoHijo.innerHTML = this.avances[index].value + '%';
+          if(this.avances[key]!=0){
+            segundoHijo.innerHTML = this.avances[key] + '%';
           }
-          segundoHijo.style.setProperty('--variable',this.avances[index].value); 
+          segundoHijo.style.setProperty('--variable',this.avances[key]); 
         }
       //Barras individuales
 
