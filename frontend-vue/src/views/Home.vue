@@ -36,7 +36,7 @@
           </li>
         </ul>
         <ul class="navbar-nav mr-4">
-          <li class="nav-item dropdown mr-4 btn btn-outline-warning">
+          <li class="nav-item dropdown mr-4 btn btn-navbar">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -61,7 +61,7 @@
     </nav>
 
     <div class="d-flex flex-row h-100  ">
-      <div class="col-4 col-lg-2  m-0 p-0 pt-3 bg-secondary">
+      <div class="col-4 col-lg-2  m-0 p-0 pt-3 barraProyectos">
         <div class="col-12 mx-auto p-0 text-center ">
           <h3 class="text-light">Mis proyectos</h3>
 
@@ -94,15 +94,17 @@
       >
         <div class="p-2">
           <div class="card text-center">
-            <div class="card-header">
-              Información del Proyecto
+            <div class="card-header fs-1">
+              <h2 class="d-inline">Información del Proyecto</h2> 
+              <button class="btn btn-cambio fs-4" @click="abrirConfigProyecto()">
+                Cambiar?</button>
             </div>
+            
             <div class="card-body">
               <h5 class="card-title">{{ proyectoActual.nombre }}</h5>
-              <h5 class="card-title">
+              <p class="card-text">
                 Fecha de finalización: {{ proyectoActual.fechaFin }}
-              </h5>
-
+              </p>
               <p class="card-text">
                 {{ proyectoActual.descripcion }}
               </p>
@@ -110,16 +112,11 @@
           </div>
         </div>
         <!--componente -->
-        <div
-          class="col-12 m-0 p-0 mt-4  componente-central border border-light overflow-auto"
-        >
+        <div class="col-12 m-0 p-0 mt-4  componente-central border border-light overflow-auto">
           <router-view class=""></router-view>
         </div>
       </div>
     </div>
-
-    <!-- Logo, botones de proyectos y usuario -->
-
     <!--Div para desplegar los componentes de cada boton-->
     <!--Popup de crear nuevo proyecto-->
     <div class="popup">
@@ -144,11 +141,10 @@
           placeholder="Descripción"
           v-model="proyecto.descripcion"
         /><br />
-        <label for="fecha-culminación">Fecha de culminación</label>
+        <label class="fecha-culminación text-light">Fecha de culminación</label>
         <input
           type="datetime-local"
-          id="meeting-time"
-          name="meeting-time"
+          class="text-muted"
           v-model="proyecto.fechaFin"
           value="2022-01-29T19:30"
           min="2022-01-29T19:30"
@@ -205,8 +201,6 @@
 
     <!--Boton configuracion de proyecto
     <button id="botonConfigProyecto" @click="abrirConfigProyecto()">
-      <img class="logos" src="../assets/config.png" />
-    </button>
     -->
   </div>
 </template>
@@ -233,7 +227,7 @@ export default {
       //nombres es un arreglo con los nombres de los 4 botones
       nombres: ["Metas", "Sprints", "Plan", "Actividades", "Retroalimentacion"],
       //ref es el arreglo que relaciona los botones con sus componentes
-      ref: ["smallgoals", "sprints", "Plan", "Activities", "retroalimentacion"],
+      ref: ["smallgoals", "sprints", "Plan", "Activities", "#"],
       //mesidenav es falso cuando el mouse no esta encima de los botones
       mesidenav: false,
       //proyecto es el objeto base para manejar, se llena en el Popup de crear nuevo proyecto
@@ -374,13 +368,6 @@ export default {
         }
         console.log(error.config);
       }
-      //actualiza los mensajes de motivación y fecha
-      var moti = document.getElementById("motivacion");
-      moti.innerHTML =
-        "Recuerda que tu motivación es: " + this.proyectoActual.motivacion;
-      var fec = document.getElementById("fecha");
-      fec.innerHTML =
-        "La fecha de culminación es " + this.proyectoActual.fechaFin;
       //Ejecuta obtenerProyectosDeBackend (linea 266)
       this.obtenerProyectosDeBackend();
       //Cierra el Popup de ModificarProyecto (linea 149)
@@ -452,58 +439,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1,
-h2,
-#logousuario {
-  font-weight: normal;
-  color: blue;
-  right: 2em;
-}
-
-.sidenav {
-  margin-top: 5px;
-  width: 80px;
-  position: fixed;
-  z-index: 1;
-  background: rgb(21, 73, 198, 0.6);
-  overflow-x: hidden;
-  color: white;
-  top: 120px;
-  border-radius: 10px;
-  border: 2px solid #eee;
-}
-.sidenav:hover {
-  width: 250px;
-}
-
-.sidenav a {
-  line-height: 15vh;
-  height: 15vh;
-  text-align: center;
-  text-decoration: none;
-  font-size: 25px;
-  display: block;
-
-  border-bottom: 2px solid;
-  border-right: 2px solid;
-}
-
-.sidenav a p:hover {
-  color: rgb(21, 73, 198, 0.6);
-  background-color: #eee;
-  border-color: #eee;
-}
-
-.topNavigationBar {
-  position: fixed;
-  top: 0;
-  background-color: rgba(255, 255, 255, 0.103);
-  overflow: hidden;
-  height: 126px;
-  width: 100vw;
-  border-bottom: 2px solid rgb(156, 156, 156);
-}
-
 .popup {
   background: rgb(123, 163, 209);
   position: absolute;
@@ -517,13 +452,16 @@ h2,
   background: #fff;
   box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
+  border-width: 2px;
+  border-color: white;
   transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 200 ms,
     transform 20ms ease-in-out 0 ms;
 }
 .popup.active {
   display: block;
-  background: rgb(123, 163, 209, 0.5);
-  top: 10%;
+  background: #446792;
+  
+  top: 1%;
   left: 50%;
   opacity: 1;
   transform: translate(-50%, 50%) scale(1);
@@ -585,85 +523,9 @@ h2,
   width: 240px;
   height: 120px;
 }
-#retroicon {
-  margin-top: 800px;
-  margin-left: 5%;
-  height: 80px;
-  width: 80px;
-  position: fixed;
-  border-radius: 10px;
-  padding: 13px;
-  background-color: rgb(21, 73, 198, 0.6);
-  color: rgb(255, 255, 255);
-  position: fixed;
-  border: 2px solid #eee;
-}
-#fecha {
-  margin: 8rem 16.5rem;
-  height: 30px;
-  width: 350px;
-  position: fixed;
-  font-size: 16px;
-  border-radius: 10px;
-  padding: 4px;
-  background-color: rgb(21, 73, 198, 0.6);
-  color: rgb(255, 255, 255);
-  position: fixed;
-  border: 2px solid #eee;
-}
-#motivacion {
-  margin-top: 800px;
-  margin-left: 20%;
-  font-size: 22px;
-  height: 4em;
-  width: 40em;
-  border-radius: 10px;
-  padding: 10px;
-  background-color: rgb(21, 73, 198, 0.6);
-  color: rgb(255, 255, 255);
-  position: fixed;
-  border: 2px solid #eee;
-}
-.botonesProyectos {
-  font-size: 20px;
-  color: rgb(255, 255, 255);
-  border-radius: 10px;
-  background-color: rgb(21, 73, 198, 0.6);
-}
-.botonesProyectos:hover {
-  color: rgb(21, 73, 198);
-  background-color: rgb(255, 255, 255);
-}
-#botonConfigProyecto {
-  margin-top: 800px;
-  margin-left: 90%;
-  height: 80px;
-  width: 80px;
-  position: fixed;
-  border-radius: 10px;
-  padding: 4px;
-  background-color: rgb(21, 73, 198, 0.6);
-  color: rgb(255, 255, 255);
-  position: fixed;
-  border: 2px solid #eee;
-}
-#botonConfigProyecto,
-#retroicon:hover {
-  height: 85px;
-  width: 85px;
-}
-#logo {
-  width: 230px;
-}
-.logos {
-  width: 50px;
-}
-#proyectos {
-  display: inline;
-  margin-top: 70px;
-}
+
 input {
-  background-color: rgb(123, 169, 209);
+  background-color: rgb(162, 187, 209);
   color: white;
   margin-top: 5px;
   display: block;
@@ -686,14 +548,18 @@ input {
   margin-left: 10px;
   width: 40%;
   padding: 12px 0px 10px 5px;
-  border: none;
   outline: none;
   font-size: 15px;
   background: rgb(123, 163, 209, 0.5);
-  color: black;
+  color: rgb(255, 255, 255);
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
+  transition: 0.5s;
+}
+.CrearProyecto:hover,.cancelarCrearProyecto:hover{
+  color: #ffffff;
+  box-shadow: 0 0 5px #ffffff, 0 0 20px #ffffff, 0 0 40px #ffffff;
 }
 #tituloPopup {
   font-size: 30px;
@@ -703,6 +569,8 @@ input {
 
 .navbar-color {
   background-color: #1d3461;
+  background: radial-gradient(circle, rgba(2,0,36,1) 0%, 
+  #1d3461 51%, rgb(24, 63, 155) 100%);
 }
 .barralado {
   background-color: #376996;
@@ -711,20 +579,61 @@ input {
   min-height: 65vh;
   max-height: 65vh;
 }
+
+
 .btn-crear-proyecto {
-  background-color: #6290c8;
+  background-color: #446792;
+  border-radius: 4px;
+  border-width: 2px;
+  border-color: white;
+  color: white;
+  transition: 0.5s;
 }
+.btn-crear-proyecto:hover {
+  color: #ffffff;
+  box-shadow: 0 0 5px #ffffff, 0 0 20px #ffffff, 0 0 40px #ffffff;
+}
+
+
 .btn-side-navbar {
-  background-color: #829cbc;
+  background-color: #446792;
+  border-radius: 4px;
+  border-width: 2px;
+  border-color: white;
+  color: white;
+  transition: 0.5s;
+}
+.btn-side-navbar:hover{
+  color: #ffffff;
+  box-shadow: 0 0 5px #ffffff, 0 0 20px #ffffff, 0 0 40px #ffffff;
+}
+.btn-navbar{
+  transition: 0.5s;
 }
 .btn-navbar:hover {
-  background-color: #aaa;
+  background: #1d3461;
+  box-shadow: 0 0 5px #ffffff, 0 0 20px #ffffff, 0 0 40px #ffffff;
+
 }
+.btn-cambio{
+  background-color: #446792;
+  /*background-image: linear-gradient(to left,#446792,#1d3461);*/
+  color: white;
+  transition: 0.5s;
+}
+
 .content-color {
   background-color: #a9b2b9;
 }
 .hr-proyectos {
   border-top: 2px solid #1d3461;
+}
+.barraProyectos{
+  background-image: linear-gradient(to top,rgb(182, 182, 182),#454b50);
+}
+.card-header{
+  background: #1d3461;
+  color: white;
 }
 </style>
 <!--COSAS QUE HACER:
