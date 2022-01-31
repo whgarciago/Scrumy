@@ -1,7 +1,16 @@
 <template>
   <div class="col-12 m-0 p-2 h-100 component">
-    <div class="col-12 h-15 d-inline-block titleMetas">
+    <div
+      class=" d-flex flex-row col-12 m-0 mb-1 pb-2 align-items-center  titleMetas"
+    >
       <h2>Metas</h2>
+
+      <button
+        class=" ml-auto add"
+        @click="abrirPopup()"
+      >
+        <img src="../assets/addbutton.png" />
+      </button>
     </div>
     <div class="row col-12 h-75 justify-content-center pl-5 overflow-auto">
       <div
@@ -22,9 +31,7 @@
       </div>
     </div>
     <div class="col-12 h-15 d-inline-block text-right">
-      <button class=" mt-2 add" @click="abrirPopup()">
-        <img src="../assets/addbutton.png" />
-      </button>
+      
     </div>
 
     <div class="create-goal-popup">

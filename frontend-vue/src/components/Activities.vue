@@ -1,6 +1,4 @@
 <template>
-
-      
       <div id="Activities col-12 m-0 p-2 h-100 ">
         <div class="col-12 d-inline-block m-2 titleMetas">
           <h2>Actividades</h2>
