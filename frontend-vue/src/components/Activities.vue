@@ -24,11 +24,11 @@
         <div class=" d-flex flex-row">
         <div v-for="actividad in actividades" :key="actividad.id" class="actividades ">
         <div class="card bg-light mb-3" style="width: 18rem;">
-          <div class="card-header">{{actividad.nombre}}</div>
+          <div class="card-header">{{actividad.nombre}}___{{actividad.actividadID}}__{{actividad.estado}}</div>
           <div class="card-body">
-            <p class="card-text">{{actividad.descripcion}}
-            </p>
-            <input type ="checkbox">
+            <p class="card-text">{{actividad.descripcion}}</p>
+            <button class="btn" @click="cambiarEstado(actividad.actividadID)">COMPLETADA?</button>
+            <button class="btn" @click="EliminarActividad(actividad.actividadID)">ELIMINAR</button>
           </div>
         </div>
       </div>
@@ -48,27 +48,10 @@
         <button @click="CrearActividad()" class="textoOpcion">Crear</button>
       </div>
     
-
-    <!--Popup para eliminar actividad-->
-    
-      <div class="ventanaOpciones eliminarActividad">
-        <div class="contenidoFixed">
-          <h2>Eliminar actividades</h2>
-              <div v-for="actividad in actividades" :key="actividad.id" class="actividadesEliminar">
-                  <!--Revisar si value está correcto -->
-                  <input type="checkbox" name="done" value="actividad.actividadID" v-model="CheckboxDelAct">
-                  <p>{{actividad.nombre}}</p>
-              </div>  
-        </div>
-        <button @click="cerrarPopupDel()" class="cerrarVentana">x</button>
-        <button @click="EliminarActividad()" class="textoOpcion">Eliminar</button>
-      </div>
      <!--Div grande que abarca toda la pagina -->
     <!--Div del Titulo y el selector de sprints -->
     
-        <button @click="abrirPopupAct()" id="CreateActivityButton">+</button>
-    <button @click="abrirPopupDel()" id="DeleteActivityButton"><img src="https://img.icons8.com/glyph-neue/50/4a90e2/trash.png"/></button>
-    
+        <button @click="abrirPopupAct()" id="CreateActivityButton">+</button>   
   </div>
 </template>
 
@@ -121,18 +104,10 @@ export default {
   },
   methods:{
     abrirPopupAct: function() {
-      document.querySelector(".eliminarActividad").style.display ="none";
       document.querySelector(".crearActividad").style.display ="flex";
     },
     cerrarPopupAct: function() {
       document.querySelector(".crearActividad").style.display ="none";
-    },
-    abrirPopupDel: function() {
-      document.querySelector(".crearActividad").style.display ="none";
-      document.querySelector(".eliminarActividad").style.display ="flex";
-    },
-    cerrarPopupDel: function() {
-      document.querySelector(".eliminarActividad").style.display ="none";
     },
     BringActivities(idMeta){
       //let actividades=[]; 
@@ -197,7 +172,19 @@ export default {
       });
       //this.SetAvance();//Actualiza la barra con el avance del sprint seleccionado
     },
-    
+    cambiarEstado(idActividad){
+      console.log(idActividad);
+      let pathChangeState = "/actividades/updateState?id=";
+      axios
+      .put(this.$store.state.backURL + pathChangeState + idActividad,{} )
+      .then((response) => {
+        console.log("Pudo acceder a las actividades");
+        this.BringActivities(this.idMetA);
+      })
+      .catch((response) => {
+        alert("No es posible conectar con el backend en este momento 5");
+      });
+    },
   CrearActividad(){
       let pathCreateActivity = "/actividades/create";
       axios
@@ -223,32 +210,19 @@ export default {
       //this.SetAvance();//Actualiza la barra con el avance del sprint seleccionado
  
     },
-    auxEliminarActividad(idActividad){
-      let pathRemoveActivity = "/actividades/remove";
+    EliminarActividad(idActividad){
+      let pathRemoveActivity = "/actividades/remove?id=";
       axios
-      .delete(this.$store.state.backURL + pathRemoveActivity, {
-        params: {
-          actividadID: idActividad,
-        },
-      })
+      .delete(this.$store.state.backURL + pathRemoveActivity + idActividad, {})
       .then((response) => {
         console.log("Pudo acceder a las actividades");
+        this.BringActivities(this.idMetA);
       })
       .catch((response) => {
         alert("No es posible conectar con el backend en este momento 5");
       });
       //this.SetAvance();//Act
     },
-    EliminarActividad(){
-    this.arregloActividades = this.CheckboxDelAct;
-    for (let index = 0; index < this.arregloActividades.length; index++) {
-        this.auxEliminarActividad(this.arregloActividades[index]);
-        
-    }      
-    this.cerrarPopupDel();
-    this.BringActivities(this.meta.id);
-  },
-
 
   },
 
@@ -350,18 +324,6 @@ html,body{
     margin: 40px; 
 }
 
-#DeleteActivityButton{
-    position: absolute;
-    bottom: 8px;
-    right: 16px;
-    background-color:#ffffff;
-    border-radius: 20%;
-    border-style: solid;
-    color:#15a8e2;
-    width: 65px;
-    height: 65px;
-    cursor: pointer;
-  }
 
   #CreateActivityButton{
     position: absolute;
@@ -394,12 +356,6 @@ html,body{
     text-justify: center;
   }
 
-  .eliminarActividad{
-      position: absolute;
-      display: none;
-      transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 200 ms,
-      transform 20ms ease-in-out 0 ms;
-  }
   .crearActividad{
       position: absolute;
       display: none;
