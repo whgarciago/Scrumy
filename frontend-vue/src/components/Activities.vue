@@ -104,10 +104,18 @@ export default {
   },
   methods:{
     abrirPopupAct: function() {
+      //document.querySelector(".eliminarActividad").style.display ="none";
       document.querySelector(".crearActividad").style.display ="flex";
     },
     cerrarPopupAct: function() {
       document.querySelector(".crearActividad").style.display ="none";
+    },
+    abrirPopupDel: function() {
+      document.querySelector(".crearActividad").style.display ="none";
+      //document.querySelector(".eliminarActividad").style.display ="flex";
+    },
+    cerrarPopupDel: function() {
+      //document.querySelector(".eliminarActividad").style.display ="none";
     },
     BringActivities(idMeta){
       //let actividades=[]; 
@@ -216,7 +224,7 @@ export default {
       .delete(this.$store.state.backURL + pathRemoveActivity + idActividad, {})
       .then((response) => {
         console.log("Pudo acceder a las actividades");
-        this.BringActivities(this.idMetA);
+        //this.BringActivities(this.meta.id);
       })
       .catch((response) => {
         alert("No es posible conectar con el backend en este momento 5");
@@ -324,6 +332,18 @@ html,body{
     margin: 40px; 
 }
 
+#DeleteActivityButton{
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+    background-color:#ffffff;
+    border-radius: 20%;
+    border-style: solid;
+    color:#15a8e2;
+    width: 65px;
+    height: 65px;
+    cursor: pointer;
+  }
 
   #CreateActivityButton{
     position: absolute;
@@ -356,6 +376,12 @@ html,body{
     text-justify: center;
   }
 
+  .eliminarActividad{
+      position: absolute;
+      display: none;
+      transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 200 ms,
+      transform 20ms ease-in-out 0 ms;
+  }
   .crearActividad{
       position: absolute;
       display: none;
