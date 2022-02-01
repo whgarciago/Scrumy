@@ -202,6 +202,7 @@ export default {
           idMeta: this.idMetA,
           nombre: this.NombreActividad,
           descripcion: this.DescripcionActividad,
+          dificultad:" ",
 
       })
       .then((response) => {
