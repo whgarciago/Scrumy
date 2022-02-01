@@ -334,6 +334,7 @@ export default {
           estado: this.formGoal.state,
           idProyecto: this.$store.state.activeProject,
           idSprint: 0,
+          dificultad:" ",
         })
         .then((response) => {
           this.cargarMetas();

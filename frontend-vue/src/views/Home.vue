@@ -31,7 +31,7 @@
             @click="abrirComponente(indice)"
           >
             <a class="nav-link" href="#"
-              >{{ nombre }} <span class="sr-only">(current)</span></a
+              ><h4>{{ nombre }}</h4><span class="sr-only">(current)</span></a
             >
           </li>
         </ul>
@@ -569,8 +569,8 @@ input {
 
 .navbar-color {
   background-color: #1d3461;
-  background: radial-gradient(circle, rgba(2,0,36,1) 0%, 
-  #1d3461 51%, rgb(24, 63, 155) 100%);
+  /*background: radial-gradient(circle, rgba(2,0,36,1) 0%, 
+  #1d3461 51%, rgb(24, 63, 155) 100%);*/
 }
 .barralado {
   background-color: #376996;
@@ -596,7 +596,7 @@ input {
 
 
 .btn-side-navbar {
-  background-color: #446792;
+  background-color: #6293ce;
   border-radius: 4px;
   border-width: 2px;
   border-color: white;
@@ -604,8 +604,9 @@ input {
   transition: 0.5s;
 }
 .btn-side-navbar:hover{
+  background-color: #284669;
   color: #ffffff;
-  box-shadow: 0 0 5px #ffffff, 0 0 20px #ffffff, 0 0 40px #ffffff;
+  /*box-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 10px #ffffff;*/
 }
 .btn-navbar{
   transition: 0.5s;
@@ -629,7 +630,8 @@ input {
   border-top: 2px solid #1d3461;
 }
 .barraProyectos{
-  background-image: linear-gradient(to top,rgb(182, 182, 182),#454b50);
+  /*background-image: linear-gradient(to top,rgb(182, 182, 182),#454b50);*/
+  background-color: rgb(99, 144, 199,0.7);
 }
 .card-header{
   background: #1d3461;
