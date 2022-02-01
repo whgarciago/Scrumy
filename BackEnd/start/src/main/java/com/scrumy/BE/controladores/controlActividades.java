@@ -198,13 +198,12 @@ public class controlActividades {
     public ResponseEntity<Actividades> updateState(@RequestParam int id){
         Optional<Actividades> activitydata = RA.findById(id);
 
-        try{
+        if(activitydata.isPresent()){
             Actividades a = activitydata.get();
-            a.setEstado(!a.getEstado());
+            boolean s = a.getEstado();
+            a.setEstado(!s);
             return new ResponseEntity<>(RA.save(a), HttpStatus.OK);
-
-        }catch(Exception e){
-
+        }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
