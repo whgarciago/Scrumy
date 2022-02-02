@@ -10,19 +10,19 @@ public class Actividades {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int actividadID;
 
-    @Column(name = "Dificultad")
+    @Column(name = "Dificultad",nullable = false)
     private String dificultad;
 
-    @Column(name = "Nombre")
+    @Column(name = "Nombre",nullable = false)
     private String nombre;
 
     @Column(name = "Descripcion")
     private String descripcion;
 
-    @Column(name = "IDMeta")
+    @Column(name = "IDMeta",nullable = false)
     private int idMeta;
 
-    @Column(name = "Estado")
+    @Column(name = "Estado",nullable = false)
     private boolean estado;
 
     //Constructores
@@ -37,6 +37,16 @@ public class Actividades {
         this.idMeta = idMeta;
         this.estado = false;
     }
+
+
+    public Actividades(String dificultad, String nombre, String descripcion, int idMeta, boolean estado) {
+        this.dificultad = dificultad;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.idMeta = idMeta;
+        this.estado = estado;
+    }
+
 
     
     //Getters y Setters

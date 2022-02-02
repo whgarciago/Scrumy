@@ -10,13 +10,13 @@ public class Usuarios {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int usuarioID;
 
-    @Column(name = "Nombre")
+    @Column(name = "Nombre", nullable = false)
     private String nombre;
 
-    @Column(name = "Correo")
+    @Column(name = "Correo",nullable = false)
     private String correo;
 
-    @Column(name = "Contraseña")
+    @Column(name = "Contraseña",nullable = false)
     private String contraseña;
 
     @Column(name = "IDProyectos")

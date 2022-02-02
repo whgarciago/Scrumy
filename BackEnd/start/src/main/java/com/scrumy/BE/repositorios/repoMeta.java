@@ -8,10 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface repoMeta extends JpaRepository <Meta, Integer>{
     List<Meta> findByMetaID(int Meta);
-    
+    List<Meta> findByidSprint(int idSprint);
     List<Meta> findByidProyecto(int idProyecto);
 
     
-    List<Meta> findByidSprint(int idProyecto);
 
 }

@@ -63,6 +63,19 @@ public class controlMeta {
         }
     }
 
+    @GetMapping("/metas/sprintfind")
+    public ResponseEntity<List<Meta>> getMetasbyIdSprint(@RequestParam int id){
+        try{
+            List<Meta> foundProject = RM.findByidSprint(id);
+            if(foundProject.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(foundProject, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+            
     @GetMapping("/metas/findDificulty")
     public ResponseEntity<String> getDificultyByMeta(@RequestParam int id){
         try{
@@ -77,10 +90,11 @@ public class controlMeta {
         }
     }
 
+
     @PostMapping("/metas/create")
     public ResponseEntity<Meta> createMeta(@RequestBody Meta m){
         try{
-            Meta tdb = RM.save(new Meta(m.getNombre(), m.getIdProyecto() , m.getEstado() , m.getIdSprint() , m.getDescripcion(), m.getActividadID(), m.getDificultad()));
+            Meta tdb = RM.save(new Meta(m.getNombre(), m.getIdProyecto() , m.getEstado() , m.getIdSprint() , m.getDescripcion(), m.getDificultad()));
             return new ResponseEntity<>(tdb,HttpStatus.CREATED);
         }catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -109,7 +123,6 @@ public class controlMeta {
             m.setEstado(updMeta.getEstado());
             m.setIdSprint(updMeta.getIdSprint());
             m.setDescripcion(updMeta.getDescripcion());
-            m.setActividadID(updMeta.getActividadID());
 
             return new ResponseEntity<>(RM.save(m),HttpStatus.OK);
         }else{
@@ -146,13 +159,4 @@ public class controlMeta {
         }
     }
 
-    @DeleteMapping("/metas/delete/all")
-    public ResponseEntity<HttpStatus> deleteAllMeta(){
-        try{
-            RM.deleteAll();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

@@ -1,0 +1,28 @@
+ALTER TABLE IF EXISTS public.proyecto
+    ADD CONSTRAINT "FKUsuario" FOREIGN KEY (usuario)
+    REFERENCES public.usuarios (usuarioid) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+    NOT VALID;
+
+ALTER TABLE IF EXISTS public.meta
+    ADD CONSTRAINT "FKProyecto" FOREIGN KEY (proyecto)
+    REFERENCES public.proyecto (proyectoid) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+    NOT VALID;
+
+ALTER TABLE IF EXISTS public.sprint
+    ADD CONSTRAINT "FKProyectoS" FOREIGN KEY (proyecto)
+    REFERENCES public.proyecto (proyectoid) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.actividades
+    ADD CONSTRAINT "FKmeta" FOREIGN KEY (idmeta)
+    REFERENCES public.meta (metaid) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE SET NULL
+    NOT VALID;

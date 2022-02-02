@@ -10,49 +10,47 @@ public class Meta {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int metaID;
 
-    @Column(name = "Nombre")
+    @Column(name = "Nombre",nullable = false)
     private String nombre;
 
-    @Column(name = "Proyecto")
+    @Column(name = "Proyecto",nullable = false)
     private int idProyecto;
 
-    @Column(name = "Estado")
+    @Column(name = "Estado",nullable = false)
     private int estado;
 
     //Tenemos que volverlo arreglo
     @Column(name = "Sprint")
     private int idSprint; 
 
-    @Column(name = "Descripcion")
+    @Column(name = "Descripcion",nullable = false)
     private String descripcion;
 
-    @Column(name = "Actividad")
-    private int actividadID;
+   //@Column(name = "Actividad",nullable = false)
+    //private int actividadID;
 
-    @Column(name = "Dificultad")
+    @Column(name = "Dificultad",nullable = false)
     private String dificultad;
 
     //Constructores
     public Meta() {
     }
 
-    public Meta(String nombre, int idProyecto, int estado, int idSprint, String descripcion, int actividadID) {
+    public Meta(String nombre, int idProyecto, int estado, int idSprint, String descripcion) {
         this.nombre = nombre;
         this.idProyecto = idProyecto;
         this.estado = estado;
         this.idSprint = idSprint;
         this.descripcion = descripcion;
-        this.actividadID = actividadID;
     }
 
 
-    public Meta(String nombre, int idProyecto, int estado, int idSprint, String descripcion, int actividadID, String dificultad) {
+    public Meta(String nombre, int idProyecto, int estado, int idSprint, String descripcion, String dificultad) {
         this.nombre = nombre;
         this.idProyecto = idProyecto;
         this.estado = estado;
         this.idSprint = idSprint;
         this.descripcion = descripcion;
-        this.actividadID = actividadID;
         this.dificultad = dificultad;
     }
     
@@ -97,13 +95,13 @@ public class Meta {
         this.idSprint = idSprint;
     }
 
-    public int getActividadID() {
+    /*public int getActividadID() {
         return this.actividadID;
     }
 
     public void setActividadID(int actividadID) {
         this.actividadID = actividadID;
-    }
+    }*/
 
     public String getNombre() {
         return this.nombre;
@@ -140,7 +138,7 @@ public class Meta {
             ", estado='" + getEstado() + "'" +
             ", idSprint='" + getIdSprint() + "'" +
             ", descripcion='" + getDescripcion() + "'" +
-            ", actividadID='" + getActividadID() + "'" +
+            //", actividadID='" + getActividadID() + "'" +
             ", dificultad='" + getDificultad() + "'" +
             "}";
     }
