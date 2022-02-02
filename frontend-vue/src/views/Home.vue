@@ -517,24 +517,24 @@ export default {
           break;
         case 3://Tema verde
           BarraSuperior[0].style.backgroundColor= "#02ac66";
-          BarraProy[0].style.backgroundColor= "#056940b3";
+          BarraProy[0].style.backgroundColor= " #F47F4Db3";
           EncabezProyecto[0].style.backgroundColor= "#02ac66";
-          BotonCambiar[0].style.backgroundColor= "#056940b3";
-          Contenido[0].style.backgroundColor= "#056940b3";
+          BotonCambiar[0].style.backgroundColor= " #F47F4Db3";
+          Contenido[0].style.backgroundColor= " #F47F4Db3";
           break;
         case 4://Tema Rojo
           BarraSuperior[0].style.backgroundColor= "#B83955";
-          BarraProy[0].style.backgroundColor= "#9F1E3Ab7";
+          BarraProy[0].style.backgroundColor= "#295073b7";
           EncabezProyecto[0].style.backgroundColor= "#B83955";
-          BotonCambiar[0].style.backgroundColor= "#9F1E3Ab7";
-          Contenido[0].style.backgroundColor= "#9F1E3Ab7";
+          BotonCambiar[0].style.backgroundColor= "#295073b7";
+          Contenido[0].style.backgroundColor= "#295073b7";
           break;
         case 5://Tema Claro
           BarraSuperior[0].style.backgroundColor= "#23bac4";
-          BarraProy[0].style.backgroundColor= "#0DA497b3";
+          BarraProy[0].style.backgroundColor= "#d9473db3";
           EncabezProyecto[0].style.backgroundColor= "#23bac4";
-          BotonCambiar[0].style.backgroundColor= "#0DA497b3";
-          Contenido[0].style.backgroundColor= "#0DA497b3";
+          BotonCambiar[0].style.backgroundColor= "#d9473db3";
+          Contenido[0].style.backgroundColor= "#d9473db3";
           break;
         default://Default
           BarraSuperior[0].style.backgroundColor= "#1d3461";
@@ -786,7 +786,7 @@ input {
 .b8{background: #fff;}
 .Home{
   --color1:#99e2ff;
-  --color2: #87e6d1;
+  --color2: #9df8a9;
   /*background-color: var(--color1);*/
   background-image: linear-gradient(to top,var(--color1),var(--color2));
 }
