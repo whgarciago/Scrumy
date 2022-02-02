@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column vh-100 col-12 m-0 p-0 overflow-hidden">
+  <div class="d-flex flex-column vh-100 col-12 m-0 p-0 overflow-hidden Home">
     <nav class="navbar navbar-expand-lg navbar-dark navbar-color ">
       <a class="navbar-brand pl-5" href="#"
         ><img
@@ -49,11 +49,44 @@
               {{ usuarioNombre }}
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="" @click="goToSettings()"
+              <a class="dropdown-item" @click="goToSettings()"
                 >Configuracion</a
               >
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" @click="cerrarSesion()" href="">Cerrar sesión</a>
+              <div class="dropdown-divider"></div>
+              <p class="text-center"><b>Temas</b></p>
+              <a class="dropdown-item bg-dark text-light" @click="EstilosPredeterminados(1)" >Tema Oscuro</a>
+              <a class="dropdown-item bg-primary text-light" @click="EstilosPredeterminados(2)">Tema Azul</a>
+              <a class="dropdown-item bg-success text-light" @click="EstilosPredeterminados(3)">Tema Verde</a>
+              <a class="dropdown-item bg-danger text-light" @click="EstilosPredeterminados(4)" >Tema Rojo</a>
+              <a class="dropdown-item bg-info text-light" @click="EstilosPredeterminados(5)">Tema Claro</a>
+              <div class="dropdown-divider"></div>
+              <p class="text-center"><b>Fondos</b></p>
+              <p>Color Superior</p>
+              <div class="d-flex  ">
+                <button class="btn b1" @click="FondosPredeterminados(1,'--color2')">A</button>
+                <button class="btn b2" @click="FondosPredeterminados(2,'--color2')">B</button>
+                <button class="btn b3" @click="FondosPredeterminados(3,'--color2')">C</button>
+                <button class="btn b4" @click="FondosPredeterminados(4,'--color2')">D</button>
+              </div><div>
+                <button class="btn b5" @click="FondosPredeterminados(5,'--color2')">E</button>
+                <button class="btn b6" @click="FondosPredeterminados(6,'--color2')">F</button>
+                <button class="btn b7" @click="FondosPredeterminados(7,'--color2')">G</button>
+                <button class="btn b8" @click="FondosPredeterminados(8,'--color2')">H</button>
+              </div>
+              <p>Color Inferior</p>
+              <div class="d-flex  ">
+                <button class="btn b1" @click="FondosPredeterminados(1,'--color1')">A</button>
+                <button class="btn b2" @click="FondosPredeterminados(2,'--color1')">B</button>
+                <button class="btn b3" @click="FondosPredeterminados(3,'--color1')">C</button>
+                <button class="btn b4" @click="FondosPredeterminados(4,'--color1')">D</button>
+              </div><div>
+                <button class="btn b5" @click="FondosPredeterminados(5,'--color1')">E</button>
+                <button class="btn b6" @click="FondosPredeterminados(6,'--color1')">F</button>
+                <button class="btn b7" @click="FondosPredeterminados(7,'--color1')">G</button>
+                <button class="btn b8" @click="FondosPredeterminados(8,'--color1')">H</button>
+              </div>
             </div>
           </li>
         </ul>
@@ -93,21 +126,22 @@
         v-if="proyectoActual.nombre != ''"
       >
         <div class="p-2">
-          <div class="card text-center">
-            <div class="card-header fs-1">
-              <h2 class="d-inline">Información del Proyecto</h2> 
-              <button class="btn btn-cambio fs-4" @click="abrirConfigProyecto()">
-                Cambiar?</button>
+          <div class="card">
+            <div class="card-header d-flex">
+              <h2 class="d-inline mx-auto">Información del Proyecto</h2> 
+              <button class="btn btn-cambio fs-6 mr-1 h-50" @click="abrirConfigProyecto()">
+                <img class="img-fluid" src="../assets/config.png" /></button>
             </div>
             
-            <div class="card-body">
-              <h5 class="card-title">{{ proyectoActual.nombre }}</h5>
+            <div class="card-body text-center">
+              <h4 class="card-title text-info">{{ proyectoActual.nombre }}</h4>
               <p class="card-text">
-                Fecha de finalización: {{ proyectoActual.fechaFin }}
+                <b class="text-info">Fecha de finalización:</b>  {{ proyectoActual.fechaFin }} <b class="text-info">Descripción:</b>  {{ proyectoActual.descripcion }}
               </p>
-              <p class="card-text">
-                {{ proyectoActual.descripcion }}
-              </p>
+              <h5 class="card-text">
+                <b class="text-info">Recuerda que tu motivación es:</b>
+                {{ proyectoActual.motivacion }}
+              </h5>
             </div>
           </div>
         </div>
@@ -181,20 +215,20 @@
           placeholder="Descripción"
           v-model="proyectoActual.descripcion"
         /><br />
-        <label for="fecha-culminación">Fecha de culminación</label>
+        <label for="fecha-culminación text-light">Fecha de culminación</label>
         <input
           type="date"
           id="fechaculminacionProyecto"
           v-model="proyectoActual.fechaFin"
         /><br />
         <button class="CrearProyecto" @click="ModificarProyecto()">
-          Guardar cambios
+          Guardar
         </button>
-        <button
-          class="cancelarCrearProyecto"
-          @click="cerrarModificarProyecto()"
-        >
+        <button class="cancelarCrearProyecto" @click="cerrarModificarProyecto()">
           Cancelar
+        </button>
+        <button class="EliminarProyecto" @click="EliminarProyecto()">
+          <img src="https://img.icons8.com/material/32/000000/delete--v1.png" />
         </button>
       </form>
     </div>
@@ -217,15 +251,8 @@ export default {
       usuarioID: localStorage.usuarioID, //trae el usuario del backend
       usuarioNombre: localStorage.usuarioNombre, //trae el nombre del usuario
       proyectoID: localStorage.proyectoID, //trae el ID del proyecto
-      //minis es un "arreglo" con los logos de los 4 botones
-      minis: [
-        require("../assets/mp.png"),
-        require("../assets/sp.png"),
-        require("../assets/pl.png"),
-        require("../assets/ac.png"),
-      ],
       //nombres es un arreglo con los nombres de los 4 botones
-      nombres: ["Metas", "Sprints", "Plan", "Actividades", "Retroalimentacion"],
+      nombres: ["Metas", "Sprints", "Avance", "Actividades", "Retroalimentacion"],
       //ref es el arreglo que relaciona los botones con sus componentes
       ref: ["smallgoals", "sprints", "Plan", "Activities", "#"],
       //mesidenav es falso cuando el mouse no esta encima de los botones
@@ -373,6 +400,48 @@ export default {
       //Cierra el Popup de ModificarProyecto (linea 149)
       this.cerrarModificarProyecto();
     },
+        //Funcion para modificar los atributos de un proyecto
+    async EliminarProyecto() {
+      console.log(typeof this.proyectoActual.id);
+      //Se guardan los parametros del formulario en el objeto proyecto actual
+      const { nombre, motivacion, descripcion, fechaFin } = this.proyectoActual;
+      try {
+        const response = await axios.delete(
+          "http://localhost:8081/api/proyectos/remove?id=" +
+            this.proyectoActual.id,
+          {
+            idUsuarios: this.usuarioID,
+          }
+        );
+        console.log("se ejecuto funcion eliminar proyecto");
+      } catch (error) {
+        console.log(error);
+        if (error.response) {
+          // Respuesta con codigo fuera de rango
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // No respuesta
+          console.log(error.request);
+        } else {
+          // Error en el envío de petición
+          console.log("Error", error.message);
+        }
+        console.log(error.config);
+      }
+      //Ejecuta obtenerProyectosDeBackend (linea 266)
+      this.obtenerProyectosDeBackend();
+      //Cierra el Popup de ModificarProyecto (linea 149)
+      this.cerrarModificarProyecto();
+      this.proyectoActual.id = 0;
+      this.proyectoActual.usuarioID = "";
+      this.proyectoActual.nombre = "";
+      this.proyectoActual.motivacion = "";
+      this.proyectoActual.descripcion = "";
+      this.proyectoActual.fechaFin = "";
+    },
+    
     //Cuando se selecciona un proyecto en la barra de arriba, seleccionarProyecto trae
     //dicho proyecto desde el Backend y actualiza los datos
     seleccionarProyecto(proyecto) {
@@ -425,6 +494,84 @@ export default {
     goToHome() {
       this.$router.push({ name: "home" }).catch((err) => {});
     },
+    EstilosPredeterminados(opcion){
+      var BarraSuperior=document.getElementsByClassName("navbar-color");
+      var BarraProy=document.getElementsByClassName("barraProyectos");
+      var EncabezProyecto=document.getElementsByClassName("card-header");
+      var BotonCambiar=document.getElementsByClassName("btn-cambio")
+      switch(opcion){
+        case 1://Tema Oscuro
+          BarraSuperior[0].style.backgroundColor= "#000";
+          BarraProy[0].style.backgroundColor= "#222222b3";
+          EncabezProyecto[0].style.backgroundColor= "#000";
+          BotonCambiar[0].style.backgroundColor= "#222222b3";
+          break;
+        case 2://Tema Azul
+          BarraSuperior[0].style.backgroundColor= '#1d3461';
+          BarraProy[0].style.backgroundColor= "#6390c7b3";
+          EncabezProyecto[0].style.backgroundColor= '#1d3461';
+          BotonCambiar[0].style.backgroundColor= "#6390c7b3";
+          break;
+        case 3://Tema verde
+          BarraSuperior[0].style.backgroundColor= "#02ac66";
+          BarraProy[0].style.backgroundColor= "#056940b3";
+          EncabezProyecto[0].style.backgroundColor= "#02ac66";
+          BotonCambiar[0].style.backgroundColor= "#056940b3";
+          break;
+        case 4://Tema Rojo
+          BarraSuperior[0].style.backgroundColor= "#d6234a";
+          BarraProy[0].style.backgroundColor= "#9F1E3Ab3";
+          EncabezProyecto[0].style.backgroundColor= "#d6234a";
+          BotonCambiar[0].style.backgroundColor= "#9F1E3Ab3";
+          break;
+        case 5://Tema Claro
+          BarraSuperior[0].style.backgroundColor= "#23bac4";
+          BarraProy[0].style.backgroundColor= "#0DA497b3";
+          EncabezProyecto[0].style.backgroundColor= "#23bac4";
+          BotonCambiar[0].style.backgroundColor= "#0DA497b3";
+          break;
+        default://Default
+          BarraSuperior[0].style.backgroundColor= "#1d3461";
+          BarraProy[0].style.backgroundColor= "#6390c7b3";
+          EncabezProyecto[0].style.backgroundColor= "#1d3461";
+          BotonCambiar[0].style.backgroundColor= "#6390c7b3";
+          break;
+      }
+
+    },
+    FondosPredeterminados(opcion,color){
+      var fondo = document.getElementsByClassName("Home");
+      switch (opcion) {
+        case 1://Azul
+          fondo[0].style.setProperty(color,"#99e2ff");
+          break;
+        case 2://Verde
+          fondo[0].style.setProperty(color,"#9df8a9");
+          break;
+        case 3://Rojo
+          fondo[0].style.setProperty(color,"#e6a7a0");
+          break;
+        case 4://Amarillo
+          fondo[0].style.setProperty(color,"#ffffc1");
+          break;
+        case 5://Morado
+          fondo[0].style.setProperty(color,"#e0a2f3");
+          break;
+        case 6://Naranja
+          fondo[0].style.setProperty(color,"#e9c8a0");
+          break;
+        case 7://Acuamarina
+          fondo[0].style.setProperty(color,"#87e6d1");
+          break;
+        case 8://Blanco
+          fondo[0].style.setProperty(color,"#fff");
+          break;
+        default:
+          fondo[0].style.setProperty(color,"#fff");
+          break;
+      }
+
+    }
   },
   //Carga los proyectos del backend apenas inicia la pagina
   mounted() {
@@ -440,7 +587,7 @@ export default {
 }
 
 .popup {
-  background: rgb(123, 163, 209);
+  background: #446792;
   position: absolute;
   top: 10%;
   left: 50%;
@@ -459,7 +606,7 @@ export default {
 }
 .popup.active {
   display: block;
-  background: #446792;
+  background: #424242;
   
   top: 1%;
   left: 50%;
@@ -470,7 +617,7 @@ export default {
 }
 
 .ConfigProyecto {
-  background: rgb(123, 163, 209);
+  background: #446792;
   position: absolute;
   top: 10%;
   left: 50%;
@@ -488,7 +635,7 @@ export default {
 
 .ConfigProyecto.active {
   display: block;
-  background: rgb(123, 163, 209, 0.5);
+  background: #424242;
   top: 10%;
   left: 50%;
   opacity: 1;
@@ -525,8 +672,8 @@ export default {
 }
 
 input {
-  background-color: rgb(162, 187, 209);
-  color: white;
+  background-color: rgb(182, 182, 182);
+  color: rgb(78, 78, 78);
   margin-top: 5px;
   display: block;
   width: 100%;
@@ -544,20 +691,21 @@ input {
   max-width: 100%;
 }
 .CrearProyecto,
-.cancelarCrearProyecto {
+.cancelarCrearProyecto,
+.EliminarProyecto {
   margin-left: 10px;
-  width: 40%;
+  width: 30%;
   padding: 12px 0px 10px 5px;
   outline: none;
   font-size: 15px;
-  background: rgb(123, 163, 209, 0.5);
+  background: rgb(182, 182, 182);
   color: rgb(255, 255, 255);
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
   transition: 0.5s;
 }
-.CrearProyecto:hover,.cancelarCrearProyecto:hover{
+.CrearProyecto:hover,.cancelarCrearProyecto:hover,.EliminarProyecto:hover{
   color: #ffffff;
   box-shadow: 0 0 5px #ffffff, 0 0 20px #ffffff, 0 0 40px #ffffff;
 }
@@ -569,20 +717,15 @@ input {
 
 .navbar-color {
   background-color: #1d3461;
-  /*background: radial-gradient(circle, rgba(2,0,36,1) 0%, 
-  #1d3461 51%, rgb(24, 63, 155) 100%);*/
 }
-.barralado {
-  background-color: #376996;
-}
+
 .componente-central {
   min-height: 65vh;
   max-height: 65vh;
 }
 
 
-.btn-crear-proyecto {
-  background-color: #446792;
+.btn-crear-proyecto,.btn-side-navbar {
   border-radius: 4px;
   border-width: 2px;
   border-color: white;
@@ -590,34 +733,23 @@ input {
   transition: 0.5s;
 }
 .btn-crear-proyecto:hover {
-  color: #ffffff;
+  background-color: #000000;
   box-shadow: 0 0 5px #ffffff, 0 0 20px #ffffff, 0 0 40px #ffffff;
 }
 
-
-.btn-side-navbar {
-  background-color: #6293ce;
-  border-radius: 4px;
-  border-width: 2px;
-  border-color: white;
-  color: white;
-  transition: 0.5s;
-}
 .btn-side-navbar:hover{
-  background-color: #284669;
-  color: #ffffff;
+  background-color: #000000;
   /*box-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 10px #ffffff;*/
 }
 .btn-navbar{
   transition: 0.5s;
 }
 .btn-navbar:hover {
-  background: #1d3461;
   box-shadow: 0 0 5px #ffffff, 0 0 20px #ffffff, 0 0 40px #ffffff;
 
 }
 .btn-cambio{
-  background-color: #446792;
+  background-color: #6390c7b3;
   /*background-image: linear-gradient(to left,#446792,#1d3461);*/
   color: white;
   transition: 0.5s;
@@ -631,11 +763,25 @@ input {
 }
 .barraProyectos{
   /*background-image: linear-gradient(to top,rgb(182, 182, 182),#454b50);*/
-  background-color: rgb(99, 144, 199,0.7);
+  background-color: #6390c7b3;
 }
 .card-header{
   background: #1d3461;
   color: white;
+}
+.b1{background: #99e2ff;}
+.b2{background: #9df8a9;}
+.b3{background: #e6a7a0;}
+.b4{background: #ffffc1;}
+.b5{background: #e0a2f3;}
+.b6{background: #e9c8a0;}
+.b7{background: #87e6d1;}
+.b8{background: #fff;}
+.Home{
+  --color1:#ffffff;
+  --color2: white;
+  /*background-color: var(--color1);*/
+  background-image: linear-gradient(to top,var(--color1),var(--color2));
 }
 </style>
 <!--COSAS QUE HACER:
