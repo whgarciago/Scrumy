@@ -498,43 +498,50 @@ export default {
       var BarraSuperior=document.getElementsByClassName("navbar-color");
       var BarraProy=document.getElementsByClassName("barraProyectos");
       var EncabezProyecto=document.getElementsByClassName("card-header");
-      var BotonCambiar=document.getElementsByClassName("btn-cambio")
+      var BotonCambiar=document.getElementsByClassName("btn-cambio");
+      var Contenido=document.getElementsByClassName("content-color");
       switch(opcion){
         case 1://Tema Oscuro
           BarraSuperior[0].style.backgroundColor= "#000";
           BarraProy[0].style.backgroundColor= "#222222b3";
           EncabezProyecto[0].style.backgroundColor= "#000";
           BotonCambiar[0].style.backgroundColor= "#222222b3";
+          Contenido[0].style.backgroundColor= "#222222b3";
           break;
         case 2://Tema Azul
           BarraSuperior[0].style.backgroundColor= '#1d3461';
           BarraProy[0].style.backgroundColor= "#6390c7b3";
           EncabezProyecto[0].style.backgroundColor= '#1d3461';
           BotonCambiar[0].style.backgroundColor= "#6390c7b3";
+          Contenido[0].style.backgroundColor= "#6390c7b3";
           break;
         case 3://Tema verde
           BarraSuperior[0].style.backgroundColor= "#02ac66";
           BarraProy[0].style.backgroundColor= "#056940b3";
           EncabezProyecto[0].style.backgroundColor= "#02ac66";
           BotonCambiar[0].style.backgroundColor= "#056940b3";
+          Contenido[0].style.backgroundColor= "#056940b3";
           break;
         case 4://Tema Rojo
-          BarraSuperior[0].style.backgroundColor= "#d6234a";
-          BarraProy[0].style.backgroundColor= "#9F1E3Ab3";
-          EncabezProyecto[0].style.backgroundColor= "#d6234a";
-          BotonCambiar[0].style.backgroundColor= "#9F1E3Ab3";
+          BarraSuperior[0].style.backgroundColor= "#B83955";
+          BarraProy[0].style.backgroundColor= "#9F1E3Ab7";
+          EncabezProyecto[0].style.backgroundColor= "#B83955";
+          BotonCambiar[0].style.backgroundColor= "#9F1E3Ab7";
+          Contenido[0].style.backgroundColor= "#9F1E3Ab7";
           break;
         case 5://Tema Claro
           BarraSuperior[0].style.backgroundColor= "#23bac4";
           BarraProy[0].style.backgroundColor= "#0DA497b3";
           EncabezProyecto[0].style.backgroundColor= "#23bac4";
           BotonCambiar[0].style.backgroundColor= "#0DA497b3";
+          Contenido[0].style.backgroundColor= "#0DA497b3";
           break;
         default://Default
           BarraSuperior[0].style.backgroundColor= "#1d3461";
           BarraProy[0].style.backgroundColor= "#6390c7b3";
           EncabezProyecto[0].style.backgroundColor= "#1d3461";
           BotonCambiar[0].style.backgroundColor= "#6390c7b3";
+          Contenido[0].style.backgroundColor= "#6390c7b3";
           break;
       }
 
@@ -756,7 +763,7 @@ input {
 }
 
 .content-color {
-  background-color: #a9b2b9;
+  background-color: #6390c7b3;
 }
 .hr-proyectos {
   border-top: 2px solid #1d3461;
@@ -778,8 +785,8 @@ input {
 .b7{background: #87e6d1;}
 .b8{background: #fff;}
 .Home{
-  --color1:#ffffff;
-  --color2: white;
+  --color1:#99e2ff;
+  --color2: #87e6d1;
   /*background-color: var(--color1);*/
   background-image: linear-gradient(to top,var(--color1),var(--color2));
 }
