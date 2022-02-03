@@ -303,20 +303,12 @@ export default {
         let startYear = parseInt(fechainicioString.substring(0, 4), 10);
         let startMonth = parseInt(fechainicioString.substring(5, 7), 10);
         let startDay = parseInt(fechainicioString.substring(8, 10), 10) + 1;
-        console.log(startYear + " " + today[0]);
-        console.log(startMonth + " " + today[1]);
-        console.log(startDay + " " + today[2]);
 
         let yyyy = parseInt(fechaFinString.substring(0, 4), 10);
         let mm = parseInt(fechaFinString.substring(5, 7), 10);
         let dd = parseInt(fechaFinString.substring(8, 10), 10) + 1;
-        console.log(yyyy + " " + today[0]);
-        console.log(mm + " " + today[1]);
-        console.log(dd + " " + today[2]);
 
-              console.log(true);
-              this.activeSprintId = this.sprints[index].sprintID;
-              console.log(this.activeSprintId);
+        this.activeSprintId = this.sprints[index].sprintID;
         // if (startYear <= today[0] && today[0] <= yyyy) {
         //   if (startMonth <= today[1] && today[1] <= mm) {
         //     if (startDay <= today[2] && today[2] <= dd) {

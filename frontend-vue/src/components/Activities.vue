@@ -1,75 +1,76 @@
 <template>
       <div id="Activities col-12 m-0 p-2 h-100 ">
         <div class="col-12 d-inline-block m-2 titleMetas">
-          <h2>Actividades</h2>
+          <h2 data-bs-toggle="tooltip" data-bs-placement="right" title="Aqui puedes añadir actividades a tus metas">Actividades</h2>
         </div>
        <h5 id= "escoge">Escoge el sprint</h5><br>
-      <select name="menu" id="menu" @change="TraerMetasDelSprint($event)" v-model="key"> <!--Selector de sprints -->
+      <select name="menu" id="menu" @change="TraerMetasDelSprint($event)" v-model="key" data-bs-toggle="tooltip" data-bs-placement="right" title="Selecciona un Sprint"> <!--Selector de sprints -->
           <!--El siguiente for recorre todos los sprints en sprints[], los trae como opciones del selector y muestra su nombre-->
           <option v-for="spr in sprints" :key="spr.sprintID"  selected="selected" >Sprint {{sprints.indexOf(spr) +1 }}</option>
         </select>
 
-      <div class="d-flex flex-row col-12 m-0 p-0 justify-content-center overflow-auto">       
+      <div class="d-flex flex-row col-12 m-0 p-0 overflow-auto">       
          <!--Div de las metas del sprint para ordenar -->
         <div id="Metas">
       <!--El siguiente for recorre todas las metas en metas[] y los trae como divs e imprime su nombre-->
-        <button v-for="meta   in metas" :key="meta.id" class=" metas btn btn-primary btn-sm"  @click="BringActivities(meta.metaID)"> 
+        <button v-for="meta   in metas" :key="meta.id" class=" metas btn btn-dark btn-sm"  @click="BringActivities(meta.metaID)" data-bs-toggle="tooltip" data-bs-placement="right" title="Selecciona esta meta para agregarle una actividad"> 
           <h5>{{meta.nombre}}</h5>
         </button>
         <!--<img id ="Flecha" src="../assets/flecha.png">-->
         
     </div>
-      </div>  
-      <div class="d-flex flex-row col-12 h-75 m-0 p-0 justify-content-center overflow-auto" >
-        <div class=" d-flex flex-row">
-        <div v-for="actividad in actividades" :key="actividad.id" class="actividades ">
-        <div class="card bg-light mb-3" style="width: 18rem;">
-          <div class="card-header">{{actividad.nombre}}</div>
-          <div class="card-body">
-            <p class="card-text">{{actividad.descripcion}}
-            </p>
-            <input type ="checkbox">
+  </div>  
+  <div class="col-12 h-75 m-0 p-4 justify-content-center d-grid" >
+      <!--div v-for="actividad in actividades" :key="actividad.id" class="actividades g-col-4"-->
+        <div class="card actividades bg-light mb-3 d-inline-block m-3" v-for="actividad in actividades" :key="actividad.id">
+          <div class="card-header text-white bg-dark">
+            {{actividad.nombre}}
+            <button v-show="actividad.estado" class="btn bg-success text-white btn-sm" @click="cambiarEstado(actividad.actividadID)" data-bs-toggle="tooltip" data-bs-placement="right" title="Haz click aqui para marcar tu actividad como 'POR HACER'">
+              COMPLETADA</button>
+            <button v-show="!actividad.estado" class="btn bg-danger text-white btn-sm" @click="cambiarEstado(actividad.actividadID)" data-bs-toggle="tooltip" data-bs-placement="right" title="Haz click aqui para marcar tu actividad como 'COMPLETADA'"> POR HACER</button>
+          </div>
+          <div class="card-body" @click="abrirPopupCamb(actividad.actividadID)" data-bs-toggle="tooltip" data-bs-placement="right" title="Haz click aqui para editar tu actividad">
+            <p class="card-text"><b>DESCRIPCIÓN:</b> {{actividad.descripcion}}</p>
+            <p class="card-text" v-if="actividad.dificultad"><b>DIFICULTAD: </b>{{actividad.dificultad}}</p>
+            <!--button class="btn btn-outline-danger" @click="EliminarActividad(actividad.actividadID)">ELIMINAR</button-->
+            <!--button class="btn btn-outline-success" @click="abrirPopupCamb(actividad.actividadID)">EDITAR</button-->
           </div>
         </div>
-      </div>
-    </div>
+    <!--/div-->
 
-      </div>
-      <!--Popup para crear actividad-->
-      <div class="ventanaOpciones crearActividad">
-        <div class="contenidoActividad">
-          <h2>Nueva actividad</h2>
-          <p>Nombre: </p>
-          <input v-model="NombreActividad" type="text" id="nombreActividad"><br>
-          <p>descripción: </p>
-          <input v-model="DescripcionActividad" type="text" id="descripcionActividad"><br>
-        </div>
-        <button @click="cerrarPopupAct()" class="cerrarVentana">x</button>
-        <button @click="CrearActividad()" class="textoOpcion">Crear</button>
-      </div>
-    
-
-    <!--Popup para eliminar actividad-->
-    
-      <div class="ventanaOpciones eliminarActividad">
-        <div class="contenidoFixed">
-          <h2>Eliminar actividades</h2>
-              <div v-for="actividad in actividades" :key="actividad.id" class="actividadesEliminar">
-                  <!--Revisar si value está correcto -->
-                  <input type="checkbox" name="done" value="actividad.actividadID" v-model="CheckboxDelAct">
-                  <p>{{actividad.nombre}}</p>
-              </div>  
-        </div>
-        <button @click="cerrarPopupDel()" class="cerrarVentana">x</button>
-        <button @click="EliminarActividad()" class="textoOpcion">Eliminar</button>
-      </div>
-     <!--Div grande que abarca toda la pagina -->
-    <!--Div del Titulo y el selector de sprints -->
-    
-        <button @click="abrirPopupAct()" id="CreateActivityButton">+</button>
-    <button @click="abrirPopupDel()" id="DeleteActivityButton"><img src="https://img.icons8.com/glyph-neue/50/4a90e2/trash.png"/></button>
-    
   </div>
+      <!--Popup para crear actividad-->
+      <div class="ventanaOpciones crearActividad bg-dark">
+        <div class="contenidoActividad">
+          <h2 class="text-light">Nueva actividad</h2>
+          <p class="text-light">Nombre: </p>
+          <input v-model="NombreActividad" type="text" class="rounded bg-secondary"><br>
+          <p class="text-light">descripción: </p>
+          <input v-model="DescripcionActividad" type="text" class="rounded bg-secondary"><br>
+        </div>
+        <button @click="cerrarPopupAct()" class="cerrarVentana btn bg-dark text-light">x</button>
+        <button @click="CrearActividad()" class="textoOpcion btn bg-dark text-light btn-lg">CREAR</button>
+      </div>
+    
+     <!--Popup para editar actividad-->
+      <div class="ventanaOpcion2 cambiarActividad bg-dark">
+        <div class="contenidoActividad">
+          <h2 class="text-light">Editar Actividad</h2>
+          <p class="text-light">Nombre: </p>
+          <input v-model="NombreActividad" type="text" class="rounded bg-secondary"><br>
+          <p class="text-light">descripción: </p>
+          <input v-model="DescripcionActividad" type="text" class="rounded bg-secondary"><br>
+          <p class="text-light">dificultad: </p>
+          <input v-model="DificultadActividad" type="text" class="rounded bg-secondary"><br>
+        </div>
+        <button @click="cerrarPopupCam()" class="cerrarVentana btn bg-dark text-light">x</button>
+        <button @click="cambiarActividad()" class="textoOpcion2 btn text-dark btn-lg btn-outline-success">GUARDAR</button>
+        <button @click="EliminarActividad(IDActividad)" class="textoOpcion btn text-dark btn-lg btn-outline-danger">ELIMINAR</button>
+      </div>
+    
+    <button v-if="this.idMetA!=0" @click="abrirPopupAct()" class="CreateActivityButton btn bg-dark text-white btn-lg"><b>NUEVA ACTIVIDAD</b></button>   
+  </div>
+  
 </template>
 
 <script>
@@ -112,6 +113,8 @@ export default {
       actividades:[],
       NombreActividad:"",
       DescripcionActividad:"",
+      DificultadActividad:"",
+      IDActividad:0,
       CheckboxDelAct:[],
       isHiddenCreate: false,
       isHiddenDelete: false,
@@ -121,18 +124,31 @@ export default {
   },
   methods:{
     abrirPopupAct: function() {
-      document.querySelector(".eliminarActividad").style.display ="none";
+      //document.querySelector(".eliminarActividad").style.display ="none";
       document.querySelector(".crearActividad").style.display ="flex";
     },
     cerrarPopupAct: function() {
       document.querySelector(".crearActividad").style.display ="none";
     },
-    abrirPopupDel: function() {
+    abrirPopupCamb: function(id) {
       document.querySelector(".crearActividad").style.display ="none";
-      document.querySelector(".eliminarActividad").style.display ="flex";
+      document.querySelector(".cambiarActividad").style.display ="flex";
+      for (let i = 0; i< this.actividades.length; i++) {
+        if (this.actividades[i].actividadID==id) {
+          this.DescripcionActividad=this.actividades[i].descripcion;
+          this.NombreActividad=this.actividades[i].nombre;
+          this.DificultadActividad=this.actividades[i].dificultad;
+          this.IDActividad=id;
+        }
+       
+      }
     },
-    cerrarPopupDel: function() {
-      document.querySelector(".eliminarActividad").style.display ="none";
+    cerrarPopupCam: function() {
+      document.querySelector(".cambiarActividad").style.display ="none";
+      this.DescripcionActividad="";
+      this.NombreActividad="";
+      this.DificultadActividad="";
+      this.IDActividad=0;
     },
     BringActivities(idMeta){
       //let actividades=[]; 
@@ -153,7 +169,6 @@ export default {
       });
       
     },
-
     TraerSprintsBackend(){//Trae los Sprints del Backend y los almacena en sprints[]
        axios
         .get(this.$store.state.backURL + pathGet, {
@@ -197,7 +212,42 @@ export default {
       });
       //this.SetAvance();//Actualiza la barra con el avance del sprint seleccionado
     },
-    
+    cambiarEstado(idActividad){
+      console.log(idActividad);
+      let pathChangeState = "/actividades/updateState?id=";
+      axios
+      .put(this.$store.state.backURL + pathChangeState + idActividad,{} )
+      .then((response) => {
+        console.log("Pudo acceder a las actividades");
+        this.BringActivities(this.idMetA);
+      })
+      .catch((response) => {
+        alert("No es posible conectar con el backend en este momento 5");
+      });
+    },
+    cambiarActividad(){
+      let pathChangeState = "/actividades/update";
+      axios
+      .put(this.$store.state.backURL + pathChangeState, {
+            nombre: this.NombreActividad,
+            descripcion: this.DescripcionActividad,
+            dificultad: this.DificultadActividad,
+            idMeta: this.idMetA,
+          },
+          {
+            params: {
+              id: this.IDActividad,
+            },
+          } )
+      .then((response) => {
+        console.log("Pudo hacer el update");
+        this.BringActivities(this.idMetA);
+        this.cerrarPopupCam();
+      })
+      .catch((response) => {
+        alert("No es posible conectar con el backend en este momento 5");
+      });
+    },
   CrearActividad(){
       let pathCreateActivity = "/actividades/create";
       axios
@@ -207,6 +257,7 @@ export default {
           idMeta: this.idMetA,
           nombre: this.NombreActividad,
           descripcion: this.DescripcionActividad,
+          dificultad:" ",
 
       })
       .then((response) => {
@@ -223,40 +274,21 @@ export default {
       //this.SetAvance();//Actualiza la barra con el avance del sprint seleccionado
  
     },
-    auxEliminarActividad(idActividad){
-      let pathRemoveActivity = "/actividades/remove";
+    EliminarActividad(idActividad){
+      let pathRemoveActivity = "/actividades/remove?id=";
       axios
-      .delete(this.$store.state.backURL + pathRemoveActivity, {
-        params: {
-          actividadID: idActividad,
-        },
-      })
+      .delete(this.$store.state.backURL + pathRemoveActivity + idActividad, {})
       .then((response) => {
         console.log("Pudo acceder a las actividades");
+        this.cerrarPopupCam();
+        this.BringActivities(this.idMetA);
       })
       .catch((response) => {
         alert("No es posible conectar con el backend en este momento 5");
       });
-      //this.SetAvance();//Act
     },
-    EliminarActividad(){
-    this.arregloActividades = this.CheckboxDelAct;
-    for (let index = 0; index < this.arregloActividades.length; index++) {
-        this.auxEliminarActividad(this.arregloActividades[index]);
-        
-    }      
-    this.cerrarPopupDel();
-    this.BringActivities(this.meta.id);
-  },
-
 
   },
-
-  mounted(){ //Al iniciar, ejecuta estos comandos
-    //this.TraerSprintsBackend();
-    //this.TraerMetasDelSprint(1);
- 
-  }
   
 }
 </script>
@@ -289,8 +321,8 @@ html,body{
 #Sprints h1{display: inline;  color: white;} 
 #menu {
   position :absolute;
-  top :13%;
-  right: 6%;
+  top :7%;
+  right: 2%;
   width: 15%;
   height: 5%;
   border-radius: 20px;
@@ -300,11 +332,11 @@ html,body{
   display: inline;  
   color: white;
   position :absolute;
-  top :7%;
-  right: 2%;
+  top :2%;
+  right: 3%;
   }
 #Metas{
-  height: 20%;
+  height: 15%;
   width: 70%;
   text-align: center;
   padding: 1px;
@@ -336,7 +368,7 @@ html,body{
 
 #Actividades {
     width: 100%;
-    height: 65%;
+    height: 55%;
     text-align: center;
     padding: 1px;
     display: flex; 
@@ -347,60 +379,46 @@ html,body{
 
 .actividades{
     height: 25%;
-    margin: 40px; 
+    -ms-grid-row-align: center;
 }
 
-#DeleteActivityButton{
+  .CreateActivityButton{
     position: absolute;
-    bottom: 8px;
-    right: 16px;
-    background-color:#ffffff;
-    border-radius: 20%;
-    border-style: solid;
-    color:#15a8e2;
-    width: 65px;
-    height: 65px;
-    cursor: pointer;
+    top: 18%;
+    right: 2%;
   }
-
-  #CreateActivityButton{
-    position: absolute;
-    bottom: 8px;
-    right: 90px;
-    font-size: 40px;
-    background-color:#ffffff;
-    border-radius: 20%;
-    border-style: solid;
-    color:#15a8e2;
-    cursor: pointer;
-  }
-    .ventanaOpciones{
-    background-color: #ffffff;
+  .ventanaOpciones{
+    background-color: #5e5e5e;
     position: absolute;
     top: 10%;
     left: 30%;  
     width: 40%;
-    height: 70%;
+    height: 40%;
+    border-style: solid;
+    border-color:#FFFFFF;
+    padding: 20px 30px;
+    border-radius: 10px;
+  }
+  .ventanaOpcion2{
+    background-color: #5e5e5e;
+    position: absolute;
+    top: 10%;
+    left: 30%;  
+    width: 40%;
+    height: 50%;
     border-style: solid;
     border-color:#FFFFFF;
     padding: 20px 30px;
     border-radius: 10px;
   }
 
-  .ventanaOpciones h2{
-    color: black;
-    font-size: 20px;
-    font-weight: bold;
-    text-justify: center;
-  }
-
-  .eliminarActividad{
+  .crearActividad{
       position: absolute;
       display: none;
       transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 200 ms,
       transform 20ms ease-in-out 0 ms;
   }
-  .crearActividad{
+   .cambiarActividad{
       position: absolute;
       display: none;
       transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 200 ms,
@@ -413,23 +431,29 @@ html,body{
   .cerrarVentana{
     position: absolute;
     display: flex;
-    top: 5%;
-    right: 5%;
+    top: 2%;
+    right: 2%;
     font-size: 25px;
     border-style: hidden;
-    background-color: #FFFFFF;
-    color: #15a8e2;
   }
   .textoOpcion{
     position: absolute;
-    bottom: 5%;
+    bottom: 10%;
+    Right: 10%;
+    border-style: solid rgb(255, 0, 149);
+    background-color: #FFFFFF;
+    color: #15a8e2;
+  }
+    .textoOpcion2{
+    position: absolute;
+    bottom: 30%;
     Right: 10%;
     border-style: solid rgb(255, 0, 149);
     background-color: #FFFFFF;
     color: #15a8e2;
   }
   .titleMetas {
-  border-bottom: 2px solid rgb(156, 156, 156);
+  border-bottom: 2px solid rgb(0, 0, 0);
   margin-bottom: 5px;
   }
 </style>
