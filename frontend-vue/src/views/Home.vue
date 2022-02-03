@@ -143,12 +143,12 @@
             
             <div class="card-body text-center" data-bs-toggle="tooltip" data-bs-placement="top" title="Esta es la información de tu proyecto">
               <p class="card-text">
-                <b class="text-info">Fecha de finalización:</b>  {{ proyectoActual.fechaFin }} <b class="text-info">Descripción:</b>  {{ proyectoActual.descripcion }}
+                <b class="text-dark">Fecha de finalización:</b>  {{ proyectoActual.fechaFin }} <b class="text-dark">Descripción:</b>  {{ proyectoActual.descripcion }}
               </p>
-              <h5 class="card-text">
-                <b class="text-info">Recuerda que tu motivación es:</b>
-                {{ proyectoActual.motivacion }}
-              </h5>
+              <div class="card-text">
+                <!--b class="text-dark"></b-->Recuerda que tu motivación es:
+                <h4>{{ proyectoActual.motivacion }}</h4>
+              </div>
             </div>
           </div>
         </div>
@@ -544,10 +544,10 @@ export default {
           break;
         case 3://Tema verde
           BarraSuperior[0].style.backgroundColor= "#02ac66";
-          BarraProy[0].style.backgroundColor= " #F47F4Db3";
+          BarraProy[0].style.backgroundColor= " #D28769b3";
           EncabezProyecto[0].style.backgroundColor= "#02ac66";
-          BotonCambiar[0].style.backgroundColor= " #F47F4Db3";
-          Contenido[0].style.backgroundColor= " #F47F4Db3";
+          BotonCambiar[0].style.backgroundColor= " #D28769b3";
+          Contenido[0].style.backgroundColor= " #D28769b3";
           break;
         case 4://Tema Rojo
           BarraSuperior[0].style.backgroundColor= "#B83955";
@@ -812,8 +812,8 @@ input {
 .b7{background: #87e6d1;}
 .b8{background: #fff;}
 .Home{
-  --color1:#99e2ff;
-  --color2: #9df8a9;
+  --color1:#fff;
+  --color2: #fff;
   /*background-color: var(--color1);*/
   background-image: linear-gradient(to top,var(--color1),var(--color2));
 }

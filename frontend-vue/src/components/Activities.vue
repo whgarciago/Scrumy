@@ -25,9 +25,9 @@
         <div class="card actividades bg-light mb-3 d-inline-block m-3" v-for="actividad in actividades" :key="actividad.id">
           <div class="card-header text-white bg-dark">
             {{actividad.nombre}}
-            <button v-show="actividad.estado" class="btn bg-danger text-white btn-sm" @click="cambiarEstado(actividad.actividadID)" data-bs-toggle="tooltip" data-bs-placement="right" title="Haz click aqui para marcar tu actividad como 'POR HACER'">
+            <button v-show="actividad.estado" class="btn bg-success text-white btn-sm" @click="cambiarEstado(actividad.actividadID)" data-bs-toggle="tooltip" data-bs-placement="right" title="Haz click aqui para marcar tu actividad como 'POR HACER'">
               COMPLETADA</button>
-            <button v-show="!actividad.estado" class="btn bg-success text-white btn-sm" @click="cambiarEstado(actividad.actividadID)" data-bs-toggle="tooltip" data-bs-placement="right" title="Haz click aqui para marcar tu actividad como 'COMPLETADA'"> POR HACER</button>
+            <button v-show="!actividad.estado" class="btn bg-danger text-white btn-sm" @click="cambiarEstado(actividad.actividadID)" data-bs-toggle="tooltip" data-bs-placement="right" title="Haz click aqui para marcar tu actividad como 'COMPLETADA'"> POR HACER</button>
           </div>
           <div class="card-body" @click="abrirPopupCamb(actividad.actividadID)" data-bs-toggle="tooltip" data-bs-placement="right" title="Haz click aqui para editar tu actividad">
             <p class="card-text"><b>DESCRIPCIÓN:</b> {{actividad.descripcion}}</p>
