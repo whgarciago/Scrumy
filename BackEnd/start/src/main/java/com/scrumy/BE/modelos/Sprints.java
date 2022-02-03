@@ -1,8 +1,6 @@
 package com.scrumy.BE.modelos;
 
 import javax.persistence.*;
-import java.sql.Date;
-
 
 @Entity
 @Table(name="sprint")
@@ -19,17 +17,17 @@ public class Sprints {
     private int idProyecto;
 
     @Column(name = "FechaInicio",nullable = false)
-    private Date fechaInicio;
+    private String fechaInicio;
 
     @Column(name = "FechaFinalizacion",nullable = false)
-    private Date fechaFinalizacion;
+    private String fechaFinalizacion;
 
     //constructores
     public Sprints() {
     }
 
 
-    public Sprints(/*int idMetas,*/ int idProyecto, Date fechaInicio, Date fechaFinalizacion) {
+    public Sprints(/*int idMetas,*/ int idProyecto, String fechaInicio, String fechaFinalizacion) {
         //this.idMetas = idMetas;
         this.idProyecto = idProyecto;
         this.fechaInicio = fechaInicio;
@@ -61,30 +59,30 @@ public class Sprints {
         this.idProyecto = idProyecto;
     }
 
-    public Date getFechaInicio() {
+    public String getFechaInicio() {
         return this.fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFinalizacion() {
+    public String getFechaFinalizacion() {
         return this.fechaFinalizacion;
     }
 
-    public void setFechaFinalizacion(Date fechaFinalizacion) {
+    public void setFechaFinalizacion(String fechaFinalizacion) {
         this.fechaFinalizacion = fechaFinalizacion;
     }
 
     @Override
     public String toString() {
         return "{" +
-            " sprintID='" + getSprintID() + "'" +
+            " sprintID:'" + getSprintID() + "'" +
             //", idMetas='" + getIdMetas() + "'" +
-            ", idProyecto='" + getidProyecto() + "'" +
-            ", fechaInicio='" + getFechaInicio() + "'" +
-            ", fechaFinalizacion='" + getFechaFinalizacion() + "'" +
+            ", idProyecto:'" + getidProyecto() + "'" +
+            ", fechaInicio:'" + getFechaInicio() + "'" +
+            ", fechaFinalizacion:'" + getFechaFinalizacion() + "'" +
             "}";
     }
 

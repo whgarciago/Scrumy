@@ -145,7 +145,9 @@ export default {
       })
       .then((response) => {
         this.metas = response["data"];
+
         //this.avances = new Array(this.metas.length);
+
         //console.log(this.metas.length);
         for (let i = 0; i < this.metas.length; i++) {
           this.SetAvance(this.metas[i].metaID,i );
@@ -181,6 +183,7 @@ export default {
             segundoHijo.innerHTML = this.avances[cambio].value.toFixed(2) + '%';
           }
           segundoHijo.style.setProperty('--variable',this.avances[cambio].value); 
+
         }
       //Barras individuales
 

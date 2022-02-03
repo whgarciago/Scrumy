@@ -1,7 +1,6 @@
 package com.scrumy.BE.modelos;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 @Entity
 @Table (name = "proyecto")
@@ -11,30 +10,30 @@ public class Proyectos {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int proyectoID;
 
-    @Column(name = "Nombre")
+    @Column(name = "Nombre",nullable = false)
     private String nombre;
 
-    @Column(name = "Usuario")
+    @Column(name = "Usuario",nullable = false)
     private int idUsuarios;
 
-    @Column(name = "Motivacion")
+    @Column(name = "Motivacion",nullable = false)
     private String motivacion;
 
     //Tenemos que volverlo arreglo
-    @Column(name = "Meta")
-    private int idMeta; 
+    //@Column(name = "Meta")
+    //private int idMeta; 
 
     @Column(name = "Descripcion")
     private String descripcion;
 
-    @Column(name = "FechaFin")
-    private Date fechaFin;
+    @Column(name = "FechaFin",nullable = false)
+    private String fechaFin;
 
     //Constructores
     public Proyectos() {
     }
 
-    public Proyectos(String nombre, int idUsuarios, String motivacion,  String descripcion, Date fechaFin) {
+    public Proyectos(String nombre, int idUsuarios, String motivacion,  String descripcion, String fechaFin) {
         this.nombre = nombre;
         this.idUsuarios = idUsuarios;
         this.motivacion = motivacion;
@@ -75,13 +74,13 @@ public class Proyectos {
         this.motivacion = motivacion;
     }
 
-    public int getIdMeta() {
+    /*public int getIdMeta() {
         return this.idMeta;
     }
 
     public void setIdMeta(int idMeta) {
         this.idMeta = idMeta;
-    }
+    }*/
 
     public String getDescripcion() {
         return this.descripcion;
@@ -91,11 +90,11 @@ public class Proyectos {
         this.descripcion = descripcion;
     }
 
-    public Date getFechaFin() {
+    public String getFechaFin() {
         return this.fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(String fechaFin) {
         this.fechaFin = fechaFin;
     }
 
@@ -106,7 +105,7 @@ public class Proyectos {
             ", nombre='" + getNombre() + "'" +
             ", idUsuarios='" + getIdUsuarios() + "'" +
             ", motivacion='" + getMotivacion() + "'" +
-            ", idUMeta='" + getIdMeta() + "'" +
+            //", idUMeta='" + getIdMeta() + "'" +
             ", descripcion='" + getDescripcion() + "'" +
             ", fechaFin='" + getFechaFin() + "'" +
             "}";

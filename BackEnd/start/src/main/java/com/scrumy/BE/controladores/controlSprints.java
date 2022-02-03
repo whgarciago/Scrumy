@@ -19,7 +19,6 @@ public class controlSprints {
     @Autowired
     repoSprints RS;
 
-
     @GetMapping("/sprints/all")
     public ResponseEntity<List<Sprints>> getAllSprintsbyProyectoID (@RequestParam int id){
         try{
@@ -50,7 +49,7 @@ public class controlSprints {
     @PostMapping("/sprints/create")
     public ResponseEntity<Sprints> createSprint(@RequestBody Sprints s){
         try{
-            Sprints tdb = RS.save(new Sprints(/*s.getIdMetas(),*/s.getidProyecto(),s.getFechaInicio(),s.getFechaFinalizacion()));
+            Sprints tdb = RS.save(new Sprints(s.getidProyecto(),s.getFechaInicio(),s.getFechaFinalizacion()));
             return new ResponseEntity<>(tdb,HttpStatus.CREATED);
         }catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -85,13 +84,4 @@ public class controlSprints {
         }
     }
 
-    @DeleteMapping("/sprints/delete/all")
-    public ResponseEntity<HttpStatus> deleteAllProyectos(){
-        try{
-            RS.deleteAll();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }
