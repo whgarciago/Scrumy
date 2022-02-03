@@ -5,7 +5,7 @@
         ><img
           :src="logo_URL"
           alt="Logo de Pagina Scrumy"
-          class="img-fluid"
+          
           @click="goToHome()"
       /></a>
       <button
@@ -47,6 +47,7 @@
               aria-expanded="false"
             >
               {{ usuarioNombre }}
+              <img src="../assets/icono_usuario.png" style="color:white;"/>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" @click="goToSettings()"
@@ -102,6 +103,7 @@
             class="btn col-10 btn-crear-proyecto mt-3 mb-1"
             id="añadirproyecto"
             @click="abrirPopup()"
+            data-bs-toggle="tooltip" data-bs-placement="right" title="Aqui puedes crear un nuevo proyecto"
           >
             <!--falta abrirPopup()-->
             Crear Proyecto
@@ -113,9 +115,15 @@
             v-for="proy in proyectos"
             :key="proy.id"
             @click="seleccionarProyecto(proy)"
+            data-bs-toggle="tooltip" data-bs-placement="top" title="Haz click aquí para seleccionar este proyecto"
           >
             {{ proy.nombre }}
           </button>
+          <hr class="hr-proyectos col-9" />
+          <div class="text-light bg-dark p-2">
+            <h5>Y Recuerda:</h5> 
+            <p><i>{{Frases[Aleatorio(0,Frases.length)]}}</i></p>
+          </div>
           <!--<button @click="compararFechas()">Pruebas</button>-->
         </div>
       </div>
@@ -128,13 +136,12 @@
         <div class="p-2">
           <div class="card">
             <div class="card-header d-flex">
-              <h2 class="d-inline mx-auto">Información del Proyecto</h2> 
-              <button class="btn btn-cambio fs-6 mr-1 h-50" @click="abrirConfigProyecto()">
+              <h2 class="d-inline mx-auto">{{ proyectoActual.nombre }}</h2> 
+              <button class="btn btn-cambio fs-6 mr-1 h-50 btn-sm" @click="abrirConfigProyecto()" data-bs-toggle="tooltip" data-bs-placement="left" title="Aqui puedes editar tu proyecto">
                 <img class="img-fluid" src="../assets/config.png" /></button>
             </div>
             
-            <div class="card-body text-center">
-              <h4 class="card-title text-info">{{ proyectoActual.nombre }}</h4>
+            <div class="card-body text-center" data-bs-toggle="tooltip" data-bs-placement="top" title="Esta es la información de tu proyecto">
               <p class="card-text">
                 <b class="text-info">Fecha de finalización:</b>  {{ proyectoActual.fechaFin }} <b class="text-info">Descripción:</b>  {{ proyectoActual.descripcion }}
               </p>
@@ -146,7 +153,7 @@
           </div>
         </div>
         <!--componente -->
-        <div class="col-12 m-0 p-0 mt-4  componente-central border border-light">
+        <div class="col-12 m-0 p-4 mt-4  componente-central">
           <router-view class=""></router-view>
         </div>
       </div>
@@ -256,7 +263,7 @@ export default {
       //ref es el arreglo que relaciona los botones con sus componentes
       ref: ["smallgoals", "sprints", "Plan", "Activities", "#"],
       //mesidenav es falso cuando el mouse no esta encima de los botones
-      mesidenav: false,
+      
       //proyecto es el objeto base para manejar, se llena en el Popup de crear nuevo proyecto
       proyecto: {
         id: 0,
@@ -277,6 +284,23 @@ export default {
       },
       //proyectos traidos desde el backend
       proyectos: [],
+      Frases:[
+        "Un sueño no se hace realidad por arte de magia, necesita sudor, determinación y trabajo duro - Colin Powel",
+        "A veces la adversidad es lo que necesitas encarar para ser exitoso - Zig Ziglar",
+        "Para tener éxito tu deseo de alcanzarlo debe ser mayor a tu miedo al fracaso - Bill Cosby",
+        "Tu actitud, no tu aptitud, determinará tu altitud - Zig Ziglar",
+        "Siempre parece imposible... hasta que se hace - Nelson Mandela",
+        "No cuentes los días, haz que los días cuenten - Muhammad Ali",
+        "El mejor momento del día es ahora - Pierre Bonnard",
+        "Con autodisciplina casi todo es posible - Theodore Roosevelt",
+        "La mejor manera para empezar es callándote y empezar a hacer - Walt Disney",
+        "Tienes que esperar cosas de ti mismo antes de poder hacerlas - Michael Jordan",
+        "El secreto para salir adelante es comenzar - Mark Twain",
+        "No pares cuando estés cansado. Para cuando hayas terminado - Marilyn Monroe",
+        "El hombre que mueve montañas comienza cargando pequeñas piedras - Confucio",
+        "El éxito es la suma de pequeños esfuerzos, que se repiten día tras día - Robert Collier",
+        "La mejor forma de predecir el futuro es creándolo - Abraham Lincoln"
+      ]
     };
   },
 
@@ -294,6 +318,9 @@ export default {
       localStorage.setItem("usuarioID", -1);
       localStorage.setItem("usuarioNombre", null);
       this.$router.push({ name: "loginform" });
+    },
+    Aleatorio(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
     },
 
     //abre el Popup de configuración de proyecto

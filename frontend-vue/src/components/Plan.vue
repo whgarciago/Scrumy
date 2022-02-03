@@ -3,10 +3,10 @@
 
     <!--Div del Titulo y el selector de sprints -->
     <div class="col-12 h-15 d-inline-block m-2 titleMetas">
-      <h2>Avance</h2>
+      <h2 data-bs-toggle="tooltip" data-bs-placement="right" title="Aqui puedes ver el avance que llevas por cada sprint y por cada meta">Avance</h2>
     </div>
     <h5 id= "escoge">Escoge el sprint</h5>
-    <select name="menu" id="menu" @change="TraerMetasDelSprint($event)" v-model="key"> <!--Selector de sprints -->s
+    <select name="menu" id="menu" @change="TraerMetasDelSprint($event)" v-model="key" data-bs-toggle="tooltip" data-bs-placement="right" title="Elige un sprint"> <!--Selector de sprints -->s
           <!--El siguiente for recorre todos los sprints en sprints[], los trae como opciones del selector y muestra su nombre-->
           <option v-for="spr in sprints" :key="spr.sprintID"  selected="selected" >Sprint {{sprints.indexOf(spr) +1 }}</option>
           {{ActualizarBarra()}}
@@ -16,15 +16,15 @@
     <div id="Plan">
       <!--El siguiente for recorre todas las metas en metas[] y los trae como divs e imprime su nombre-->
         <div v-for="meta   in metas" :key="meta.id" class="metas"> 
-          <h2>{{meta.nombre}}</h2>
-          <h3>
+          <h2 class="bg-dark">{{meta.nombre}}</h2>
+          <h3 data-bs-toggle="tooltip" data-bs-placement="right" title="Este es el avance de esta meta">
             
           </h3>
         </div>
     </div>
 
     <!--Div de la barra de progreso del sprint -->
-    <div id="BarraProgreso">
+    <div id="BarraProgreso" data-bs-toggle="tooltip" data-bs-placement="right" title="Este es el avance de tu sprint">
       <h3>Tu avance en el Sprint es: </h3>
       <div id="barra"><!--Div que es literalmente la barra de progreso -->
         <div id="avance"><!--Div que es el avance dentro de la barra -->
@@ -163,17 +163,24 @@ export default {
       var avanceMeta = document.getElementById("Plan").childNodes;
 
         //console.log(this.avances.length);
-        for (let index = 0; index < this.avances.length; index++) {
-          sum += this.avances[index].value;
-          if(this.avances[index].value==100){
+        for (let index = 0; index < this.metas.length; index++) {
+          var cambio=0;
+          for (let j = 0; j < this.avances.length; j++) {
+            if(this.avances[j].key==this.metas[index].metaID){
+              cambio=j;
+            }
+            
+          }
+          sum += this.avances[cambio].value;
+          if(this.avances[cambio].value==100){
             avanceMeta[index].style.backgroundColor= "#F44D4D";
           }
           var primerHijo = avanceMeta[index].firstChild;
           var segundoHijo = primerHijo.nextSibling;
-          if(this.avances[index].value!=0){
-            segundoHijo.innerHTML = this.avances[index].value + '%';
+          if(this.avances[cambio].value!=0){
+            segundoHijo.innerHTML = this.avances[cambio].value.toFixed(2) + '%';
           }
-          segundoHijo.style.setProperty('--variable',this.avances[index].value); 
+          segundoHijo.style.setProperty('--variable',this.avances[cambio].value); 
         }
       //Barras individuales
 
