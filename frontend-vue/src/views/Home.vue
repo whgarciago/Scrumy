@@ -122,7 +122,7 @@
       <!--contenido-->
 
       <div
-        class="d-flex flex-column h-100 col-8 col-lg-7 m-auto pt-3 content-color "
+        class="d-flex flex-column h-100 col-8 col-lg-7 m-auto pt-3 content-color overflow-auto"
         v-if="proyectoActual.nombre != ''"
       >
         <div class="p-2">
@@ -146,7 +146,7 @@
           </div>
         </div>
         <!--componente -->
-        <div class="col-12 m-0 p-0 mt-4  componente-central border border-light overflow-auto">
+        <div class="col-12 m-0 p-0 mt-4  componente-central border border-light">
           <router-view class=""></router-view>
         </div>
       </div>

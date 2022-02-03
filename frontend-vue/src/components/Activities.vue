@@ -9,26 +9,29 @@
           <option v-for="spr in sprints" :key="spr.sprintID"  selected="selected" >Sprint {{sprints.indexOf(spr) +1 }}</option>
         </select>
 
-      <div class="d-flex flex-row col-12 m-0 p-0 justify-content-center overflow-auto">       
+      <div class="d-flex flex-row col-12 m-0 p-0 overflow-auto">       
          <!--Div de las metas del sprint para ordenar -->
         <div id="Metas">
       <!--El siguiente for recorre todas las metas en metas[] y los trae como divs e imprime su nombre-->
-        <button v-for="meta   in metas" :key="meta.id" class=" metas btn btn-primary btn-sm"  @click="BringActivities(meta.metaID)"> 
+        <button v-for="meta   in metas" :key="meta.id" class=" metas btn btn-dark btn-sm"  @click="BringActivities(meta.metaID)"> 
           <h5>{{meta.nombre}}</h5>
         </button>
         <!--<img id ="Flecha" src="../assets/flecha.png">-->
         
     </div>
       </div>  
-      <div class="d-flex flex-row col-12 h-75 m-0 p-0 justify-content-center overflow-auto" >
-        <div class=" d-flex flex-row">
-        <div v-for="actividad in actividades" :key="actividad.id" class="actividades ">
+      <div class="d-flex flex-row col-12 h-75 m-0 p-4 justify-content-center overflow-auto" >
+        <div class=" d-flex flex-row p-4">
+        <div v-for="actividad in actividades" :key="actividad.id" id="actividades ">
         <div class="card bg-light mb-3" style="width: 18rem;">
-          <div class="card-header">{{actividad.nombre}}___{{actividad.actividadID}}__{{actividad.estado}}</div>
+          <div class="card-header text-white bg-dark">
+            {{actividad.nombre}}
+            <button v-show="actividad.estado" class="btn bg-danger text-white btn-sm" @click="cambiarEstado(actividad.actividadID)">COMPLETADA</button>
+            <button v-show="!actividad.estado" class="btn bg-success text-white btn-sm" @click="cambiarEstado(actividad.actividadID)">POR HACER</button>
+          </div>
           <div class="card-body">
             <p class="card-text">{{actividad.descripcion}}</p>
-            <button class="btn" @click="cambiarEstado(actividad.actividadID)">COMPLETADA?</button>
-            <button class="btn" @click="EliminarActividad(actividad.actividadID)">ELIMINAR</button>
+            <button class="btn btn-outline-danger" @click="EliminarActividad(actividad.actividadID)">ELIMINAR</button>
           </div>
         </div>
       </div>
@@ -36,22 +39,22 @@
 
       </div>
       <!--Popup para crear actividad-->
-      <div class="ventanaOpciones crearActividad">
+      <div class="ventanaOpciones crearActividad bg-dark">
         <div class="contenidoActividad">
-          <h2>Nueva actividad</h2>
-          <p>Nombre: </p>
-          <input v-model="NombreActividad" type="text" id="nombreActividad"><br>
-          <p>descripción: </p>
-          <input v-model="DescripcionActividad" type="text" id="descripcionActividad"><br>
+          <h2 class="text-light">Nueva actividad</h2>
+          <p class="text-light">Nombre: </p>
+          <input v-model="NombreActividad" type="text" class="rounded bg-secondary"><br>
+          <p class="text-light">descripción: </p>
+          <input v-model="DescripcionActividad" type="text" class="rounded bg-secondary"><br>
         </div>
-        <button @click="cerrarPopupAct()" class="cerrarVentana">x</button>
-        <button @click="CrearActividad()" class="textoOpcion">Crear</button>
+        <button @click="cerrarPopupAct()" class="cerrarVentana btn bg-dark text-light">x</button>
+        <button @click="CrearActividad()" class="textoOpcion btn bg-dark text-light btn-lg">CREAR</button>
       </div>
     
      <!--Div grande que abarca toda la pagina -->
     <!--Div del Titulo y el selector de sprints -->
     
-        <button @click="abrirPopupAct()" id="CreateActivityButton">+</button>   
+    <button @click="abrirPopupAct()" class="CreateActivityButton btn bg-dark text-white btn-lg"><b>NUEVA ACTIVIDAD</b></button>   
   </div>
 </template>
 
@@ -130,13 +133,22 @@ export default {
       .then((response) => {
         this.actividades = response["data"];
         this.idMetA = idMeta;
+        //this.ActualizarColor();
       })
       .catch((response) => {
         alert("No es posible conectar con el backend en este momento 1 (SetAvance)");
       });
       
     },
-
+    ActualizarColor(){
+      var actis = document.getElementById("actividades").childNodes;
+      for (let i = 0; i < actis.length; i++) {
+        if(this.actividades[i].estado==true){
+            actis[i].style.backgroundColor= "#F44D4D";
+          }
+        
+      }
+    },
     TraerSprintsBackend(){//Trae los Sprints del Backend y los almacena en sprints[]
        axios
         .get(this.$store.state.backURL + pathGet, {
@@ -272,8 +284,8 @@ html,body{
 #Sprints h1{display: inline;  color: white;} 
 #menu {
   position :absolute;
-  top :13%;
-  right: 6%;
+  top :7%;
+  right: 2%;
   width: 15%;
   height: 5%;
   border-radius: 20px;
@@ -283,11 +295,11 @@ html,body{
   display: inline;  
   color: white;
   position :absolute;
-  top :7%;
-  right: 2%;
+  top :2%;
+  right: 3%;
   }
 #Metas{
-  height: 20%;
+  height: 15%;
   width: 70%;
   text-align: center;
   padding: 1px;
@@ -319,7 +331,7 @@ html,body{
 
 #Actividades {
     width: 100%;
-    height: 65%;
+    height: 55%;
     text-align: center;
     padding: 1px;
     display: flex; 
@@ -328,7 +340,7 @@ html,body{
     align-items: center;
 }
 
-.actividades{
+#actividades{
     height: 25%;
     margin: 40px; 
 }
@@ -346,36 +358,24 @@ html,body{
     cursor: pointer;
   }
 
-  #CreateActivityButton{
+  .CreateActivityButton{
     position: absolute;
-    bottom: 8px;
-    right: 90px;
-    font-size: 40px;
-    background-color:#ffffff;
-    border-radius: 20%;
-    border-style: solid;
-    color:#15a8e2;
-    cursor: pointer;
+    bottom: 8%;
+    right: 2%;
   }
     .ventanaOpciones{
-    background-color: #ffffff;
+    background-color: #5e5e5e;
     position: absolute;
     top: 10%;
     left: 30%;  
     width: 40%;
-    height: 70%;
+    height: 40%;
     border-style: solid;
     border-color:#FFFFFF;
     padding: 20px 30px;
     border-radius: 10px;
   }
 
-  .ventanaOpciones h2{
-    color: black;
-    font-size: 20px;
-    font-weight: bold;
-    text-justify: center;
-  }
 
   .eliminarActividad{
       position: absolute;
@@ -396,12 +396,10 @@ html,body{
   .cerrarVentana{
     position: absolute;
     display: flex;
-    top: 5%;
-    right: 5%;
+    top: 2%;
+    right: 2%;
     font-size: 25px;
     border-style: hidden;
-    background-color: #FFFFFF;
-    color: #15a8e2;
   }
   .textoOpcion{
     position: absolute;
@@ -412,7 +410,7 @@ html,body{
     color: #15a8e2;
   }
   .titleMetas {
-  border-bottom: 2px solid rgb(156, 156, 156);
+  border-bottom: 2px solid rgb(0, 0, 0);
   margin-bottom: 5px;
   }
 </style>

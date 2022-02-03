@@ -17,9 +17,9 @@
       <!--El siguiente for recorre todas las metas en metas[] y los trae como divs e imprime su nombre-->
         <div v-for="meta   in metas" :key="meta.id" class="metas"> 
           <h2>{{meta.nombre}}</h2>
-          <div>
+          <h3>
             
-          </div>
+          </h3>
         </div>
     </div>
 
@@ -165,6 +165,9 @@ export default {
         //console.log(this.avances.length);
         for (let index = 0; index < this.avances.length; index++) {
           sum += this.avances[index].value;
+          if(this.avances[index].value==100){
+            avanceMeta[index].style.backgroundColor= "#F44D4D";
+          }
           var primerHijo = avanceMeta[index].firstChild;
           var segundoHijo = primerHijo.nextSibling;
           if(this.avances[index].value!=0){
@@ -253,12 +256,14 @@ h2{
   border-radius: 6px;
 
 }
-.metas div {
+.metas h3 {
   --variable:0;
   background-color: rgb(50, 205, 159);
   height: 100%;
   width: calc(var(--variable)*1%);
   border-radius: 3px;
+  font-size: auto;
+  color: white;
 }
 .metas h2{
   color: rgb(255, 255, 255);
