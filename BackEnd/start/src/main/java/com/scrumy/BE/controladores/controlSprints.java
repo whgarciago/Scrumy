@@ -33,6 +33,28 @@ public class controlSprints {
         }
     }
 
+    @GetMapping("/sprints/status/proyect")
+    public ResponseEntity<List<Sprints>> getAllActiveSprintsbyProyectoID (@RequestParam int id){
+        try{
+            List<Sprints> listaSprints = RS.findByidProyecto(id);
+            
+            if(listaSprints.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            for(int i = 0;i<listaSprints.size();i++){
+                if(listaSprints.get(i).getEstado()!=true){
+                    listaSprints.remove(i);
+                }else{
+                    continue;
+                }
+            }
+            return new ResponseEntity<>(listaSprints,HttpStatus.OK);
+                        
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/sprints/find")
     public ResponseEntity<Optional<Sprints>> getSprintbyID(@RequestParam int id){
         try{
@@ -78,6 +100,20 @@ public class controlSprints {
             s.setFechaInicio(updSprints.getFechaInicio());
             s.setFechaFinalizacion(updSprints.getFechaFinalizacion());          
 
+            return new ResponseEntity<>(RS.save(s),HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/sprints/updateState")
+    public ResponseEntity<Sprints> updateEstado(@RequestParam int id){
+        Optional<Sprints> Sprintdata = RS.findById(id);
+            
+        if(Sprintdata.isPresent()){
+            Sprints s = Sprintdata.get();
+            boolean e = s.getEstado(); 
+            s.setEstado(!e);         
             return new ResponseEntity<>(RS.save(s),HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
