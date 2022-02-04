@@ -10,8 +10,8 @@ public class Sprints {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int sprintID;
 
-    //@Column(name = "Meta")
-    //private int idMetas;
+    @Column(name = "Estado")
+    private boolean estado = true;
 
     @Column(name = "Proyecto")
     private int idProyecto;
@@ -27,8 +27,7 @@ public class Sprints {
     }
 
 
-    public Sprints(/*int idMetas,*/ int idProyecto, String fechaInicio, String fechaFinalizacion) {
-        //this.idMetas = idMetas;
+    public Sprints( int idProyecto, String fechaInicio, String fechaFinalizacion) {
         this.idProyecto = idProyecto;
         this.fechaInicio = fechaInicio;
         this.fechaFinalizacion = fechaFinalizacion;
@@ -43,13 +42,13 @@ public class Sprints {
         this.sprintID = sprintID;
     }
 
-    /*public int getIdMetas() {
-        return this.idMetas;
+    public boolean getEstado(){
+        return this.estado;
     }
 
-    public void setIdMetas(int idMetas) {
-        this.idMetas = idMetas;
-    }*/
+    public void setEstado(boolean estado){
+        this.estado =  estado;
+    }
 
     public int getidProyecto() {
         return this.idProyecto;
@@ -79,7 +78,7 @@ public class Sprints {
     public String toString() {
         return "{" +
             " sprintID:'" + getSprintID() + "'" +
-            //", idMetas='" + getIdMetas() + "'" +
+            ", estado='" + getEstado() + "'" +
             ", idProyecto:'" + getidProyecto() + "'" +
             ", fechaInicio:'" + getFechaInicio() + "'" +
             ", fechaFinalizacion:'" + getFechaFinalizacion() + "'" +
