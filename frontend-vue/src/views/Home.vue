@@ -122,7 +122,7 @@
           <hr class="hr-proyectos col-9" />
           <div class="text-light bg-dark p-2">
             <h5>Y Recuerda:</h5> 
-            <p><i>{{Frases[Aleatorio(0,Frases.length)]}}</i></p>
+            <p><i>{{Frases[Frase]}}</i></p>
           </div>
           <!--<button @click="compararFechas()">Pruebas</button>-->
         </div>
@@ -263,7 +263,7 @@ export default {
       //ref es el arreglo que relaciona los botones con sus componentes
       ref: ["smallgoals", "sprints", "Plan", "Activities", "#"],
       //mesidenav es falso cuando el mouse no esta encima de los botones
-      
+      Frase: 0,
       //proyecto es el objeto base para manejar, se llena en el Popup de crear nuevo proyecto
       proyecto: {
         id: 0,
@@ -330,6 +330,7 @@ export default {
     //abre el componente central y carga su respectivo contenido según el boton presionado
     abrirComponente(index) {
       this.$router.push({ name: this.ref[index] }).catch((err) => {});
+      this.Frase=this.Aleatorio(0,this.Frases.length)
     },
     //Abre el Popup para añadir un nuevo proyecto
     abrirPopup: function() {
@@ -543,25 +544,25 @@ export default {
           Contenido[0].style.backgroundColor= "#6390c7b3";
           break;
         case 3://Tema verde
-          BarraSuperior[0].style.backgroundColor= "#02ac66";
-          BarraProy[0].style.backgroundColor= " #D28769b3";
-          EncabezProyecto[0].style.backgroundColor= "#02ac66";
-          BotonCambiar[0].style.backgroundColor= " #D28769b3";
-          Contenido[0].style.backgroundColor= " #D28769b3";
+          BarraSuperior[0].style.backgroundColor= "#37261C ";
+          BarraProy[0].style.backgroundColor= " #2C7C22b3";
+          EncabezProyecto[0].style.backgroundColor= "#37261C ";
+          BotonCambiar[0].style.backgroundColor= " #2C7C22b3";
+          Contenido[0].style.backgroundColor= " #2C7C22b3";
           break;
         case 4://Tema Rojo
           BarraSuperior[0].style.backgroundColor= "#B83955";
-          BarraProy[0].style.backgroundColor= "#295073b7";
+          BarraProy[0].style.backgroundColor= "#153450b7";
           EncabezProyecto[0].style.backgroundColor= "#B83955";
-          BotonCambiar[0].style.backgroundColor= "#295073b7";
-          Contenido[0].style.backgroundColor= "#295073b7";
+          BotonCambiar[0].style.backgroundColor= "#153450b7";
+          Contenido[0].style.backgroundColor= "#153450b7";
           break;
         case 5://Tema Claro
-          BarraSuperior[0].style.backgroundColor= "#23bac4";
-          BarraProy[0].style.backgroundColor= "#d9473db3";
-          EncabezProyecto[0].style.backgroundColor= "#23bac4";
-          BotonCambiar[0].style.backgroundColor= "#d9473db3";
-          Contenido[0].style.backgroundColor= "#d9473db3";
+          BarraSuperior[0].style.backgroundColor= "#01657D";
+          BarraProy[0].style.backgroundColor= "#BE463Db3";
+          EncabezProyecto[0].style.backgroundColor= "#01657D";
+          BotonCambiar[0].style.backgroundColor= "#BE463Db3";
+          Contenido[0].style.backgroundColor= "#BE463Db3";
           break;
         default://Default
           BarraSuperior[0].style.backgroundColor= "#1d3461";
