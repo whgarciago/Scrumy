@@ -41,27 +41,27 @@
   </div>
       <!--Popup para crear actividad-->
       <div class="ventanaOpciones crearActividad bg-dark">
-        <div class="contenidoActividad">
+        <div class="contenidoActividad w-100 h-100">
           <h2 class="text-light">Nueva actividad</h2>
           <p class="text-light">Nombre: </p>
           <input v-model="NombreActividad" type="text" class="rounded bg-secondary"><br>
           <p class="text-light">descripción: </p>
-          <input v-model="DescripcionActividad" type="text" class="rounded bg-secondary"><br>
+          <input v-model="DescripcionActividad" type="text" class="rounded bg-secondary w-100"><br>
         </div>
         <button @click="cerrarPopupAct()" class="cerrarVentana btn bg-dark text-light">x</button>
-        <button @click="CrearActividad()" class="textoOpcion btn bg-dark text-light btn-lg">CREAR</button>
+        <button @click="CrearActividad()" class="textoOpcion btn btn-outline-success text-dark btn-lg">CREAR</button>
       </div>
     
      <!--Popup para editar actividad-->
       <div class="ventanaOpcion2 cambiarActividad bg-dark">
-        <div class="contenidoActividad">
+        <div class="contenidoActividad w-100 h-100">
           <h2 class="text-light">Editar Actividad</h2>
           <p class="text-light">Nombre: </p>
           <input v-model="NombreActividad" type="text" class="rounded bg-secondary"><br>
           <p class="text-light">descripción: </p>
-          <input v-model="DescripcionActividad" type="text" class="rounded bg-secondary"><br>
+          <input v-model="DescripcionActividad" type="text" class="rounded bg-secondary w-100"><br>
           <p class="text-light">dificultad: </p>
-          <input v-model="DificultadActividad" type="text" class="rounded bg-secondary"><br>
+          <input v-model="DificultadActividad" type="text" class="rounded bg-secondary w-100"><br>
         </div>
         <button @click="cerrarPopupCam()" class="cerrarVentana btn bg-dark text-light">x</button>
         <button @click="cambiarActividad()" class="textoOpcion2 btn text-dark btn-lg btn-outline-success">GUARDAR</button>
@@ -393,7 +393,7 @@ html,body{
     top: 10%;
     left: 30%;  
     width: 40%;
-    height: 40%;
+    height: 48%;
     border-style: solid;
     border-color:#FFFFFF;
     padding: 20px 30px;
@@ -405,7 +405,7 @@ html,body{
     top: 10%;
     left: 30%;  
     width: 40%;
-    height: 50%;
+    height: 60%;
     border-style: solid;
     border-color:#FFFFFF;
     padding: 20px 30px;
@@ -438,16 +438,16 @@ html,body{
   }
   .textoOpcion{
     position: absolute;
-    bottom: 10%;
-    Right: 10%;
+    bottom: 5%;
+    Right: 5%;
     border-style: solid rgb(255, 0, 149);
     background-color: #FFFFFF;
     color: #15a8e2;
   }
     .textoOpcion2{
     position: absolute;
-    bottom: 30%;
-    Right: 10%;
+    bottom: 5%;
+    Right: 50%;
     border-style: solid rgb(255, 0, 149);
     background-color: #FFFFFF;
     color: #15a8e2;

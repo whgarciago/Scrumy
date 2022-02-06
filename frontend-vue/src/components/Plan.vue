@@ -15,9 +15,9 @@
     <!--Div de las metas del sprint para ordenar -->
     <div id="Plan">
       <!--El siguiente for recorre todas las metas en metas[] y los trae como divs e imprime su nombre-->
-        <div v-for="meta   in metas" :key="meta.id" class="metas"> 
-          <h2 class="bg-dark">{{meta.nombre}}</h2>
-          <h3 data-bs-toggle="tooltip" data-bs-placement="right" title="Este es el avance de esta meta">
+        <div v-for="meta   in metas" :key="meta.id" class="metas d-flex flex-column"> 
+          <h2 class="bg-dark p-0">{{meta.nombre}}</h2>
+          <h3 data-bs-toggle="tooltip" data-bs-placement="right" title="Este es el avance de esta meta" class="p-0">
             
           </h3>
         </div>
@@ -174,13 +174,17 @@ export default {
             
           }
           sum += this.avances[cambio].value;
-          if(this.avances[cambio].value==100){
-            avanceMeta[index].style.backgroundColor= "#F44D4D";
-          }
           var primerHijo = avanceMeta[index].firstChild;
           var segundoHijo = primerHijo.nextSibling;
+          if(this.avances[cambio].value==100){
+            avanceMeta[index].style.backgroundColor= "#32cd9f";
+            primerHijo.style.backgroundColor="#32cd9f";
+          }
           if(this.avances[cambio].value!=0){
             segundoHijo.innerHTML = this.avances[cambio].value.toFixed(2) + '%';
+          }
+          if(this.avances[cambio].value==100){
+            segundoHijo.innerHTML = "¡COMPLETADA!";
           }
           segundoHijo.style.setProperty('--variable',this.avances[cambio].value); 
 
@@ -268,7 +272,7 @@ h2{
 }
 .metas h3 {
   --variable:0;
-  background-color: rgb(50, 205, 159);
+  background-color: #32cd9f;
   height: 100%;
   width: calc(var(--variable)*1%);
   border-radius: 3px;
