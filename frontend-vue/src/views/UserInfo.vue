@@ -1,15 +1,7 @@
 <template>
   <div class="row col-12 vh-100 whole-page m-0 p-0 ">
     <!-- Logo, botones de proyectos y usuario -->
-    <div class="topNavigationBar" id="MyTopNavigationBar">
-      <img id="logo" alt="Logo Scrumy" src="../assets/logo_scrumy.png" />
-      <!--Nombre de usuario y configuración-->
-      <a href="#" class="userbutton">
-        <b id="neg">{{ user.nombre }}</b> Configuración
-      </a>
-    </div>
-
-    <div class="col-3 p-0 m-0 spacing-to-navbar"></div>
+    
     <div
       class="col-6 p-0 m-0 d-flex flex-column justify-content-center align-items-center m-0 p-0 spacing-to-navbar"
     >
@@ -61,10 +53,6 @@
             required
           />
         </div>
-
-
- 
-
         <div class="col-12 col-sm-5 col-md-4 mb-3">
           <button
             class="col-sm-10 col-md-10 offset-sm-1 offset-md-2 btn btn-primary"
@@ -172,81 +160,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1,
-h2,
-#logousuario {
-  font-weight: normal;
-  color: blue;
-  right: 2em;
-}
 
-body {
-  background-color: cornflowerblue;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: 0% 35%;
-  width: 100%;
-  height: 100%;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-}
-
-.topNavigationBar {
-  position: fixed;
-  top: 0;
-  background-color: rgba(255, 255, 255, 0.103);
-  overflow: hidden;
-  height: 126px;
-  width: 100vw;
-  border-bottom: 2px solid rgb(156, 156, 156);
-}
-
-.topNavigationBar .userbutton {
-  font-size: 22px;
-  color: rgb(21, 73, 198, 0.6);
-  padding-top: 40px;
-  float: right;
-  /*text-align: right;*/
-}
-.topNavigationBar .userbutton:hover {
-  color: rgb(255, 255, 255);
-  background-color: rgba(94, 94, 94, 0.164);
-}
-#neg {
-  font-size: 42px;
-  float: unset;
-}
-.topNavigationBar a {
-  line-height: 30px;
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  text-decoration: none;
-  font-size: 20px;
-  width: 240px;
-  height: 120px;
-}
-
-#logo {
-  width: 230px;
-}
-.logos {
-  width: 50px;
-}
-.whole-page {
-  min-width: 768px;
-  padding-top: 130px !important;
-
-  background-image: url("../assets/background_picture.jpg");
-  background-size: cover;
-  height: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-}
-.spacing-to-navbar {
-  padding-top: 150px;
-}
 </style>
