@@ -50,12 +50,12 @@
               {{ actividad.nombre }}
               <button
                 v-show="actividad.estado"
-                class="btn bg-success text-white btn-sm"
+                class="btn text-white btn-sm"
                 data-bs-toggle="tooltip"
                 data-bs-placement="right"
                 title="Haz click aqui para marcar tu actividad como 'POR HACER'"
               >
-                COMPLETADA
+                <img :src="starIcon" alt="Actividad Completada">
               </button>
               <button
                 v-show="!actividad.estado"
@@ -93,6 +93,7 @@
 
 <script>
 import axios from "axios";
+import starIcon from "../assets/completed_activity_star.png";
 
 const pathGetProject = "/proyectos/find";
 const pathGetSprints = "/sprints/all";
@@ -108,6 +109,7 @@ export default {
       proyectId: this.$store.state.activeProject,
       sprints: [],
       proyecto: {},
+      starIcon :starIcon,
       currentGoals: [
         {
           descripcion: "",

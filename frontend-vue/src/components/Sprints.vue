@@ -73,7 +73,7 @@
                 data-bs-placement="right"
                 title="Haz click aqui para marcar tu Sprint como 'COMPLETADO'"
               >
-                CERRAR SPRINT
+                COMPLETAR SPRINT
               </button>
             </div>
             <div class="card-body">
@@ -94,7 +94,7 @@
             </div>
           </div>
         </div>
-        <button @click="getCurrentDate()">Pruebas</button>
+        
       </div>
       <!-- Lista de metas lateral derecho-->
       <div
