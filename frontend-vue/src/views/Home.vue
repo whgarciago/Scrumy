@@ -97,6 +97,7 @@
     <div class="d-flex flex-row h-100  ">
       <div class="col-4 col-lg-2  m-0 p-0 pt-3 barraProyectos">
         <div class="col-12 mx-auto p-0 text-center ">
+          
           <h3 class="text-light">Mis proyectos</h3>
 
           <button
@@ -124,7 +125,6 @@
             <h5>Y Recuerda:</h5> 
             <p><i>{{Frases[Frase]}}</i></p>
           </div>
-          <!--<button @click="compararFechas()">Pruebas</button>-->
         </div>
       </div>
       <!--contenido-->
@@ -189,6 +189,7 @@
           v-model="proyecto.fechaFin"
           value="2022-01-29T19:30"
           min="2022-01-29T19:30"
+          id="projectMinDate"
         /><br />
         <button class="CrearProyecto" @click="CrearProyecto(usuarioID)">
           Crear
@@ -224,7 +225,7 @@
         /><br />
         <label for="fecha-culminación text-light">Fecha de culminación</label>
         <input
-          type="date"
+          type="datetime-local"
           id="fechaculminacionProyecto"
           v-model="proyectoActual.fechaFin"
         /><br />
@@ -261,7 +262,7 @@ export default {
       //nombres es un arreglo con los nombres de los 4 botones
       nombres: ["Metas", "Sprints", "Avance", "Actividades", "Retroalimentacion"],
       //ref es el arreglo que relaciona los botones con sus componentes
-      ref: ["smallgoals", "sprints", "Plan", "Activities", "#"],
+      ref: ["smallgoals", "sprints", "Plan", "Activities", "retroalimentacion"],
       //mesidenav es falso cuando el mouse no esta encima de los botones
       Frase: 0,
       //proyecto es el objeto base para manejar, se llena en el Popup de crear nuevo proyecto
@@ -305,18 +306,8 @@ export default {
   },
 
   methods: {
-    compararFechas() {
-      let today = new Date().toISOString();
-      let fecha = new Date(this.proyecto.fechaFin).toISOString();
-
-      console.log(today <= fecha);
-
-      console.log("Fecha fin: " + fecha);
-      console.log("Fecha Actual: " + today);
-    },
     cerrarSesion() {
-      localStorage.setItem("usuarioID", -1);
-      localStorage.setItem("usuarioNombre", null);
+      localStorage.clear()
       this.$router.push({ name: "loginform" });
     },
     Aleatorio(min, max) {
@@ -334,6 +325,8 @@ export default {
     },
     //Abre el Popup para añadir un nuevo proyecto
     abrirPopup: function() {
+      let dateInput = document.getElementById("projectMinDate");
+      dateInput.min = new Date().toISOString().split(".")[0];
       const popup = document.querySelector(".popup").classList.add("active");
       document.getElementById("nombreProyecto").value = "";
       document.getElementById("motivacionProyecto").value = "";
@@ -478,10 +471,12 @@ export default {
       this.proyectoActual.nombre = proyecto.nombre;
       this.proyectoActual.motivacion = proyecto.motivacion;
       this.proyectoActual.descripcion = proyecto.descripcion;
-      this.proyectoActual.fechaFin = proyecto.fechaFin;
+      let date = new Date(proyecto.fechaFin);
+      this.proyectoActual.fechaFin = date.toLocaleString('es-CO');
 
       //Actualiza id de proyecto en store con el seleccionado
       this.$store.state.activeProject = this.proyectoActual.id;
+      localStorage.setItem('proyectoId', this.proyectoActual.id);
       //actualiza la motivación
       this.$router.push({ name: "home" }).catch((err) => {});
       //console.log("carac ejecutada");
@@ -755,8 +750,8 @@ input {
 }
 
 .componente-central {
-  min-height: 65vh;
-  max-height: 65vh;
+  min-height: 70vh;
+  max-height: 70vh;
 }
 
 
@@ -776,12 +771,11 @@ input {
   background-color: #000000;
   /*box-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 10px #ffffff;*/
 }
-.btn-navbar{
+.btn-navbar {
   transition: 0.5s;
 }
 .btn-navbar:hover {
   box-shadow: 0 0 5px #ffffff, 0 0 20px #ffffff, 0 0 40px #ffffff;
-
 }
 .btn-cambio{
   background-color: #6390c7b3;
@@ -800,7 +794,7 @@ input {
   /*background-image: linear-gradient(to top,rgb(182, 182, 182),#454b50);*/
   background-color: #6390c7b3;
 }
-.card-header{
+.card-header {
   background: #1d3461;
   color: white;
 }

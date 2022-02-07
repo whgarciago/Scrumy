@@ -70,7 +70,7 @@ export default {
       for (let index = 0; index < this.users.length; index++) {
         if (this.users[index].correo == this.email) {
           console.log("Concuerdan nombres");
-          if ((this.users[index].contraseña = this.password)) {
+          if ((this.users[index].contraseña == this.password)) {
             localStorage.setItem("usuarioID", this.users[index].usuarioID);
             localStorage.setItem("usuarioNombre", this.users[index].nombre);
             this.$router.push({ name: "home" });

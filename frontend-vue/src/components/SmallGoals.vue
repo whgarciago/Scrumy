@@ -1,40 +1,42 @@
 <template>
   <div class="col-12 m-0 p-2 h-100 component">
     <div
-      class=" d-flex flex-row col-12 m-0 mb-1 pb-2 align-items-center  titleMetas"
+      class=" d-flex flex-row col-12 m-0 mb-1 pb-2 align-items-center  border-bottom border-dark"
     >
       <h2>Metas</h2>
 
-      <button
-        class=" ml-auto add"
-        @click="abrirPopup()"
-      >
+      <button class=" ml-auto add" @click="abrirPopup()">
         <img src="../assets/addbutton.png" />
       </button>
     </div>
-    <div class="row col-12 h-75 justify-content-center pl-5 overflow-auto">
+    <div class="row col-12 h-75 m-0 overflow-auto justify-content-center">
       <div
+        class="card actividades bg-light mb-3 d-inline-block m-3"
+        style="width: 25rem;"
         v-for="goal in goals"
         :goal="goal"
         :indice="goal.index"
         :key="goal.id"
+        @click="abrirGoalPopup(goal)"
       >
-        <div class="card bg-light mb-3" @click="abrirGoalPopup(goal)" style="width: 18rem;">
-          <div class="card-header">{{goal.nombre}}</div>
-          <div class="card-body">
-            <p class="card-text">{{goal.descripcion}}
-            </p>
-          </div>
+        <div class="card-header text-white bg-dark">
+          {{ goal.nombre }}
         </div>
-
-      
+        <div
+          class="card-body"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Haz click aqui para editar tu actividad"
+        >
+          <p class="card-text"><b>DESCRIPCIÓN:</b> {{ goal.descripcion }}</p>
+          <p class="card-text" v-if="goal.dificultad">
+            <b>DIFICULTAD: </b>{{ goal.dificultad }}
+          </p>
+        </div>
       </div>
     </div>
-    <div class="col-12 h-15 d-inline-block text-right">
-      
-    </div>
 
-    <div class="create-goal-popup">
+    <div class="create-goal-popup col-12 col-sm-8">
       <form class="form" id="formularioProyecto" onsubmit="return false">
         <h3>Nueva Meta</h3>
         <label for="goalName">Nombre</label><br />
@@ -59,29 +61,38 @@
         ></textarea>
 
         <br />
-
-        <button class="crearMeta" type="submit" @click="crearMeta()">
-          Crear
-        </button>
-        <button class="cancelarCrearMeta" type="button" @click="cerrarPopup()">
-          Cancelar
-        </button>
+        <div class="col-12 ">
+          <button
+            class="btn crearMeta col-12 col-sm-4 m-1"
+            type="submit"
+            @click="crearMeta()"
+          >
+            Crear
+          </button>
+          <button
+            class="btn cancelarCrearMeta col-12 col-sm-4"
+            type="button"
+            @click="cerrarPopup()"
+          >
+            Cancelar
+          </button>
+        </div>
       </form>
     </div>
 
-    <div class="goal-popup">
-      <h1>Nombre: {{ activeGoal.nombre }}</h1>
+    <div class="goal-popup col-12 col-sm-8">
+      <h3>Nombre: {{ activeGoal.nombre }}</h3>
       <h4>Descripción: {{ activeGoal.descripcion }}</h4>
       <h5 v-if="activeGoal.dificultad != null">
         Dificultad: {{ activeGoal.dificultad }}
       </h5>
-      <button class="difficulties-button" @click="openDifficultyPopup()">
+      <button class="btn difficulties-button col-12 col-sm-4 m-1" @click="openDifficultyPopup()">
         Dificultad
       </button>
-      <button class="cancelarCrearMeta" @click="cerrarGoalPopup()">
+      <button class="btn cancelarCrearMeta col-12 col-sm-4" @click="cerrarGoalPopup()">
         Cerrar
       </button>
-      <button class="edit-goal-button" @click="openEditGoalPopup()">
+      <button class=" btn edit-goal-button col-12 col-sm-2 float-right" @click="openEditGoalPopup()">
         <img src="https://img.icons8.com/material/32/000000/edit--v1.png" />
       </button>
     </div>
@@ -98,18 +109,18 @@
         v-model="activeGoal.dificultad"
         required
       ></textarea>
-      <button class="cancelarCrearMeta" @click="saveDifficultyPopup()">
+      <button class="btn cancelarCrearMeta col-12 col-sm-4 m-1" @click="saveDifficultyPopup()">
         Guardar
       </button>
-      <button class="difficulties-button" @click="closeDifficultyPopup()">
+      <button class="btn difficulties-button col-12 col-sm-4" @click="closeDifficultyPopup()">
         Cancelar
       </button>
-      <button class="delete-goal-button" @click="deleteDifficulty()">
+      <button class="btn delete-goal-button col-12 col-sm-2 float-right" @click="deleteDifficulty()">
         <img src="https://img.icons8.com/material/32/000000/delete--v1.png" />
       </button>
     </div>
 
-    <div class="update-goal-popup">
+    <div class="update-goal-popup col-12 col-sm-8">
       <form class="form" id="editGoalForm" onsubmit="return false">
         <h3>Modificar Meta</h3>
         <label for="goalName">Nombre</label><br />
@@ -117,7 +128,7 @@
           type="text"
           name="editGoalName"
           id="editGoalName"
-          placeholder="Nombre"
+          :placeholder="[[activeGoal.nombre]]"
           v-model="editGoal.name"
           required
         />
@@ -126,7 +137,7 @@
           name="editGoalDescription"
           id="editGoalDescription"
           class="w-100 goalDescription"
-          placeholder="Descripción"
+          :placeholder="[[activeGoal.descripcion]]"
           cols="30"
           rows="3"
           v-model="editGoal.description"
@@ -135,17 +146,17 @@
 
         <br />
 
-        <button class="crearMeta" type="submit" @click="editGoalInBackend()">
+        <button class="btn crearMeta col-12 col-sm-4 m-1" type="submit" @click="editGoalInBackend()">
           Guardar
         </button>
         <button
-          class="cancelarCrearMeta"
+          class="btn cancelarCrearMeta col-12 col-sm-4"
           type="button"
           @click="closeEditGoalPopup()"
         >
           Cancelar
         </button>
-        <button class="delete-goal-button" @click="deleteGoal()">
+        <button class="btn delete-goal-button col-12 col-sm-2 float-right" @click="deleteGoal()">
           <img src="https://img.icons8.com/material/32/000000/delete--v1.png" />
         </button>
       </form>
@@ -207,12 +218,21 @@ export default {
         name: "",
         description: "",
         proyectId: this.proyectId,
-        state: 0,
+        state: 1,
       },
     };
   },
 
   methods: {
+    
+    abrirGoalPopup: function(goal) {
+      this.activeGoal = goal;
+
+      document.querySelector(".goal-popup").classList.add("active");
+    },
+    cerrarGoalPopup: function() {
+      document.querySelector(".goal-popup").classList.remove("active");
+    },
     abrirPopup: function() {
       document.querySelector(".create-goal-popup").classList.add("active");
     },
@@ -231,6 +251,7 @@ export default {
 
     openEditGoalPopup: function() {
       document.querySelector(".update-goal-popup").classList.add("active");
+      this.cerrarGoalPopup()
     },
     closeEditGoalPopup: function() {
       document.querySelector(".update-goal-popup").classList.remove("active");
@@ -297,14 +318,6 @@ export default {
           alert("No es posible conectar con el backend en este momento");
         });
     },
-    abrirGoalPopup: function(goal) {
-      this.activeGoal = goal;
-
-      document.querySelector(".goal-popup").classList.add("active");
-    },
-    cerrarGoalPopup: function() {
-      document.querySelector(".goal-popup").classList.remove("active");
-    },
 
     saveDifficultyPopup: function() {
       axios
@@ -334,7 +347,7 @@ export default {
           estado: this.formGoal.state,
           idProyecto: this.$store.state.activeProject,
           idSprint: 0,
-          dificultad:" ",
+          dificultad: " ",
         })
         .then((response) => {
           this.cargarMetas();
@@ -369,10 +382,6 @@ export default {
 h2 {
   color: #fff;
 }
-
-h3 {
-  color: #7ba9d1;
-}
 .add {
   border: none;
   border-radius: 5px;
@@ -383,7 +392,7 @@ h3 {
 .goal-difficulty-popup,
 .update-goal-popup {
   z-index: 100;
-  background: #fff;
+  background: #424242;
   position: absolute;
   top: -10%;
   left: 50%;
@@ -392,84 +401,68 @@ h3 {
   transform: translate(-50%, 50%) scale(1.25);
   width: 500px;
   padding: 20px 30px;
-  background: #fff;
   box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
   transition: top 0ms ease-in-out 200ms, opacity 200ms ease-in-out 200 ms,
     transform 20ms ease-in-out 0 ms;
   font-size: large;
 }
-.create-goal-popup label,
-.goal-difficulty-popup,
-.update-goal-popup {
-  color: rgb(21, 73, 198, 0.6);
-}
-.create-goal-popup textarea,
-.goal-difficulty-popup textarea,
-.update-goal-popup textarea {
-  background-color: #7ba9d1;
-  color: #fff;
-  font-size: large;
-  overflow: hidden;
-  resize: none;
-  border: 1px solid #aaa;
-  border-radius: 5px;
-}
+
 .create-goal-popup.active,
 .goal-difficulty-popup.active,
 .update-goal-popup.active {
-  color: rgb(21, 73, 198, 0.6);
   display: block;
-  background: #fff;
-  top: -10%;
+  background: #424242;
+  top: -30%;
   left: 50%;
   opacity: 1;
   transform: translate(-50%, 50%) scale(1);
   transition: top 0ms ease-in-out 0ms, opacity 200ms ease-in-out 200 ms,
     transform 20ms ease-in-out 0 ms;
+  color: white;
+}
+input {
+  background-color: rgb(182, 182, 182);
+  color: rgb(78, 78, 78);
+  margin-top: 5px;
+  display: block;
+  width: 100%;
+  height: 10px;
+  padding: 10px;
+  outline: none;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  font-size: large;
+}
+textarea {
+  background-color: rgb(182, 182, 182);
+  color: rgb(78, 78, 78);
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: block;
+  padding: 10px;
+  outline: none;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  font-size: large;
 }
 
 .crearMeta,
-.cancelarCrearMeta {
-  margin-left: 5px;
-  width: 35%;
-  padding: 12px 0px 10px 5px;
-  border: none;
-  outline: none;
-  font-size: 15px;
-  background: rgb(123, 163, 209, 0.5);
-  color: black;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-}
+.cancelarCrearMeta,
 .difficulties-button {
-  margin-left: 2px;
-  width: 30%;
-  padding: 12px 0px 10px 5px;
-  border: none;
-  outline: none;
   font-size: 15px;
-  background: rgb(123, 163, 209, 0.5);
-  color: black;
-  border-radius: 10px;
-  cursor: pointer;
+  background: rgb(182, 182, 182);
+  color: rgb(255, 255, 255);
   font-weight: 600;
+  transition: 0.5s;
 }
 .delete-goal-button,
 .edit-goal-button {
-  margin-left: 5px;
-  width: 50px;
-  padding: 2px;
-  border: none;
-  outline: none;
   font-size: 15px;
-  background: rgb(123, 163, 209, 0.5);
-  color: black;
-  border-radius: 10px;
-  cursor: pointer;
+  background: rgb(182, 182, 182);
+  color: rgb(255, 255, 255);
   font-weight: 600;
-  float: right;
+  transition: 0.5s;
 }
 
 .component {
@@ -494,33 +487,23 @@ h3 {
     transform 20ms ease-in-out 0 ms;
   font-size: large;
 }
-.goal-popup label {
-  color: rgb(21, 73, 198, 0.6);
-}
-.goal-popup textarea {
-  background-color: #7ba9d1;
-  color: #fff;
-  font-size: large;
-  border: 1px solid #aaa;
-  border-radius: 5px;
-}
+
 .goal-popup.active {
-  color: rgb(21, 73, 198, 0.6);
   display: block;
-  background: #fff;
-  top: 10%;
+  background: #424242;
+  top: 1%;
   left: 50%;
   opacity: 1;
   transform: translate(-50%, 50%) scale(1);
   transition: top 0ms ease-in-out 0ms, opacity 200ms ease-in-out 200 ms,
     transform 20ms ease-in-out 0 ms;
+  color: white;
 }
 .card {
   cursor: pointer;
-  color: rgb(21, 73, 198, 0.6);
 }
-.titleMetas {
-  border-bottom: 2px solid rgb(156, 156, 156);
-  margin-bottom: 5px;
+.actividades {
+  height: 50%;
+  -ms-grid-row-align: center;
 }
 </style>

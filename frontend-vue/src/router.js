@@ -9,7 +9,7 @@ import UserInfo from "./views/UserInfo";
 import Plan from "@/components/Plan";
 import Sprints from "@/components/Sprints";
 import Activities from "@/components/Activities";
-
+import Retroalimentacion from "@/components/Retroalimentacion"
 
 Vue.use(Router);
 
@@ -59,11 +59,15 @@ export default new Router({
           name: "smallgoals",
           component: SmallGoals,
         },
-
         {
-          path: "/Sprints",
+          path: "/sprints",
           name: "sprints",
           component: Sprints,
+        },
+        {
+          path: "/retroalimentacion",
+          name: "retroalimentacion",
+          component: Retroalimentacion,
         },
       ],
     },

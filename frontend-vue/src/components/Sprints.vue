@@ -1,12 +1,18 @@
 <template>
   <div class="col-12 m-0 p-2 h-100 component">
     <div
-      class=" d-flex flex-row col-12 m-0 mb-1 pb-2 align-items-center  titleMetas"
+      class=" d-flex flex-row col-12 m-0 mb-1 pb-2 align-items-center border-bottom border-dark"
     >
-      <h2>Sprints</h2>
+      <h2
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        title="Aquí puedes ver tus sprints y añadirles metas"
+      >
+        Sprints
+      </h2>
 
       <button
-        v-if="sprints.length < 1"
+        v-if="SprintActive == false"
         class=" ml-auto add"
         @click="openCreateSprintPopup()"
       >
@@ -14,31 +20,70 @@
       </button>
     </div>
 
-    <div class="d-flex flex-row col-12 h-75 m-0 p-0 justify-content-center">
-      <!-- Lista de sprints lateral izquierdo-->
-      <div
-        class=" column col-8 overflow-auto align-items-center justify-content-center"
-      >
-        <button
-          class="btn btn-primary mb-2 mx-1"
-          v-for="(sprint, index) in sprints"
-          :sprint="sprint"
-          :key="sprint.id"
-          @click="selectSprint(sprint, index + 1)"
+    <div class="d-flex flex-row col-12 h-75 m-0 p-0">
+      <div class="col-8 overflow-auto">
+        <!-- Lista de sprints lateral izquierdo-->
+        <div class="d-flex flex-row col-12 mb-2 p-0 overflow-auto">
+          <!--Div de las metas del sprint para ordenar -->
+          <div id="Metas">
+            <!--El siguiente for recorre todas las metas en metas[] y los trae como divs e imprime su nombre-->
+            <button
+              v-for="(sprint, index) in sprints"
+              :sprint="sprint"
+              :key="sprint.id"
+              @click="selectSprint(sprint, index + 1)"
+              class=" metas btn btn-dark btn-sm"
+              data-bs-toggle="tooltip"
+              data-bs-placement="right"
+              title="Selecciona este sprint para ver sus metas"
+            >
+              <h5>Sprint {{ index + 1 }}</h5>
+            </button>
+          </div>
+        </div>
+        <div
+          v-if="actualSprint.index > 0"
+          class="d-flex flex-column align-items-center justify-content-center"
         >
-          Sprint {{ index + 1 }}
-        </button>
-        <div class="d-flex align-items-center justify-content-center">
           <div
-            v-if="actualSprint.index > 0"
-            class="card bg-light mb-3 "
-            style="max-width: 18rem;"
+            class="col-12 mt-auto bg-dark border border-light text-light rounded "
           >
-            <div class="card-header">Sprint {{ actualSprint.index }}</div>
+            <h5>Fecha de finalización: {{ actualSprint.fechaFinalizacion }}</h5>
+          </div>
+          <div
+            class="card actividades bg-light mb-3 d-inline-block m-3"
+            style="min-width:50%; max-width:70%"
+          >
+            <div class="card-header text-white bg-dark">
+              Sprint {{ actualSprint.index }}
+              <button
+                v-if="actualSprint.estado == false"
+                class=" float-right btn bg-success text-white btn-sm"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="El sprint está completado"
+              >
+                TERMINADO
+              </button>
+              <button
+                v-if="actualSprint.estado == true"
+                class="float-right btn bg-danger text-white btn-sm"
+                @click="cambiarEstadoSprint()"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="Haz click aqui para marcar tu Sprint como 'COMPLETADO'"
+              >
+                CERRAR SPRINT
+              </button>
+            </div>
             <div class="card-body">
-              <h5 class="card-title">Metas del Sprint</h5>
+              <p class="card-text"><b>Metas del Sprint</b></p>
+              <p v-if="currentGoals.length < 1">
+                Este sprint no tiene metas añadidas
+              </p>
               <button
                 class=" btn btn-sm col-12 color mb-1"
+                :disabled="!actualSprint.estado"
                 @click="removeGoalFromSprint(goal)"
                 v-for="(goal, index) in currentGoals"
                 :goal="goal"
@@ -47,33 +92,49 @@
                 {{ index + 1 }}. {{ goal.nombre }}
               </button>
             </div>
-            <div
-              class="card-footer m-auto"
-              v-for="(sprint, index) in sprints"
-              :sprint="sprint"
-              :key="sprint.id"
-            >
-              Inicio {{ sprints[index].fechaInicio }} Fin {{ sprints[index].fechaFinalizacion }}
-            </div>
           </div>
         </div>
+        <button @click="getCurrentDate()">Pruebas</button>
       </div>
-
       <!-- Lista de metas lateral derecho-->
-      <div class="col-4 scroll ml-3 ">
-        <div class="container goals-title goals-list text-center m-1">
-          Metas Sin Sprint
+      <div
+        class="d-flex flex-column col-4 scroll p-0 pr-2 border-left border-dark"
+        v-if="actualSprint.estado == true"
+      >
+        <div
+          class="container bg-dark text-light text-center rounded border border-light m-1"
+        >
+          <h3 class="text-light">Metas</h3>
         </div>
+
         <br />
         <div v-for="goal in goals" :goal="goal" :key="goal.id">
           <button
-            v-if="goal.idSprint == 0  && activeSprintId>0"
-            class="btn goals-list col-12 m-1"
+            v-if="goal.idSprint == 0"
+            class="btn btn-light border border-dark  col-12 m-1"
             @click="updateGoalSprint(goal)"
           >
             {{ goal.nombre }}
           </button>
         </div>
+      </div>
+      <div
+        v-else
+        class="d-flex flex column p-0 h-100 col-4 pr-2 border-left border-dark text-center align-items-center justify-content-center"
+      >
+        <h3 class="bg-dark text-light p-2 rounded m-auto border border-light">
+          Este sprint no está activo
+        </h3>
+      </div>
+      <div
+        v-if="sprints.length < 1"
+        class="d-flex flex column p-0 h-100 col-4 pr-2 border-left border-dark text-center align-items-center justify-content-center"
+      >
+        <h5
+          class="bg-dark text-light p-2 rounded m-auto border border-light col-6"
+        >
+          Crea un sprint y añadele metas
+        </h5>
       </div>
     </div>
 
@@ -84,22 +145,17 @@
         @submit.prevent="createSprint()"
       >
         <h3>Nuevo Sprint</h3>
-
-        <label for="sprintStartDate">Fecha de Inicio</label>
-        <input
-          type="date"
-          id="sprintStartDate"
-          v-model="sprintCreateForm.startDate"
-          min="2022-01-24"
-          max="2030-01-01"
-        /><br />
+        <p>
+          Cuando creas un sprint su fecha de inicio es la hora actual
+        </p>
         <label for="sprintDeadline">Fecha de culminación</label>
         <input
-          type="date"
+          type="datetime-local"
           id="sprintDeadline"
           v-model="sprintCreateForm.deadLine"
           min="2022-01-24"
           max="2030-01-01"
+          required
         /><br />
         <button class="crearMeta" type="submit">
           Crear
@@ -113,18 +169,20 @@
         </button>
       </form>
     </div>
-    <div class="col-12 h-15 d-inline-block text-right"></div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 
+const pathGetProject = "/proyectos/find";
 const pathGetSprints = "/sprints/all";
 const pathCreateSprint = "/sprints/create";
 const pathGetGoals = "/metas/all";
 const pathUpdateGoalSprint = "/metas/update/sprint";
 const pathGetGoalsBySprintId = "/metas/findBySprint";
+const pathChangeSprintState = "/sprints/updateState";
+const pathUpdateSprint = "/sprints/update";
 
 export default {
   name: "sprints",
@@ -133,17 +191,19 @@ export default {
     return {
       proyectId: this.$store.state.activeProject,
       sprints: [],
+      SprintActive: true,
       actualDate: "2022-01-24",
+      proyecto: {},
       activeSprintId: 0,
       goalsBySprint: [],
       currentGoals: [],
       actualSprint: {
+        fechaFinalizacion: "2022-02-17",
+        fechaInicio: "2022-02-02",
+        estado: false,
+        idProyecto: 0,
         index: 0,
         sprintID: 0,
-        startDate: "",
-        deadLine: "",
-        proyectId: "",
-        goals: [],
       },
       sprintsLength: 0,
       selectedGoalId: 0,
@@ -156,13 +216,32 @@ export default {
     };
   },
 
-  created() {
-    this.loadGoals();
-    this.getSprints();
+  async created() {
+    //Obtiene las metas del proyecto
+    await this.loadGoals();
+    //obtiene los sprint del proyecto
+    await this.getSprints();
+    //verifica si los sprint siguen activos
     this.getActiveSprint();
   },
-  beforeMount() {
+  mounted() {
     this.getActiveSprint();
+  },
+  beforeCreate() {
+    //obtiene el proyecto asociado
+    let proyectoid = localStorage.getItem("proyectoId");
+    axios
+      .get(this.$store.state.backURL + pathGetProject, {
+        params: {
+          id: proyectoid,
+        },
+      })
+      .then((response) => {
+        this.proyecto = response["data"];
+      })
+      .catch((response) => {
+        alert("No es posible conectar con el backend en este momento");
+      });
   },
 
   methods: {
@@ -172,15 +251,48 @@ export default {
     selectSprint(sprint, index) {
       this.actualSprint = sprint;
       this.actualSprint.index = index;
+      let date = new Date(this.actualSprint.fechaFinalizacion);
+      this.actualSprint.fechaFinalizacion = date.toLocaleString();
+
       this.getGoalsBySprintId(this.actualSprint.sprintID);
-      this.getActiveSprint();
     },
-    createSprint() {
-      this.setMinDate();
-      axios
+    formatDate(date) {
+      if (date < 10) {
+        return "0" + date;
+      } else {
+        return date;
+      }
+    },
+    getCurrentDate() {
+      //regresa el tiempo actual en formato yyyy-mm-ddThh:mm:ss
+      var today = new Date();
+      let year = today.getFullYear();
+      year = this.formatDate(year);
+      let month = today.getMonth() + 1;
+      month = this.formatDate(month);
+      let day = today.getDate();
+      day = this.formatDate(day);
+      let hours = today.getHours();
+      hours = this.formatDate(hours);
+      let minutes = today.getMinutes();
+      minutes = this.formatDate(minutes);
+      let seconds = today.getSeconds();
+      seconds = this.formatDate(seconds);
+
+      var date = year + "-" + month + "-" + day;
+
+      var time = hours + ":" + minutes + ":" + seconds;
+
+      var dateTime = date + "T" + time;
+      return dateTime;
+    },
+
+    async createSprint() {
+      let date = this.getCurrentDate();
+      await axios
         .post(this.$store.state.backURL + pathCreateSprint, {
           idProyecto: this.proyectId,
-          fechaInicio: this.sprintCreateForm.startDate,
+          fechaInicio: date,
           fechaFinalizacion: this.sprintCreateForm.deadLine,
         })
         .then((response) => {
@@ -188,16 +300,30 @@ export default {
           this.sprintCreateForm.deadLine = "";
           this.getSprints();
           this.getGoalsBySprintId(this.actualSprint.sprintID);
-
-          this.getActiveSprint();
           this.closeCreateSprintPopup();
+          this.getActiveSprint();
         })
         .catch((response) => {
           alert("No es posible conectar con el backend en este momento");
         });
     },
-    getSprints() {
-      axios
+
+    sortSprints() {
+      //ordena los sprint segun id
+      for (let i = 0; i < this.sprints.length; i++) {
+        for (let j = 0; j < this.sprints.length - i - 1; j++) {
+          if (this.sprints[j + 1].sprintID < this.sprints[j].sprintID) {
+            [this.sprints[j + 1].sprintID, this.sprints[j].sprintID] = [
+              this.sprints[j].sprintID,
+              this.sprints[j + 1].sprintID,
+            ];
+          }
+        }
+      }
+    },
+
+    async getSprints() {
+      await axios
         .get(this.$store.state.backURL + pathGetSprints, {
           params: {
             id: this.$store.state.activeProject,
@@ -205,15 +331,17 @@ export default {
         })
         .then((response) => {
           this.sprints = response["data"];
+          this.sortSprints();
           this.getActiveSprint();
         })
         .catch((response) => {
+          console.log(response);
           alert("No es posible conectar con el backend en este momento");
         });
     },
 
-    loadGoals() {
-      axios
+    async loadGoals() {
+      await axios
         .get(this.$store.state.backURL + pathGetGoals, {
           params: {
             id: this.$store.state.activeProject,
@@ -247,15 +375,6 @@ export default {
         .catch((response) => {
           alert("No es posible conectar con el backend en este momento");
         });
-    },
-
-    getCurrentDate() {
-      var today = new Date();
-      var dd = today.getDate();
-      var mm = today.getMonth() + 1; //January is 0!
-      var yyyy = today.getFullYear();
-      today = yyyy + "-" + mm + "-" + dd;
-      return [yyyy, mm, dd];
     },
 
     getGoalsBySprintId(sprintId) {
@@ -294,38 +413,71 @@ export default {
         });
     },
     getActiveSprint() {
-      let today = this.getCurrentDate();
+      //el sprint activo siempre es el ultimo ya que solo puede haber uno a la vez
 
-      for (let index = 0; index < this.sprints.length; index++) {
-        let fechainicioString = this.sprints[index].fechaInicio;
-        let fechaFinString = this.sprints[index].fechaFinalizacion;
-
-        let startYear = parseInt(fechainicioString.substring(0, 4), 10);
-        let startMonth = parseInt(fechainicioString.substring(5, 7), 10);
-        let startDay = parseInt(fechainicioString.substring(8, 10), 10) + 1;
-
-        let yyyy = parseInt(fechaFinString.substring(0, 4), 10);
-        let mm = parseInt(fechaFinString.substring(5, 7), 10);
-        let dd = parseInt(fechaFinString.substring(8, 10), 10) + 1;
-
-        this.activeSprintId = this.sprints[index].sprintID;
-        // if (startYear <= today[0] && today[0] <= yyyy) {
-        //   if (startMonth <= today[1] && today[1] <= mm) {
-        //     if (startDay <= today[2] && today[2] <= dd) {
-        //       console.log(true);
-        //       this.activeSprintId = this.sprints[index].sprintID;
-        //       console.log(this.activeSprintId);
-        //     } else {
-        //       console.log("false 1");
-        //     }
-        //   } else {
-        //     console.log("false 2");
-        //   }
-        // }
+      if (this.sprints.length > 0) {
+        if (this.sprints[this.sprints.length - 1].estado == true) {
+          this.activeSprintId = this.sprints[this.sprints.length - 1].sprintID;
+          this.SprintActive = true;
+        }
+      } else {
+        this.SprintActive = false;
       }
     },
 
+    async updateSprintEndDate() {
+      let date = this.getCurrentDate();
+      let sprint = this.sprints[this.sprints.length - 1];
+      await axios
+        .put(
+          this.$store.state.backURL + pathUpdateSprint,
+          {
+            fechaFinalizacion: date,
+            fechaInicio: sprint.fechaInicio,
+            estado: sprint.estado,
+            idProyecto: sprint.idProyecto,
+            index: sprint.index,
+          },
+          { params: { id: this.activeSprintId } }
+        )
+        .then((response) => {
+          this.getSprints();
+          console.log(this.actualSprint.estado);
+          this.actualSprint.estado = false;
+          console.log(this.actualSprint.estado);
+          this.SprintActive = true;
+          console.log("Se cambió fecha del sprint");
+        })
+        .catch((response) => {
+          console.log(response);
+          alert("No es posible conectar con el backend en este momento 5");
+        });
+    },
+
+    async cambiarEstadoSprint() {
+      await this.updateSprintEndDate();
+      await axios
+        .put(
+          this.$store.state.backURL + pathChangeSprintState,
+          {},
+          { params: { id: this.activeSprintId } }
+        )
+        .then((response) => {
+          console.log(response);
+          this.loadGoals();
+          this.getSprints();
+          this.actualSprint.estado = false;
+          this.SprintActive = false;
+        })
+        .catch((response) => {
+          console.log(response);
+          alert("No es posible conectar con el backend en este momento 5");
+        });
+    },
+
     openCreateSprintPopup: function() {
+      this.setPopupMinEndDate();
+      this.setPopupMaxEndDate();
       document.querySelector(".create-sprint-popup").classList.add("active");
     },
     closeCreateSprintPopup: function() {
@@ -338,10 +490,16 @@ export default {
     closeSprintInfoPopup: function() {
       document.querySelector(".sprint-info-popup").classList.remove("active");
     },
-    setMinDate() {
-      let input = document.getElementById("sprintStartDate");
-      this.getCurrentDate();
-      input.setAttribute("min", this.actualDate);
+
+    setPopupMinEndDate() {
+      let dateInput = document.getElementById("sprintDeadline");
+      let fecha = this.getCurrentDate();
+      fecha = fecha.slice(0, -3);
+      dateInput.min = fecha;
+    },
+    setPopupMaxEndDate() {
+      let dateInput = document.getElementById("sprintDeadline");
+      dateInput.max = this.proyecto.fechaFin;
     },
   },
 };
@@ -352,9 +510,6 @@ h2 {
   color: #fff;
 }
 
-h3 {
-  color: #7ba9d1;
-}
 .add {
   border: none;
   border-radius: 5px;
@@ -380,72 +535,110 @@ h3 {
     transform 20ms ease-in-out 0 ms;
   font-size: large;
 }
-.create-sprint-popup,
-.sprint-info-popup {
-  color: rgb(21, 73, 198, 0.6);
-}
-.create-sprint-popup textarea,
-.sprint-info-popup textarea {
-  background-color: #7ba9d1;
-  color: #fff;
-  font-size: large;
-  overflow: hidden;
-  resize: none;
+
+input {
+  background-color: rgb(182, 182, 182);
+  color: rgb(78, 78, 78);
+  margin-top: 5px;
+  display: block;
+  width: 100%;
+  height: 10px;
+  padding: 10px;
+  outline: none;
   border: 1px solid #aaa;
   border-radius: 5px;
+  font-size: large;
 }
+
+.create-sprint-popup textarea,
+.sprint-info-popup textarea {
+  background-color: rgb(182, 182, 182);
+  color: rgb(78, 78, 78);
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: block;
+  padding: 10px;
+  outline: none;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  font-size: large;
+}
+
 .create-sprint-popup.active,
 .sprint-info-popup.active {
-  color: rgb(21, 73, 198, 0.6);
   display: block;
-  background: #fff;
+  background: #424242;
   top: -30%;
   left: 50%;
   opacity: 1;
   transform: translate(-50%, 50%) scale(1);
   transition: top 0ms ease-in-out 0ms, opacity 200ms ease-in-out 200 ms,
     transform 20ms ease-in-out 0 ms;
+  color: white;
 }
 
 .crearMeta,
 .cancelarCrearMeta {
-  margin-left: 5px;
-  width: 35%;
+  margin-left: 10px;
+  width: 30%;
   padding: 12px 0px 10px 5px;
-  border: none;
   outline: none;
   font-size: 15px;
-  background: rgb(123, 163, 209, 0.5);
-  color: black;
+  background: rgb(182, 182, 182);
+  color: rgb(255, 255, 255);
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
+  transition: 0.5s;
 }
 
 .card {
   cursor: pointer;
-  color: rgb(21, 73, 198, 0.6);
-}
-.titleMetas {
-  border-bottom: 2px solid rgb(156, 156, 156);
-  margin-bottom: 5px;
 }
 .goals-list {
   background-color: #fff;
-  color: #1549c699;
+  color: black;
 }
 .scroll {
   overflow-x: hidden; /* Hide horizontal scrollbar */
   overflow-y: scroll; /* Add vertical scrollbar */
 }
-select {
-  border: 0;
-  color: #1549c699;
-  outline: 0px;
-}
-.color{
-  border: 1px solid rgb(21, 73, 198, 0.6);
+.color {
+  border: 1px solid black;
   border-radius: 5px;
-  color: #1549c699;
+  color: black;
+}
+#Metas {
+  height: 15%;
+  width: 70%;
+  text-align: center;
+  padding: 1px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.metas {
+  overflow: hidden;
+  color: #163350;
+  font-size: 10px;
+  --dim: 5;
+  width: 30%;
+  height: 35%;
+  text-align: center;
+  top: 100%;
+  border-radius: 6px;
+}
+.metas h5 {
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+}
+.actividades {
+  height: 25%;
+  -ms-grid-row-align: center;
+}
+.component {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  width: 100%;
+  height: 100%;
 }
 </style>
