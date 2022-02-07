@@ -204,18 +204,6 @@
         </div>
 
         <div class="form-group col-12">
-          <label class="custom-label col-md-3" for="names">Email</label>
-          <input
-            id="names"
-            class="form-control col-12 col-sm-10 col-md-7 offset-sm-1"
-            type="email"
-            placeholder="Ingresa tu correo electrónico"
-            v-model="email"
-            required
-          />
-        </div>
-
-        <div class="form-group col-12">
           <label class="custom-label col-md-3 display" for="password"
             >Nueva Contrase&ntilde;a</label
           >
@@ -237,7 +225,7 @@
           </button>
         </div>
       </form>
-      <button @click="pushToHome()" class="btn btn-primary my-5">
+      <button @click="goToHome()" class="btn btn-primary my-5">
         Regresar
       </button>
         
