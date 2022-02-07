@@ -1,5 +1,5 @@
 <template>
-  <div class="col-12 m-0 p-0 h-100 component">
+  <div class="col-12 m-0 p-0 mb-5 pb-5 h-100 component">
     <!--encabezado del componente-->
     <div
       class=" d-flex flex-row col-12 m-0 mb-1 pb-2 align-items-center border-bottom border-dark"
@@ -9,17 +9,17 @@
         data-bs-placement="right"
         title="Aquí puedes ver tus sprints y añadirles metas"
       >
-        Sprints
+        Retroalimentación
       </h2>
     </div>
     <!-- Fin encabezado -->
-    <div class=" d-flex flex-row col-12 p-0 m-0 mb-2">
+    <div class=" d-flex flex-row flex-wrap col-12 p-0 m-0 mb-3">
       <button
         v-for="(sprint, index) in sprints"
         :sprint="sprint"
         :key="sprint.id"
         @click="selectSprint(sprint, index + 1)"
-        class=" metas btn btn-dark btn-sm"
+        class=" metas btn btn-dark btn-sm col-12 col-sm-4"
         data-bs-toggle="tooltip"
         data-bs-placement="right"
         title="Selecciona este sprint para ver sus metas"
@@ -28,17 +28,66 @@
       </button>
     </div>
     <!-- contenedor de sprints -->
-    <div class="d-flex flex-column col-12 p-0 m-0">
-      <h4 v-if="actualSprint.index>0">Sprint {{ actualSprint.index }}</h4>
-      <div v-for="goal in currentGoals" :goal="goal" :key="goal.MetaID">
+    <div  class="mb-5 pb-5">
+      <div
+      class="card text mb-5 "
+      v-for="goal in currentGoals"
+      :goal="goal"
+      :key="goal.MetaID"
+    >
+      <h3 class="card-header text-white bg-dark ">
         {{ goal.nombre }}
-        <div v-for="actividad in actividadesUnArreglo" :goal="goal" :key="actividad.MetaID">
-          <div v-if="goal.metaID== actividad.idMeta">      
-          {{actividad.nombre}}
+      </h3>
+      <div class="card-body text-center">
+        <div
+          class="card actividades bg-light mb-3 d-inline-block mx-auto "
+          v-for="actividad in actividadesUnArreglo"
+          :goal="goal"
+          :key="actividad.MetaID"
+        >
+          <div v-if="goal.metaID == actividad.idMeta" >
+            <div class="card-header text-white bg-dark">
+              {{ actividad.nombre }}
+              <button
+                v-show="actividad.estado"
+                class="btn bg-success text-white btn-sm"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="Haz click aqui para marcar tu actividad como 'POR HACER'"
+              >
+                COMPLETADA
+              </button>
+              <button
+                v-show="!actividad.estado"
+                class="btn bg-danger text-white btn-sm"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="Haz click aqui para marcar tu actividad como 'COMPLETADA'"
+              >
+                POR HACER
+              </button>
+            </div>
+            <div
+              class="card-body"
+              data-bs-toggle="tooltip"
+              data-bs-placement="right"
+              title="Haz click aqui para editar tu actividad"
+            >
+              <p class="card-text" v-if="actividad.dificultad">
+                <b>DIFICULTAD: </b>{{ actividad.dificultad }}
+              </p>
+            </div>
           </div>
         </div>
+
+        <div v-if="goal.actividades.length < 1" class="text-dark text-center">
+          <h5> <b>No hay actividades en esta meta</b>  </h5>
+        </div>
       </div>
-    </div>
+      <div class="card-footer  text-white bg-dark">
+        <b>DIFICULTAD: </b>{{ goal.dificultad }}
+      </div>
+    </div></div>
   </div>
 </template>
 
@@ -72,7 +121,7 @@ export default {
         },
       ],
       actividades: [],
-      actividadesUnArreglo:[],
+      actividadesUnArreglo: [],
 
       actualSprint: {
         fechaFinalizacion: "2022-02-17",
@@ -121,21 +170,17 @@ export default {
         await this.getActivitiesByMetaId(this.currentGoals[i].metaID);
         this.currentGoals[i].actividades = this.currentActivities;
       }
-      this.actividadesUnArreglo= [];
+      this.actividadesUnArreglo = [];
 
       for (let i = 0; i < this.actividades.length; i++) {
-        if (this.actividades[i].length>0) {
+        if (this.actividades[i].length > 0) {
           for (let j = 0; j < this.actividades[i].length; j++) {
-            this.actividadesUnArreglo.push(this.actividades[i][j])           
-            
+            this.actividadesUnArreglo.push(this.actividades[i][j]);
           }
-          
         }
       }
-      console.log(this.actividadesUnArreglo);
 
-      
-      //console.log(this.currentGoals);
+      console.log(this.currentGoals);
       this.actualSprint.index = index;
     },
     formatDate(date) {
