@@ -125,7 +125,6 @@
             <h5>Y Recuerda:</h5> 
             <p><i>{{Frases[Aleatorio(0,Frases.length)]}}</i></p>
           </div>
-          <!--<button @click="compararFechas()">Pruebas</button>-->
         </div>
       </div>
       <!--contenido-->
@@ -263,7 +262,7 @@ export default {
       //nombres es un arreglo con los nombres de los 4 botones
       nombres: ["Metas", "Sprints", "Avance", "Actividades", "Retroalimentacion"],
       //ref es el arreglo que relaciona los botones con sus componentes
-      ref: ["smallgoals", "sprints", "Plan", "Activities", "#"],
+      ref: ["smallgoals", "sprints", "Plan", "Activities", "retroalimentacion"],
       //mesidenav es falso cuando el mouse no esta encima de los botones
       
       //proyecto es el objeto base para manejar, se llena en el Popup de crear nuevo proyecto
@@ -307,18 +306,8 @@ export default {
   },
 
   methods: {
-    compararFechas() {
-      let today = new Date().toISOString();
-      let fecha = new Date(this.proyecto.fechaFin).toISOString();
-
-      console.log(today <= fecha);
-
-      console.log("Fecha fin: " + fecha);
-      console.log("Fecha Actual: " + today);
-    },
     cerrarSesion() {
-      localStorage.setItem("usuarioID", -1);
-      localStorage.setItem("usuarioNombre", null);
+      localStorage.clear()
       this.$router.push({ name: "loginform" });
     },
     Aleatorio(min, max) {
@@ -760,8 +749,8 @@ input {
 }
 
 .componente-central {
-  min-height: 65vh;
-  max-height: 65vh;
+  min-height: 70vh;
+  max-height: 70vh;
 }
 
 
