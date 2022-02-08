@@ -161,7 +161,7 @@
       </div>
     </div>
 
-      <form action="https://www.paypal.com/donate" method="post" target="_blank" class="position-absolute btn btn-lg DONAR">
+      <form action="https://www.paypal.com/donate" method="post" target="_blank" class="position-absolute btn btn-lg DONAR w-35">
         <input type="hidden" name="hosted_button_id" value="TXALJ7ANRPCL8" class="w-100 h-50 "/>
         <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" class="w-100 h-50 p-0"/>
       </form>
@@ -821,7 +821,7 @@ input {
 }
 .DONAR{
   top: 2%;
-  right: 12%;
+  left: 7%;
 }
 </style>
 <!--COSAS QUE HACER:
