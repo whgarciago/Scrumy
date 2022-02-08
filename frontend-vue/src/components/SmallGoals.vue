@@ -18,15 +18,16 @@
         :indice="goal.index"
         :key="goal.id"
       >
-        <div class="card-header text-white bg-dark" @click="abrirGoalPopup(goal)">
+        <div class="card-header text-white bg-dark" >
           {{ goal.nombre }}
-          <button class="btn bg-success text-white btn-sm" @click="openDifficultyPopup()">AÑADIR DIFICULTAD</button>
+          <button class="btn bg-success text-white btn-sm" @click="openDifficultyPopup(goal)">AÑADIR DIFICULTAD</button>
         </div>
         <div
           class="card-body"
           data-bs-toggle="tooltip"
           data-bs-placement="right"
           title="Haz click aqui para editar tu actividad"
+          @click="abrirGoalPopup(goal)"
         >
           <p class="card-text"><b>DESCRIPCIÓN:</b> {{ goal.descripcion }}</p>
           <p class="card-text" v-if="goal.dificultad">
@@ -86,7 +87,7 @@
       <h5 v-if="activeGoal.dificultad != null">
         Dificultad: {{ activeGoal.dificultad }}
       </h5>
-      <button class="btn difficulties-button col-12 col-sm-4 m-1" @click="openDifficultyPopup()">
+      <button class="btn difficulties-button col-12 col-sm-4 m-1" @click="openDifficultyPopup(activeGoal)">
         Dificultad
       </button>
       <button class="btn cancelarCrearMeta col-12 col-sm-4" @click="cerrarGoalPopup()">
@@ -239,7 +240,7 @@ export default {
     cerrarPopup: function() {
       document.querySelector(".create-goal-popup").classList.remove("active");
     },
-    openDifficultyPopup: function() {
+    openDifficultyPopup: function(goal) {
       this.activeGoal = goal;
       document.querySelector(".goal-difficulty-popup").classList.add("active");
       //document.querySelector(".goal-popup").classList.remove("active");
