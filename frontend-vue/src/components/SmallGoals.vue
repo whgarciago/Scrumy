@@ -5,8 +5,8 @@
     >
       <h2>Metas</h2>
 
-      <button class=" ml-auto add" @click="abrirPopup()">
-        <img src="../assets/addbutton.png" />
+      <button class=" ml-auto btn bg-dark text-light btn-lg" @click="abrirPopup()">
+        NUEVA META
       </button>
     </div>
     <div class="row col-12 h-75 m-0 overflow-auto justify-content-center">
@@ -17,16 +17,17 @@
         :goal="goal"
         :indice="goal.index"
         :key="goal.id"
-        @click="abrirGoalPopup(goal)"
       >
-        <div class="card-header text-white bg-dark">
+        <div class="card-header text-white bg-dark" >
           {{ goal.nombre }}
+          <button class="btn bg-secondary text-light text-white btn-sm float-right p-0" @click="openDifficultyPopup(goal)">AÑADIR DIFICULTAD</button>
         </div>
         <div
           class="card-body"
           data-bs-toggle="tooltip"
           data-bs-placement="right"
           title="Haz click aqui para editar tu actividad"
+          @click="openEditGoalPopup(goal)"
         >
           <p class="card-text"><b>DESCRIPCIÓN:</b> {{ goal.descripcion }}</p>
           <p class="card-text" v-if="goal.dificultad">
@@ -86,7 +87,7 @@
       <h5 v-if="activeGoal.dificultad != null">
         Dificultad: {{ activeGoal.dificultad }}
       </h5>
-      <button class="btn difficulties-button col-12 col-sm-4 m-1" @click="openDifficultyPopup()">
+      <button class="btn difficulties-button col-12 col-sm-4 m-1" @click="openDifficultyPopup(activeGoal)">
         Dificultad
       </button>
       <button class="btn cancelarCrearMeta col-12 col-sm-4" @click="cerrarGoalPopup()">
@@ -239,9 +240,10 @@ export default {
     cerrarPopup: function() {
       document.querySelector(".create-goal-popup").classList.remove("active");
     },
-    openDifficultyPopup: function() {
+    openDifficultyPopup: function(goal) {
+      this.activeGoal = goal;
       document.querySelector(".goal-difficulty-popup").classList.add("active");
-      document.querySelector(".goal-popup").classList.remove("active");
+      //document.querySelector(".goal-popup").classList.remove("active");
     },
     closeDifficultyPopup: function() {
       document
@@ -249,9 +251,10 @@ export default {
         .classList.remove("active");
     },
 
-    openEditGoalPopup: function() {
+    openEditGoalPopup: function(goal) {
+      this.activeGoal = goal;
       document.querySelector(".update-goal-popup").classList.add("active");
-      this.cerrarGoalPopup()
+      //this.cerrarGoalPopup()
     },
     closeEditGoalPopup: function() {
       document.querySelector(".update-goal-popup").classList.remove("active");

@@ -18,7 +18,14 @@
         height="1"
       />
     </form>
+    <div class="position-absolute top-100 start-100 translate-middle btn btn-lg w-100 h-100">
+      <form action="https://www.paypal.com/donate" method="post" target="_top" class="w-100 h-100">
+        <input type="hidden" name="hosted_button_id" value="TXALJ7ANRPCL8" />
+        <input type="image" src="https://img.icons8.com/material/32/000000/delete--v1.png" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+      </form>
+    </div>
   </div>
+  
 </template>
 
 <script>

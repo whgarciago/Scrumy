@@ -43,9 +43,9 @@
       <div class="ventanaOpciones crearActividad bg-dark">
         <div class="contenidoActividad w-100 h-100">
           <h2 class="text-light">Nueva actividad</h2>
-          <p class="text-light">Nombre: </p>
+          <p class="text-light m-0">Nombre: </p>
           <input v-model="NombreActividad" type="text" class="rounded bg-secondary"><br>
-          <p class="text-light">descripción: </p>
+          <p class="text-light m-0">Descripción: </p>
           <input v-model="DescripcionActividad" type="text" class="rounded bg-secondary w-100"><br>
         </div>
         <button @click="cerrarPopupAct()" class="cerrarVentana btn bg-dark text-light">x</button>
@@ -58,10 +58,11 @@
           <h2 class="text-light">Editar Actividad</h2>
           <p class="text-light">Nombre: </p>
           <input v-model="NombreActividad" type="text" class="rounded bg-secondary"><br>
-          <p class="text-light">descripción: </p>
+          <p class="text-light">Descripción: </p>
           <input v-model="DescripcionActividad" type="text" class="rounded bg-secondary w-100"><br>
-          <p class="text-light">dificultad: </p>
-          <input v-model="DificultadActividad" type="text" class="rounded bg-secondary w-100"><br>
+          <p class="text-light">Dificultad: </p>
+          <textarea class="w-100 goalDescription bg-secondary" cols="30" rows="3" v-model="DificultadActividad"></textarea>
+          <!--input v-model= type="text" class="bg-secondary w-100"--><br>
         </div>
         <button @click="cerrarPopupCam()" class="cerrarVentana btn bg-dark text-light">x</button>
         <button @click="cambiarActividad()" class="textoOpcion2 btn text-dark btn-lg btn-outline-success">GUARDAR</button>
@@ -114,6 +115,7 @@ export default {
       NombreActividad:"",
       DescripcionActividad:"",
       DificultadActividad:"",
+      EstadoActividad:"",
       IDActividad:0,
       CheckboxDelAct:[],
       isHiddenCreate: false,
@@ -139,6 +141,7 @@ export default {
           this.NombreActividad=this.actividades[i].nombre;
           this.DificultadActividad=this.actividades[i].dificultad;
           this.IDActividad=id;
+          this.EstadoActividad=this.actividades[i].estado;
         }
        
       }
@@ -149,6 +152,7 @@ export default {
       this.NombreActividad="";
       this.DificultadActividad="";
       this.IDActividad=0;
+      this.EstadoActividad;
     },
     BringActivities(idMeta){
       //let actividades=[]; 
@@ -233,6 +237,7 @@ export default {
             descripcion: this.DescripcionActividad,
             dificultad: this.DificultadActividad,
             idMeta: this.idMetA,
+            estado: this.EstadoActividad,
           },
           {
             params: {
@@ -405,7 +410,7 @@ html,body{
     top: 10%;
     left: 30%;  
     width: 40%;
-    height: 60%;
+    height: 70%;
     border-style: solid;
     border-color:#FFFFFF;
     padding: 20px 30px;
@@ -456,4 +461,15 @@ html,body{
   border-bottom: 2px solid rgb(0, 0, 0);
   margin-bottom: 5px;
   }
+  textarea {
+  background-color: rgb(182, 182, 182);
+  color: rgb(0, 0, 0);
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: block;
+  padding: 10px;
+  outline: none;
+  border-radius: 5px;
+  font-size: large;
+}
 </style>

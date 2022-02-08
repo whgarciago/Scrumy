@@ -13,10 +13,10 @@
 
       <button
         v-if="SprintActive == false"
-        class=" ml-auto add"
+        class=" ml-auto add btn bg-dark text-light btn-lg"
         @click="openCreateSprintPopup()"
       >
-        <img src="../assets/addbutton.png" />
+        NUEVO SPRINT
       </button>
     </div>
 

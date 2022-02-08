@@ -10,6 +10,7 @@ import Plan from "@/components/Plan";
 import Sprints from "@/components/Sprints";
 import Activities from "@/components/Activities";
 import Retroalimentacion from "@/components/Retroalimentacion"
+import Donation from "./views/Donation";
 
 Vue.use(Router);
 
@@ -75,6 +76,11 @@ export default new Router({
       path: "/settings",
       name: "settings",
       component: UserInfo,
+    },
+    {
+      path: "/Donation",
+      name: "Donation",
+      component: Donation,
     },
   ],
 });
