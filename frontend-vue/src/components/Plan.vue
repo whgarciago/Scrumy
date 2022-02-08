@@ -232,7 +232,7 @@ h2{
 #Sprints h2{display: inline;  color: white;} 
 #menu {
   position :absolute;
-  top :13%;
+  top :11%;
   right: 6%;
   width: 12%;
   height: 5%;

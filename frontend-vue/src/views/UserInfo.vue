@@ -205,6 +205,20 @@
 
         <div class="form-group col-12">
           <label class="custom-label col-md-3 display" for="password"
+            > Contrase&ntilde;a actual</label
+          >
+          <input
+            id="password"
+            class="form-control col-12 col-sm-10 col-md-7 offset-sm-1"
+            type="password"
+            placeholder="Contraseña"
+            v-model="cpassword"
+            required
+          />
+        </div>
+
+        <div class="form-group col-12">
+          <label class="custom-label col-md-3 display" for="password"
             >Nueva Contrase&ntilde;a</label
           >
           <input

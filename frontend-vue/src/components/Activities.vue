@@ -20,9 +20,9 @@
         
     </div>
   </div>  
-  <div class="col-12 h-75 m-0 p-4 justify-content-center d-grid" >
+  <div class="col-12 h-75 m-0 p-4 justify-content-center d-grid pb-5 mb-5" >
       <!--div v-for="actividad in actividades" :key="actividad.id" class="actividades g-col-4"-->
-        <div class="card actividades bg-light mb-3 d-inline-block m-3" v-for="actividad in actividades" :key="actividad.id">
+        <div class="card actividades bg-light mb-3 d-inline-block  mb-5" v-for="actividad in actividades" :key="actividad.id">
           <div class="card-header text-white bg-dark">
             {{actividad.nombre}}
             <button v-show="actividad.estado" class="btn bg-success text-white btn-sm" @click="cambiarEstado(actividad.actividadID)" data-bs-toggle="tooltip" data-bs-placement="right" title="Haz click aqui para marcar tu actividad como 'POR HACER'">
@@ -326,7 +326,7 @@ html,body{
 #Sprints h1{display: inline;  color: white;} 
 #menu {
   position :absolute;
-  top :7%;
+  top :5%;
   right: 2%;
   width: 15%;
   height: 5%;
