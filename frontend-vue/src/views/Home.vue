@@ -88,6 +88,7 @@
                 <button class="btn b7" @click="FondosPredeterminados(7,'--color1')">G</button>
                 <button class="btn b8" @click="FondosPredeterminados(8,'--color1')">H</button>
               </div>
+              <div class="dropdown-divider"></div>
             </div>
           </li>
         </ul>
@@ -125,6 +126,7 @@
             <h5>Y Recuerda:</h5> 
             <p><i>{{Frases[Frase]}}</i></p>
           </div>
+          
         </div>
       </div>
       <!--contenido-->
@@ -158,6 +160,11 @@
         </div>
       </div>
     </div>
+
+      <form action="https://www.paypal.com/donate" method="post" target="_blank" class="position-absolute btn btn-lg DONAR">
+        <input type="hidden" name="hosted_button_id" value="TXALJ7ANRPCL8" class="w-100 h-50 "/>
+        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" class="w-100 h-50 p-0"/>
+      </form>
     <!--Div para desplegar los componentes de cada boton-->
     <!--Popup de crear nuevo proyecto-->
     <div class="popup">
@@ -811,6 +818,10 @@ input {
   --color2: #fff;
   /*background-color: var(--color1);*/
   background-image: linear-gradient(to top,var(--color1),var(--color2));
+}
+.DONAR{
+  top: 2%;
+  right: 12%;
 }
 </style>
 <!--COSAS QUE HACER:

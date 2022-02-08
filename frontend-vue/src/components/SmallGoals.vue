@@ -5,8 +5,8 @@
     >
       <h2>Metas</h2>
 
-      <button class=" ml-auto add" @click="abrirPopup()">
-        <img src="../assets/addbutton.png" />
+      <button class=" ml-auto btn bg-dark text-light btn-lg" @click="abrirPopup()">
+        NUEVA META
       </button>
     </div>
     <div class="row col-12 h-75 m-0 overflow-auto justify-content-center">
@@ -20,14 +20,14 @@
       >
         <div class="card-header text-white bg-dark" >
           {{ goal.nombre }}
-          <button class="btn bg-success text-white btn-sm" @click="openDifficultyPopup(goal)">AÑADIR DIFICULTAD</button>
+          <button class="btn bg-secondary text-light text-white btn-sm float-right p-0" @click="openDifficultyPopup(goal)">AÑADIR DIFICULTAD</button>
         </div>
         <div
           class="card-body"
           data-bs-toggle="tooltip"
           data-bs-placement="right"
           title="Haz click aqui para editar tu actividad"
-          @click="abrirGoalPopup(goal)"
+          @click="openEditGoalPopup(goal)"
         >
           <p class="card-text"><b>DESCRIPCIÓN:</b> {{ goal.descripcion }}</p>
           <p class="card-text" v-if="goal.dificultad">
@@ -251,9 +251,10 @@ export default {
         .classList.remove("active");
     },
 
-    openEditGoalPopup: function() {
+    openEditGoalPopup: function(goal) {
+      this.activeGoal = goal;
       document.querySelector(".update-goal-popup").classList.add("active");
-      this.cerrarGoalPopup()
+      //this.cerrarGoalPopup()
     },
     closeEditGoalPopup: function() {
       document.querySelector(".update-goal-popup").classList.remove("active");
