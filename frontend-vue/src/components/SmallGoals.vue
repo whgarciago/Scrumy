@@ -17,10 +17,10 @@
         :goal="goal"
         :indice="goal.index"
         :key="goal.id"
-        @click="abrirGoalPopup(goal)"
       >
-        <div class="card-header text-white bg-dark">
+        <div class="card-header text-white bg-dark" @click="abrirGoalPopup(goal)">
           {{ goal.nombre }}
+          <button class="btn bg-success text-white btn-sm" @click="openDifficultyPopup()">AÑADIR DIFICULTAD</button>
         </div>
         <div
           class="card-body"
@@ -240,8 +240,9 @@ export default {
       document.querySelector(".create-goal-popup").classList.remove("active");
     },
     openDifficultyPopup: function() {
+      this.activeGoal = goal;
       document.querySelector(".goal-difficulty-popup").classList.add("active");
-      document.querySelector(".goal-popup").classList.remove("active");
+      //document.querySelector(".goal-popup").classList.remove("active");
     },
     closeDifficultyPopup: function() {
       document
