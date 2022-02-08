@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    backURL: 'http://localhost:8081/api',
+    backURL: 'http://scrumyapp-env.eba-wcn4wnq2.us-east-1.elasticbeanstalk.com/api',
     activeProject: 0,
   },
   mutations: {

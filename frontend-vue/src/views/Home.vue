@@ -355,7 +355,7 @@ export default {
 
       try {
         const response = await axios.post(
-          "http://localhost:8081/api/proyectos/create",
+          "http://scrumyapp-env.eba-wcn4wnq2.us-east-1.elasticbeanstalk.com/api/proyectos/create",
           {
             idUsuarios: usuarioID,
             nombre: nombre,
@@ -394,7 +394,7 @@ export default {
       const { nombre, motivacion, descripcion, fechaFin } = this.proyectoActual;
       try {
         const response = await axios.put(
-          "http://localhost:8081/api/proyectos/update?id=" +
+          "http://scrumyapp-env.eba-wcn4wnq2.us-east-1.elasticbeanstalk.com/api/proyectos/update?id=" +
             this.proyectoActual.id,
           {
             idUsuarios: this.usuarioID,
@@ -435,7 +435,7 @@ export default {
       const { nombre, motivacion, descripcion, fechaFin } = this.proyectoActual;
       try {
         const response = await axios.delete(
-          "http://localhost:8081/api/proyectos/remove?id=" +
+          "http://scrumyapp-env.eba-wcn4wnq2.us-east-1.elasticbeanstalk.com/api/proyectos/remove?id=" +
             this.proyectoActual.id,
           {
             idUsuarios: this.usuarioID,
@@ -492,7 +492,7 @@ export default {
     async obtenerProyectosDeBackend() {
       try {
         const response = await axios.get(
-          "http://localhost:8081/api/proyectos/all",
+          "http://scrumyapp-env.eba-wcn4wnq2.us-east-1.elasticbeanstalk.com/api/proyectos/all",
           {
             params: {
               id: this.usuarioID,
